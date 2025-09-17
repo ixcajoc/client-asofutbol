@@ -15,6 +15,12 @@ import { PlayerCard } from './components/futbol-player/player-panel/player-card/
 import { PlayerPanel } from './components/futbol-player/player-panel/player-panel';
 import { PanelTeam } from './components/futbol-team/panel-team/panel-team';
 import { Table } from './components/leaderboard/table/table';
+import { DisciplineTable } from './shared/reports/discipline-table/discipline-table';
+import { GamesByDay } from './shared/reports/games-by-day/games-by-day';
+import { SeasonSummary } from './shared/reports/season-summary/season-summary';
+import { TeamsStats } from './shared/reports/teams-stats/teams-stats';
+import { TopAssisters } from './shared/reports/top-assisters/top-assisters';
+import { TopScorers } from './shared/reports/top-scorers/top-scorers';
 
 export const routes: Routes = [
     {
@@ -94,12 +100,56 @@ export const routes: Routes = [
                 component: EditUser,
                 title: 'Edit User',
             },
-            // tabla clasificacion
+
             {
-                path: "tabla",
-                component: Table,
-                title: 'Tabla Casificacion',
+                path: 'reportes',
+                title:'Reportes',
+                children:[
+                    {
+                        path: "tabla",
+                        component: Table,
+                        title: 'Tabla Casificacion',
+                    },
+                    {
+                        path: "reporte-disciplina",
+                        component: DisciplineTable,
+                        title: 'Tabla Disciplinaria',
+                    },
+                    {
+                        path: "games-by-day",
+                        component: GamesByDay,
+                        title: 'Juegos por dia',
+                    },
+                    {
+                        path: "season-summary",
+                        component: SeasonSummary,
+                        title: 'Resumen de temporada',
+                    },
+                    {
+                        path: "estadisticas-equipos",
+                        component: TeamsStats,
+                        title: 'reporte estadisticas equipos',
+                    },
+                    {
+                        path: "top-asistidores",
+                        component: TopAssisters,
+                        title: 'Top Asistidores',
+                    },
+                    {
+                        path: "top-goleadores",
+                        component: TopScorers,
+                        title: 'Top Goleadores',
+                    },
+
+                ]
             },
+            
+            // tabla clasificacion
+            // {
+            //     path: "tabla",
+            //     component: Table,
+            //     title: 'Tabla Casificacion',
+            // },
            
             {
                 // creo que colocare una seccion de estadisticas y
@@ -111,6 +161,8 @@ export const routes: Routes = [
 
             }
         ]
+
+        
     },
     {
         path: 'login',

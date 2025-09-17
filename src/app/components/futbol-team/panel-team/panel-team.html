@@ -1,3 +1,5 @@
 <div class="grid grid-cols-3 gap-2" >
-    <app-team-card/>
+    @for (team of teamList['data']; track $index) {
+        <app-team-card [teamData]="team"/>
+    }
 </div>
