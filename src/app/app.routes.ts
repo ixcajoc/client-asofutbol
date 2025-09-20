@@ -34,6 +34,21 @@ export const routes: Routes = [
         title: 'Home',
     },
     {
+        path: 'login',
+        component: Login,
+        title: 'Iniciar sesión',
+    },
+    {
+        path: 'new-account',
+        component: CreateAccount,
+        title: 'Crear cuenta',
+    },
+    {
+        path: 'forgot-pass',
+        component: ForgotPassword,
+        title: 'Recuperar clave',
+    },
+    {
         path: 'dashboard1',
         component: Dashboard1,
         title: 'Admin dashboard',
@@ -164,21 +179,7 @@ export const routes: Routes = [
 
         
     },
-    {
-        path: 'login',
-        component: Login,
-        title: 'Iniciar sesión',
-    },
-    {
-        path: 'new-account',
-        component: CreateAccount,
-        title: 'Crear cuenta',
-    },
-    {
-        path: 'forgot-pass',
-        component: ForgotPassword,
-        title: 'Recuperar clave',
-    },
+    
     
 
 ];
