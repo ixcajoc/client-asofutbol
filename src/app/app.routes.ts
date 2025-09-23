@@ -28,6 +28,11 @@ export const routes: Routes = [
         component: Dashboard1,
         title: 'Admin dashboard',
     },
+    // {
+    //     path: '',
+    //     component: Login,
+    //     title: 'Iniciar sesion',
+    // },
     {
         path: 'home',
         component: Home,
@@ -69,7 +74,7 @@ export const routes: Routes = [
                 title: 'New Team',
             },
             {
-                path: "edit-team",
+                path: "edit-team/:teamId",
                 component: EditFutbolTeam,
                 title: 'Edit Team',
             },
@@ -95,7 +100,7 @@ export const routes: Routes = [
                 title: 'New Player',
             },
             {
-                path: "edit-player",
+                path: "edit-player/:playerId",
                 component: EditFutbolPlayer,
                 title: 'Edit Player',
             },
@@ -111,7 +116,7 @@ export const routes: Routes = [
                 title: 'New User',
             },
             {
-                path: "edit-user",
+                path: "edit-user/:userId",
                 component: EditUser,
                 title: 'Edit User',
             },

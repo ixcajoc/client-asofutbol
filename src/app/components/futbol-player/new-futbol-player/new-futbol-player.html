@@ -14,18 +14,20 @@
     <form [formGroup]="playerForm" (ngSubmit)="submitPlayerForm()">
       <!-- Grid -->
       <div class="grid sm:grid-cols-12 gap-2 sm:gap-6">
-
         <div class="sm:col-span-3">
           <label for="id_equipo" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
-            ID del equipo
+            Equipo
           </label>
         </div>
         <div class="sm:col-span-9">
-          <input id="id_equipo" formControlName="id_equipo" type="text" 
+          <select id="id_equipo" formControlName="id_equipo" 
             class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" 
-            placeholder="ID del equipo" required>
+            required>
+            @for (team of teamList['data']; track $index) {
+              <option [value]="team.id_equipo">{{ team.nombre }}</option>
+            }
+          </select>
         </div>
-
         <div class="sm:col-span-3">
           <label for="numero_camiseta" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
             Número de camiseta
@@ -76,9 +78,13 @@
           </label>
         </div>
         <div class="sm:col-span-9">
-          <input id="posicion" formControlName="posicion" type="text" 
+          <select id="posicion" formControlName="posicion" 
             class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" 
-            placeholder="Posición" required>
+            required>
+            @for (position of playerPositionList; track $index) {
+              <option [value]="position">{{position}}</option>
+            }
+          </select>
         </div>
 
         <div class="sm:col-span-3">
@@ -113,8 +119,8 @@
             class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" 
             required>
             <option value="" disabled selected>Seleccione</option>
-            <option value="derecho">Derecho</option>
-            <option value="izquierdo">Izquierdo</option>
+            <option value="DERECHO">Derecho</option>
+            <option value="IZQUIERDO">Izquierdo</option>
           </select>
         </div>
 
@@ -172,6 +178,9 @@
         <button type="submit" [disabled]="playerForm.invalid" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-hidden focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
           Registrar
         </button>
+          <!-- <button type="submit" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-hidden focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
+          Registrar
+        </button> -->
       </div>
     </form>
   </div>
