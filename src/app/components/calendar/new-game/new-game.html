@@ -1,0 +1,142 @@
+<!-- Card Section -->
+<div class="max-w-4xl px-4 py-10 sm:px-6 lg:px-8 mx-auto">
+  <!-- Card -->
+  <div class="bg-white rounded-xl shadow-xs p-4 sm:p-7 dark:bg-neutral-800">
+    <div class="mb-8">
+      <h2 class="text-xl font-bold text-gray-800 dark:text-neutral-200">
+        Nuevo partido
+      </h2>
+      <p class="text-sm text-gray-600 dark:text-neutral-400">
+        Programar un nuevo partido
+      </p>
+    </div>
+
+    <form [formGroup]="matchForm" (ngSubmit)="submitMatchForm()">
+      <!-- Grid -->
+      <div class="grid sm:grid-cols-12 gap-2 sm:gap-6">
+        
+        <!-- Jornada -->
+        <div class="sm:col-span-3">
+          <label for="id_jornada" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
+            Jornada
+          </label>
+        </div>
+        <div class="sm:col-span-9">
+          <select id="id_jornada" formControlName="id_jornada" 
+            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" 
+            required>
+            <option value="" disabled selected>Seleccione jornada</option>
+            @for (jornada of jornadaList; track $index) {
+              <option [value]="jornada.id_jornada">{{ jornada.numero_jornada }} - {{ jornada.nombre }}</option>
+            }
+          </select>
+        </div>
+
+        <!-- Equipo Local -->
+        <div class="sm:col-span-3">
+          <label for="id_equipo_local" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
+            Equipo Local
+          </label>
+        </div>
+        <div class="sm:col-span-9">
+          <select id="id_equipo_local" formControlName="id_equipo_local" 
+            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" 
+            required>
+            <option value="" disabled selected>Seleccione equipo local</option>
+            @for (team of teamList; track $index) {
+              <option [value]="team.id_equipo">{{ team.nombre }}</option>
+            }
+          </select>
+        </div>
+
+        <!-- Equipo Visitante -->
+        <div class="sm:col-span-3">
+          <label for="id_equipo_visitante" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
+            Equipo Visitante
+          </label>
+        </div>
+        <div class="sm:col-span-9">
+          <select id="id_equipo_visitante" formControlName="id_equipo_visitante" 
+            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" 
+            required>
+            <option value="" disabled selected>Seleccione equipo visitante</option>
+            @for (team of teamList; track $index) {
+              <option [value]="team.id_equipo">{{ team.nombre }}</option>
+            }
+          </select>
+        </div>
+
+        <!-- Fecha y hora del partido -->
+        <div class="sm:col-span-3">
+          <label for="fecha_partido" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
+            Fecha y hora
+          </label>
+        </div>
+        <div class="sm:col-span-9">
+          <input id="fecha_partido" formControlName="fecha_partido" type="datetime-local" 
+            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" 
+            required>
+        </div>
+
+        <!-- Estadio -->
+        <div class="sm:col-span-3">
+          <label for="estadio" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
+            Estadio
+          </label>
+        </div>
+        <div class="sm:col-span-9">
+          <input id="estadio" formControlName="estadio" type="text" 
+            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" 
+            placeholder="Nombre del estadio">
+        </div>
+
+        <!-- Árbitro -->
+        <div class="sm:col-span-3">
+          <label for="id_arbitro" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
+            Árbitro
+          </label>
+        </div>
+        <div class="sm:col-span-9">
+          <select id="id_arbitro" formControlName="id_arbitro" 
+            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
+            <option value="" disabled selected>Seleccione árbitro</option>
+            @for (referee of refereeList; track $index) {
+              <option [value]="referee.id_usuario">{{ referee.nombre }} {{ referee.apellido }}</option>
+            }
+          </select>
+        </div>
+
+        <!-- Estado -->
+        <div class="sm:col-span-3">
+          <label for="estado" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
+            Estado
+          </label>
+        </div>
+        <div class="sm:col-span-9">
+          <select id="estado" formControlName="estado" 
+            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
+            <option value="" disabled selected>Seleccione estado</option>
+            <option value="PROGRAMADO">Programado</option>
+            <option value="EN_CURSO">En curso</option>
+            <option value="FINALIZADO">Finalizado</option>
+            <option value="SUSPENDIDO">Suspendido</option>
+            <option value="CANCELADO">Cancelado</option>
+          </select>
+        </div>
+
+      </div>
+      <!-- End Grid -->
+
+      <div class="mt-5 flex justify-end gap-x-2">
+        <button type="button" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-red-500 hover:text-white disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-50 dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800">
+          Cancelar
+        </button>
+        <button type="submit" [disabled]="matchForm.invalid" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-hidden focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
+          Programar partido
+        </button>
+      </div>
+    </form>
+  </div>
+  <!-- End Card -->
+</div>
+<!-- End Card Section -->

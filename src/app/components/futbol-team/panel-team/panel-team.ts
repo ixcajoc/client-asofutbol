@@ -27,7 +27,7 @@ export class PanelTeam {
   getAllTeams(){
     this.teamService.getAllTeams().subscribe({
       next:(response)=>{
-        this.teamList = response;
+        this.teamList = response.data;
         console.log(this.teamList);
       },
       error: (error) => (console.log(error))
@@ -35,6 +35,12 @@ export class PanelTeam {
 
 
   }
+   // escucho el evento para actualizar la lista y no mostrar los elementos eliminados
+    onTeamDeleted(teamId: number) {
+      this.teamList = this.teamList.filter(
+        (team:any) => team.id_equipo !== teamId
+      );
+    }
 
 
 }

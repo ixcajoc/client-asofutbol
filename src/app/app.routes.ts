@@ -21,6 +21,10 @@ import { SeasonSummary } from './shared/reports/season-summary/season-summary';
 import { TeamsStats } from './shared/reports/teams-stats/teams-stats';
 import { TopAssisters } from './shared/reports/top-assisters/top-assisters';
 import { TopScorers } from './shared/reports/top-scorers/top-scorers';
+import { PanelCalendar } from './components/calendar/panel-calendar/panel-calendar';
+import { NewGame } from './components/calendar/new-game/new-game';
+import { EditGame } from './components/calendar/edit-game/edit-game';
+import { UpcomingGame } from './components/calendar/upcoming-game/upcoming-game';
 
 export const routes: Routes = [
     {
@@ -163,14 +167,58 @@ export const routes: Routes = [
 
                 ]
             },
-            
-            // tabla clasificacion
-            // {
-            //     path: "tabla",
-            //     component: Table,
-            //     title: 'Tabla Casificacion',
-            // },
-           
+
+            {
+                path: 'calendar',
+                title:'Calendario',
+                children:[
+                    {
+                        path: "panel-calendar",
+                        component: PanelCalendar,
+                        title: 'Calendar Panel',
+                    },
+                    {
+                        path: "new-game",
+                        component: NewGame,
+                        title: 'Nuevo Juego',
+                    },
+                    {
+                        path: "edit-game/:gameId",
+                        component: EditGame,
+                        title: 'Editar Juego',
+                    },
+                    {
+                        path: "upcoming-game",
+                        component: UpcomingGame,
+                        title: 'Proximos juegos',
+                    }
+                ]
+            },
+            {
+                path: "games-by-day",
+                component: GamesByDay,
+                title: 'Juegos por dia',
+            },
+            {
+                path: "season-summary",
+                component: SeasonSummary,
+                title: 'Resumen de temporada',
+            },
+            {
+                path: "estadisticas-equipos",
+                component: TeamsStats,
+                title: 'reporte estadisticas equipos',
+            },
+            {
+                path: "top-asistidores",
+                component: TopAssisters,
+                title: 'Top Asistidores',
+            },
+            {
+                path: "top-goleadores",
+                component: TopScorers,
+                title: 'Top Goleadores',
+            }, 
             {
                 // creo que colocare una seccion de estadisticas y
                 // siempre lo primero que se vea al iniciar 
