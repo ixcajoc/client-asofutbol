@@ -25,6 +25,7 @@ import { PanelCalendar } from './components/calendar/panel-calendar/panel-calend
 import { NewGame } from './components/calendar/new-game/new-game';
 import { EditGame } from './components/calendar/edit-game/edit-game';
 import { UpcomingGame } from './components/calendar/upcoming-game/upcoming-game';
+import { EventComponent } from './components/event/event';
 
 export const routes: Routes = [
     {
@@ -32,11 +33,6 @@ export const routes: Routes = [
         component: Dashboard1,
         title: 'Admin dashboard',
     },
-    // {
-    //     path: '',
-    //     component: Login,
-    //     title: 'Iniciar sesion',
-    // },
     {
         path: 'home',
         component: Home,
@@ -195,6 +191,11 @@ export const routes: Routes = [
                 ]
             },
             {
+                path: "events/match/:matchEventId",
+                component: EventComponent,
+                title: 'Eventos del partido',
+            },
+            {
                 path: "games-by-day",
                 component: GamesByDay,
                 title: 'Juegos por dia',
@@ -232,6 +233,9 @@ export const routes: Routes = [
 
         
     },
+    
+
+
     
     
 

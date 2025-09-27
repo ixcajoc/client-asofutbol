@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
 import { ReportService } from '../../../services/report-service.service';
 import { environment } from '../../../environments/environment';
+import { ExportButton } from '../../export-button/export-button';
 
 @Component({
   selector: 'app-teams-stats',
-  imports: [],
+  imports: [
+    ExportButton,
+  ],
   templateUrl: './teams-stats.html',
   styleUrl: './teams-stats.css'
 })

@@ -1,0 +1,151 @@
+<!-- Card Section -->
+<div class="max-w-4xl px-4 py-10 sm:px-6 lg:px-8 mx-auto">
+  <!-- Card -->
+  <div class="bg-white rounded-xl shadow-xs p-4 sm:p-7 dark:bg-neutral-800">
+    <div class="mb-8">
+      <h2 class="text-xl font-bold text-gray-800 dark:text-neutral-200">
+        Nuevo evento
+      </h2>
+      <p class="text-sm text-gray-600 dark:text-neutral-400">
+        Registrar un evento de un partido
+      </p>
+    </div>
+
+    <form [formGroup]="eventForm" (ngSubmit)="submitEventForm()">
+      <!-- Grid -->
+      <div class="grid sm:grid-cols-12 gap-2 sm:gap-6">
+
+        <!-- Partido -->
+        <div class="sm:col-span-3">
+          <label for="id_partido" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
+            Partido
+          </label>
+        </div>
+        <div class="sm:col-span-9">
+          <input 
+            id="id_partido" 
+            formControlName="id_partido" 
+            type="number" 
+            min="1"
+          
+            
+            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg
+                   focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 
+                   dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+            placeholder="45">
+            {{this.fieldEventId}}
+        </div>
+
+        <!-- Jugador -->
+        <div class="sm:col-span-3">
+          <label for="id_jugador" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
+            Jugador
+          </label>
+        </div>
+        <div class="sm:col-span-9">
+          <select id="id_jugador" formControlName="id_jugador"
+            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg
+                   focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 
+                   dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+            required>
+            <option value="" disabled selected>Seleccione jugador</option>
+            @for (player of playerList; track $index) {
+              <option [value]="player.id_jugador">{{ player.nombre }} {{ player.apellido }}</option>
+            }
+          </select>
+        </div>
+
+        <!-- Tipo de evento -->
+        <div class="sm:col-span-3">
+          <label for="tipo_evento" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
+            Tipo de evento
+          </label>
+        </div>
+        <div class="sm:col-span-9">
+          <select id="tipo_evento" formControlName="tipo_evento"
+            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg
+                   focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 
+                   dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+            required>
+            <option value="" disabled selected>Seleccione tipo</option>
+            <option value="GOL">Gol</option>
+            <option value="ASISTENCIA">Asistencia</option>
+            <option value="TARJETA_AMARILLA">Tarjeta amarilla</option>
+            <option value="TARJETA_ROJA">Tarjeta roja</option>
+            <option value="SUSTITUCION">Sustitución</option>
+          </select>
+        </div>
+
+        <!-- Minuto -->
+        <div class="sm:col-span-3">
+          <label for="minuto" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
+            Minuto
+          </label>
+        </div>
+        <div class="sm:col-span-9">
+          <input id="minuto" 
+            formControlName="minuto" 
+            type="number" min="0" max="120"
+            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg
+                   focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 
+                   dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+            placeholder="Ej: 45">
+        </div>
+
+        <!-- Descripción -->
+        <div class="sm:col-span-3">
+          <label for="descripcion" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
+            Descripción
+          </label>
+        </div>
+        <div class="sm:col-span-9">
+          <textarea id="descripcion" 
+            formControlName="descripcion" rows="3" maxlength="500"
+            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg
+                   focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 
+                   dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+            placeholder="Detalles del evento (opcional)"></textarea>
+        </div>
+
+        <!-- Jugador asistencia -->
+        <div class="sm:col-span-3">
+          <label for="id_jugador_asistencia" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
+            Asistencia (opcional)
+          </label>
+        </div>
+        <div class="sm:col-span-9">
+          <select id="id_jugador_asistencia" formControlName="id_jugador_asistencia"
+            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg
+                   focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 
+                   dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
+            <option value="NA" selected>Ninguno</option>
+            @for (player of playerList; track $index) {
+              <option [value]="player.id_jugador">{{ player.nombre }} {{ player.apellido }}</option>
+            }
+          </select>
+        </div>
+
+      </div>
+      <!-- End Grid -->
+
+      <!-- Botones -->
+      <div class="mt-5 flex justify-end gap-x-2">
+        <button type="button"
+          class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg
+                 border border-gray-200 bg-white text-gray-800 shadow-2xs
+                 hover:bg-red-500 hover:text-white disabled:opacity-50 disabled:pointer-events-none
+                 focus:outline-hidden dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300">
+          Cancelar
+        </button>
+        <button type="submit" [disabled]="eventForm.invalid"
+          class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg
+                 border border-transparent bg-blue-600 text-white hover:bg-blue-700
+                 focus:outline-hidden disabled:opacity-50 disabled:pointer-events-none">
+          Guardar evento
+        </button>
+      </div>
+    </form>
+  </div>
+  <!-- End Card -->
+</div>
+<!-- End Card Section -->

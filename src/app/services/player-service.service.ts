@@ -22,7 +22,7 @@ export class PlayerService {
   ) {}
 
   getAllPlayers(): Observable<any> {
-    return this.http.get(`${this.url}players`);
+    return this.http.get<any>(`${this.url}players`);
   }
   // getAllPlayers(page: number, limit: number): Observable<any> {
   //   return this.http.get(`${this.url}players?page=${page}&limit=${limit}`);
