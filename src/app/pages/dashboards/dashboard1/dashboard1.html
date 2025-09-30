@@ -3,14 +3,17 @@
   <!-- ========== MAIN CONTENT ========== -->
   <app-sidebar></app-sidebar>
   <!-- Content -->
-  <div class="w-full lg:ps-64">
-    <div class="p-4 sm:p-6 space-y-4 sm:space-y-6">
-      <!-- My content -->
 
-      <router-outlet></router-outlet>
+    <div class="w-full lg:ps-64">
+      
+        <div class="p-4 sm:p-6 space-y-4 sm:space-y-6">
+          <!-- My content -->
+          <router-outlet></router-outlet>
 
+          <app-panel-dashboard></app-panel-dashboard>
+          
+      </div>
     </div>
-  </div>
   <!-- End Content -->
   <!-- ========== END MAIN CONTENT ========== -->
 

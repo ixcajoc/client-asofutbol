@@ -27,15 +27,23 @@ export class AuthService {
   getToken() {
     return localStorage.getItem('token');
   }
-  
   setToken(token:string): void {
     localStorage.setItem('token', token);
   }
+
+  // setUserAutenticated(currentUser:any): void {
+  //   localStorage.setItem('current-user', currentUser);
+  // }
+  // getUserAutenticated(){
+  //   return localStorage.getItem('current-user');
+  // }
 
   auth(post: UserLogin){
     return this.http.post<any>(`${this.url}auth/login`,post).subscribe({
       next: (response)=> { 
         this.setToken(response.data.token);
+        // this.userAutenticated();
+        
         this.router.navigate(['/dashboard1']); 
       },
       error: (error) => {
@@ -46,26 +54,27 @@ export class AuthService {
     }); 
   }
 
-  // userAutenticated(): Observable<any> {
-  //   const headers = new HttpHeaders({
-  //     'Content-Type': 'application/json',
-  //     'Authorization': `Bearer ${this.getToken()}`
-  //   });
-
-  //   return this.http.get(`${this.url}auth/profile`, { headers });
-  // }
-  userAutenticated(){
+  userAutenticated(): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${this.getToken()}`
     });
-    return this.http.get<any>(`${this.url}auth/profile`, { headers }).subscribe({
-      next: (response)=> {
-        console.log(response.data)
-      },
-      error: (error) => {error}
-    });
+
+    return this.http.get<any>(`${this.url}auth/profile`, { headers });
   }
+  // userAutenticated(){
+  //   const headers = new HttpHeaders({
+  //     'Content-Type': 'application/json',
+  //     'Authorization': `Bearer ${this.getToken()}`
+  //   });
+  //   return this.http.get<any>(`${this.url}auth/profile`, { headers }).subscribe({
+  //     next: (response)=> {
+  //       console.log(response.data)
+  //       // this.setUserAutenticated(response.data)
+  //     },
+  //     error: (error) => {error}
+  //   });
+  // }
 
 
 

@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { RouterModule } from '@angular/router';
 import { EventService } from '../../../services/event-service.service';
 import { MessageService } from '../../../services/message-service.service';
+import { Banner } from '../../../shared/banner/banner';
 
 @Component({
   selector: 'app-edit-event',
@@ -12,6 +13,7 @@ import { MessageService } from '../../../services/message-service.service';
     RouterModule, 
     FormsModule,
     ReactiveFormsModule,
+    Banner
   ],
   templateUrl: './edit-event.html',
   styleUrl: './edit-event.css'

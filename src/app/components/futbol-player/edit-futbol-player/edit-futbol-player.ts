@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { TeamService } from '../../../services/team-service.service';
 import { MessageService } from '../../../services/message-service.service';
 import { CommonModule } from '@angular/common';
+import { Banner } from '../../../shared/banner/banner';
 
 @Component({
   selector: 'app-edit-futbol-player',
@@ -13,7 +14,8 @@ import { CommonModule } from '@angular/common';
     CommonModule, 
     RouterModule, 
     ReactiveFormsModule,
-    CommonModule
+    CommonModule,
+    Banner
   ],
   templateUrl: './edit-futbol-player.html',
   styleUrl: './edit-futbol-player.css'

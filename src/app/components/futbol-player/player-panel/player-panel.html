@@ -1,10 +1,18 @@
-<div class="grid grid-cols-3 gap-2">
-    @for (player of playerList; track $index) {
-        <app-player-card 
-            [playerData]="player"
-            (playerDeleted)="onPlayerDeleted(player.id_jugador)"     
-        />
-    }
+<div class="container">
+    <app-banner [title]="`Jugadores`"></app-banner>
+</div>
+
+<div class="container">
+    
+    <!-- <div class="grid grid-cols-3 gap-2"> -->
+    <div class="grid grid-cols-3 gap-2">
+        @for (player of playerList; track $index) {
+            <app-player-card 
+                [playerData]="player"
+                (playerDeleted)="onPlayerDeleted(player.id_jugador)"     
+            />
+        }
+    </div>
 </div>
 
 <div class="container flex items-center justify-center py-6">

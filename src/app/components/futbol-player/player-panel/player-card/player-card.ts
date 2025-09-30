@@ -2,11 +2,13 @@ import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
 import { PlayerService } from '../../../../services/player-service.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-player-card',
   imports: [
-    RouterModule
+    RouterModule,
+    CommonModule,
   ],
   templateUrl: './player-card.html',
   styleUrl: './player-card.css'
@@ -24,6 +26,10 @@ export class PlayerCard {
   constructor(
     private playerService: PlayerService
   ){}
+
+  isPos(pos: 'PORTERO' | 'DEFENSA' | 'MEDIOCAMPISTA' | 'DELANTERO'): boolean {
+    return (this.playerData?.posicion || '').toUpperCase() === pos;
+  }
 
   // ngOnInit():void{
   //   this.getAllPlayers();

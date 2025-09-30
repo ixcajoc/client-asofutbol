@@ -1,0 +1,555 @@
+<div class="bg-gray-50 min-h-screen">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-6">
+                <div class="flex items-center space-x-4">
+                    <div class="bg-green-600 p-2 rounded-lg">
+                        <i class="fas fa-futbol text-white text-2xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900">ASOFÚTBOL</h1>
+                        <p class="text-sm text-gray-500">Dashboard de Liga</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-600">Temporada 2025</span>
+                    <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Estadísticas Principales -->
+        <section class="mb-8">
+            <h2 class="text-lg font-semibold text-gray-900 mb-6">Estadísticas Generales</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <!-- Total Equipos -->
+                <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-100">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <div class="bg-green-100 p-3 rounded-lg">
+                                <i class="fas fa-shield-alt text-green-600 text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-600">Total Equipos</p>
+                            <!-- <p class="text-2xl font-bold text-gray-900">16</p> -->
+                            <p class="text-2xl font-bold text-gray-900">{{seasonSummaryList.total_equipos}}</p>
+                            <!-- <p class="text-xs text-green-600">+2 esta temporada</p> -->
+                            <p class="text-xs text-green-600">por la gloria</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Total Jugadores -->
+                <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-100">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <div class="bg-blue-100 p-3 rounded-lg">
+                                <i class="fas fa-users text-blue-600 text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-600">Total Jugadores</p>
+                            <!-- <p class="text-2xl font-bold text-gray-900">352</p> -->
+                            <p class="text-2xl font-bold text-gray-900">{{seasonSummaryList.total_jugadores}}</p>
+                            <p class="text-xs text-blue-600">Activos en liga</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Total Partidos -->
+                <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-100">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <div class="bg-orange-100 p-3 rounded-lg">
+                                <i class="fas fa-calendar-alt text-orange-600 text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-600">Partidos Jugados</p>
+                            <!-- <p class="text-2xl font-bold text-gray-900">127</p> -->
+                            <!-- <p class="text-xs text-orange-600">De 240 programados</p> -->
+                            <p class="text-2xl font-bold text-gray-900">{{seasonSummaryList.partidos_finalizados}}</p>
+                            <p class="text-xs text-orange-600">De {{seasonSummaryList.total_partidos}} programados</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Total Usuarios -->
+                <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-100">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <div class="bg-purple-100 p-3 rounded-lg">
+                                <i class="fas fa-user-friends text-purple-600 text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-600">Usuarios Registrados</p>
+                            <!-- <p class="text-2xl font-bold text-gray-900">89</p>
+                            <p class="text-xs text-purple-600">+5 este mes</p> -->
+                            <p class="text-2xl font-bold text-gray-900">{{userList.length}}</p>
+                            <p class="text-xs text-purple-600">{{inactiveCount}} usuario(s) inactivo(s)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contenido Principal -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Columna Izquierda -->
+            <div class="lg:col-span-2 space-y-8">
+                
+                <!-- Tabla de Posiciones -->
+                <section>
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-100">
+                        <div class="px-6 py-4 border-b border-gray-100">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-lg font-semibold text-gray-900">Tabla de Posiciones</h3>
+                                <span class="text-sm text-gray-500">Top 5</span>
+                            </div>
+                        </div>
+                        
+                        <app-position-table [maxRows]="5"></app-position-table>
+                
+                    </div>
+                </section>
+
+                <!-- Gráficas -->
+                <section>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-6">Análisis de Rendimiento</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        
+                        <!-- Gráfica de Goles por Jornada -->
+                        <!-- <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
+                            <h4 class="text-sm font-medium text-gray-900 mb-4">Goles por Jornada</h4>
+                            <div class="h-48 bg-gradient-to-t from-green-50 to-transparent rounded border-2 border-dashed border-gray-200 flex items-center justify-center">
+                                <div class="text-center text-gray-400">
+                                    <i class="fas fa-chart-line text-3xl mb-2"></i>
+                                    <p class="text-sm">Gráfica de línea</p>
+                                    <p class="text-xs">Placeholder para datos</p>
+                                </div>
+                            </div>
+                        </div> -->
+
+                        <div class="flex flex-col justify-center items-center">
+                            <div id="hs-doughnut-chart"></div>
+
+                            <!-- Legend Indicator -->
+                            <div class="flex justify-center sm:justify-end items-center gap-x-4 mt-3 sm:mt-6">
+                                <div class="inline-flex items-center">
+                                <span class="size-2.5 inline-block bg-blue-600 rounded-sm me-2"></span>
+                                <span class="text-[13px] text-gray-600 dark:text-neutral-400">
+                                    Income
+                                </span>
+                                </div>
+                                <div class="inline-flex items-center">
+                                <span class="size-2.5 inline-block bg-cyan-500 rounded-sm me-2"></span>
+                                <span class="text-[13px] text-gray-600 dark:text-neutral-400">
+                                    Outcome
+                                </span>
+                                </div>
+                                <div class="inline-flex items-center">
+                                <span class="size-2.5 inline-block bg-gray-300 rounded-sm me-2 dark:bg-neutral-700"></span>
+                                <span class="text-[13px] text-gray-600 dark:text-neutral-400">
+                                    Others
+                                </span>
+                                </div>
+                            </div>
+                            <!-- End Legend Indicator -->
+                        </div>
+
+                        <!-- Gráfica de Distribución de Resultados -->
+                        <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
+                            <h4 class="text-sm font-medium text-gray-900 mb-4">Distribución de Resultados</h4>
+                            
+                            <div class="flex items-center justify-center">
+                                <div class="donut-chart">
+                                    <div class="donut-center">
+                                        <span class="text-sm">Total<br>127</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Leyenda -->
+                            <div class="mt-6 space-y-3">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <div class="w-3 h-3 bg-green-500 rounded mr-3"></div>
+                                        <span class="text-sm text-gray-700">Victorias</span>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="text-sm font-semibold text-gray-900">57</span>
+                                        <span class="text-xs text-gray-500 ml-1">(45%)</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <div class="w-3 h-3 bg-yellow-400 rounded mr-3"></div>
+                                        <span class="text-sm text-gray-700">Empates</span>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="text-sm font-semibold text-gray-900">38</span>
+                                        <span class="text-xs text-gray-500 ml-1">(30%)</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <div class="w-3 h-3 bg-red-500 rounded mr-3"></div>
+                                        <span class="text-sm text-gray-700">Derrotas</span>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="text-sm font-semibold text-gray-900">32</span>
+                                        <span class="text-xs text-gray-500 ml-1">(25%)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Columna Derecha -->
+            <div class="space-y-8">
+                
+                <!-- Goleadores Principales -->
+                <section>
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-100">
+                        <!-- <div class="px-6 py-4 border-b border-gray-100">
+                            <h3 class="text-lg font-semibold text-gray-900">Tabla de Goleadores</h3>
+                        </div>
+                        <div class="p-6 space-y-4">
+                            <div class="flex items-center justify-between p-3 bg-yellow-50 rounded-lg border border-yellow-200">
+                                <div class="flex items-center space-x-3">
+                                    <span class="flex items-center justify-center w-6 h-6 bg-yellow-500 text-white rounded-full text-xs font-bold">1</span>
+                                    <div>
+                                        <p class="font-semibold text-gray-900">Carlos Rodríguez</p>
+                                        <p class="text-sm text-gray-600">Águilas FC</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-xl font-bold text-gray-900">18</p>
+                                    <p class="text-xs text-gray-500">goles</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <span class="flex items-center justify-center w-6 h-6 bg-gray-400 text-white rounded-full text-xs font-bold">2</span>
+                                    <div>
+                                        <p class="font-semibold text-gray-900">Miguel Santos</p>
+                                        <p class="text-sm text-gray-600">Tigres Unidos</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-xl font-bold text-gray-900">15</p>
+                                    <p class="text-xs text-gray-500">goles</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <span class="flex items-center justify-center w-6 h-6 bg-yellow-600 text-white rounded-full text-xs font-bold">3</span>
+                                    <div>
+                                        <p class="font-semibold text-gray-900">Diego López</p>
+                                        <p class="text-sm text-gray-600">Leones Dorados</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-xl font-bold text-gray-900">13</p>
+                                    <p class="text-xs text-gray-500">goles</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <span class="flex items-center justify-center w-6 h-6 bg-gray-400 text-white rounded-full text-xs font-bold">4</span>
+                                    <div>
+                                        <p class="font-semibold text-gray-900">Andrés Morales</p>
+                                        <p class="text-sm text-gray-600">Cóndores FC</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-xl font-bold text-gray-900">11</p>
+                                    <p class="text-xs text-gray-500">goles</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <span class="flex items-center justify-center w-6 h-6 bg-gray-400 text-white rounded-full text-xs font-bold">5</span>
+                                    <div>
+                                        <p class="font-semibold text-gray-900">Javier Ruiz</p>
+                                        <p class="text-sm text-gray-600">Halcones Reales</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-xl font-bold text-gray-900">9</p>
+                                    <p class="text-xs text-gray-500">goles</p>
+                                </div>
+                            </div>
+                        </div> -->
+                    
+                        <app-top-scorers-card></app-top-scorers-card>
+                    </div>
+                </section>
+
+                <!-- Partidos Recientes -->
+                <section>
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-100">
+                        <!-- <div class="px-6 py-4 border-b border-gray-100">
+                            <h3 class="text-lg font-semibold text-gray-900">Partidos Recientes</h3>
+                        </div>
+                        <div class="p-6 space-y-4">
+                            
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-6 h-6 bg-red-500 rounded-full"></div>
+                                        <span class="font-medium text-gray-900">Águilas FC</span>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="flex items-center space-x-2">
+                                            <span class="text-xl font-bold text-gray-900">3</span>
+                                            <span class="text-gray-500">-</span>
+                                            <span class="text-xl font-bold text-gray-900">1</span>
+                                        </div>
+                                        <span class="text-xs text-gray-500">Finalizado</span>
+                                    </div>
+                                    <div class="flex items-center space-x-3">
+                                        <span class="font-medium text-gray-900">Tigres Unidos</span>
+                                        <div class="w-6 h-6 bg-blue-600 rounded-full"></div>
+                                    </div>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-2">Ayer • Estadio Municipal</p>
+                            </div>
+
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-6 h-6 bg-yellow-400 rounded-full"></div>
+                                        <span class="font-medium text-gray-900">Leones Dorados</span>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="flex items-center space-x-2">
+                                            <span class="text-xl font-bold text-gray-900">2</span>
+                                            <span class="text-gray-500">-</span>
+                                            <span class="text-xl font-bold text-gray-900">0</span>
+                                        </div>
+                                        <span class="text-xs text-gray-500">Finalizado</span>
+                                    </div>
+                                    <div class="flex items-center space-x-3">
+                                        <span class="font-medium text-gray-900">Cóndores FC</span>
+                                        <div class="w-6 h-6 bg-green-600 rounded-full"></div>
+                                    </div>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-2">Sábado • Estadio Central</p>
+                            </div>
+
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-6 h-6 bg-purple-600 rounded-full"></div>
+                                        <span class="font-medium text-gray-900">Halcones Reales</span>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="flex items-center space-x-2">
+                                            <span class="text-xl font-bold text-gray-900">1</span>
+                                            <span class="text-gray-500">-</span>
+                                            <span class="text-xl font-bold text-gray-900">1</span>
+                                        </div>
+                                        <span class="text-xs text-gray-500">Finalizado</span>
+                                    </div>
+                                    <div class="flex items-center space-x-3">
+                                        <span class="font-medium text-gray-900">Pumas FC</span>
+                                        <div class="w-6 h-6 bg-orange-500 rounded-full"></div>
+                                    </div>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-2">Viernes • Estadio Norte</p>
+                            </div>
+                        </div> -->
+                    
+                        <app-recent-games></app-recent-games>
+                    
+                    </div>
+                </section>
+
+                <!-- Métricas de Rendimiento -->
+                <section>
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-100">
+                        <div class="px-6 py-4 border-b border-gray-100">
+                            <h3 class="text-lg font-semibold text-gray-900">Métricas de Rendimiento</h3>
+                        </div>
+                        <div class="p-6 space-y-4">
+                            
+                            <!-- <div class="flex items-center justify-between">
+                                <span class="text-sm font-medium text-gray-600">Promedio de goles por partido</span>
+                                <span class="text-lg font-bold text-gray-900">{{seasonSummaryList.total_goles}}</span>
+                            </div>
+                            
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-green-600 h-2 rounded-full" [style.width]="seasonSummaryList.promedio_goles_partido" style="width: 10%"></div>
+                            </div> -->
+
+                            <!-- <div class="flex items-center justify-between">
+                                <span class="text-sm font-medium text-gray-600">Asistencia promedio</span>
+                                <span class="text-lg font-bold text-gray-900">1,247</span>
+                            </div>
+                            
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-blue-600 h-2 rounded-full" style="width: 83%"></div>
+                            </div> -->
+                            
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm font-medium text-gray-600">Goles de visita</span>
+                                <span class="text-lg font-bold text-gray-900">{{totalGolesVisitante}}</span>
+                            </div>
+                            
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-blue-600 h-2 rounded-full" [style.width]="porcentajeGolesVisitante"></div>
+                            </div>
+
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm font-medium text-gray-600">Goles de local</span>
+                                <!-- <span class="text-lg font-bold text-gray-900">2.4</span> -->
+                                <span class="text-lg font-bold text-gray-900">{{totalGolesLocal}}</span>
+                            </div>
+                            
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <!-- <div class="bg-green-600 h-2 rounded-full" style="width: 75%"></div> -->
+                                <div class="bg-green-600 h-2 rounded-full" [style.width]="porcentajeGolesLocal" style="width: 10%"></div>
+                            </div>
+
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm font-medium text-gray-600">Tarjetas amarillas</span>
+                                <!-- <span class="text-lg font-bold text-gray-900">3.1</span> -->
+                                <span class="text-lg font-bold text-gray-900">{{yellowCards}}</span>
+                            </div>
+                            
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-yellow-500 h-2 rounded-full" [style.width.%]="yellowPercentage"></div>
+                                <!-- <div class="bg-yellow-500 h-2 rounded-full" style="width: 62%"></div> -->
+                            </div>
+
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm font-medium text-gray-600">Tarjetas rojas</span>
+                                <span class="text-lg font-bold text-gray-900">{{redCards}}</span>
+                                <!-- <span class="text-lg font-bold text-gray-900">0.2</span> -->
+                            </div>
+                            
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-red-600 h-2 rounded-full" [style.width.%]="redPercentage"></div>
+                                <!-- <div class="bg-red-600 h-2 rounded-full" style="width: 20%"></div> -->
+                            </div>
+
+
+                            <div class="pt-4 border-t border-gray-100">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm font-medium text-gray-600">Promedio de goles por partido</span>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-lg font-bold text-green-600">{{seasonSummaryList.promedio_goles_partido}}</span>
+                                        <i class="fas fa-arrow-up text-green-600 text-sm"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="pt-4 border-t border-gray-100">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm font-medium text-gray-600">Eficiencia general</span>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-lg font-bold text-green-600">85%</span>
+                                        <i class="fas fa-arrow-up text-green-600 text-sm"></i>
+                                    </div>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- Próximos Partidos -->
+        <section class="mt-8">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-100">
+                <div class="px-6 py-4 border-b border-gray-100">
+                    <h3 class="text-lg font-semibold text-gray-900">Próximos Partidos</h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 p-6">
+                    
+                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-6 h-6 bg-indigo-600 rounded-full"></div>
+                                <span class="font-medium text-gray-900 text-sm">Rayos FC</span>
+                            </div>
+                            <span class="text-xs text-gray-500">vs</span>
+                            <div class="flex items-center space-x-2">
+                                <span class="font-medium text-gray-900 text-sm">Lobos FC</span>
+                                <div class="w-6 h-6 bg-gray-600 rounded-full"></div>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-sm font-semibold text-gray-900">Domingo 15 Dic</p>
+                            <p class="text-xs text-gray-600">15:30 • Estadio Sur</p>
+                        </div>
+                    </div>
+
+                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-6 h-6 bg-red-500 rounded-full"></div>
+                                <span class="font-medium text-gray-900 text-sm">Águilas FC</span>
+                            </div>
+                            <span class="text-xs text-gray-500">vs</span>
+                            <div class="flex items-center space-x-2">
+                                <span class="font-medium text-gray-900 text-sm">Cóndores FC</span>
+                                <div class="w-6 h-6 bg-green-600 rounded-full"></div>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-sm font-semibold text-gray-900">Domingo 15 Dic</p>
+                            <p class="text-xs text-gray-600">18:00 • Estadio Municipal</p>
+                        </div>
+                    </div>
+
+                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-6 h-6 bg-yellow-400 rounded-full"></div>
+                                <span class="font-medium text-gray-900 text-sm">Leones Dorados</span>
+                            </div>
+                            <span class="text-xs text-gray-500">vs</span>
+                            <div class="flex items-center space-x-2">
+                                <span class="font-medium text-gray-900 text-sm">Tigres Unidos</span>
+                                <div class="w-6 h-6 bg-blue-600 rounded-full"></div>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-sm font-semibold text-gray-900">Lunes 16 Dic</p>
+                            <p class="text-xs text-gray-600">20:30 • Estadio Central</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="text-center">
+                <p class="text-sm text-gray-500">© 2025 ASOFÚTBOL - Sistema de Gestión de Liga</p>
+                <p class="text-xs text-gray-400 mt-1">Dashboard desarrollado para Angular 20 con Tailwind CSS 4</p>
+            </div>
+        </div>
+    </footer>
+
+</div>

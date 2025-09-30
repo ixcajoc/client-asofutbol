@@ -16,7 +16,7 @@ export class ExportButton {
   @Input() tableData!: any;
 
   exportToCSV() {
-    const csvData = this.convertToCSV(this.tableData.data);
+    const csvData = this.convertToCSV(this.tableData);
     const blob = new Blob([csvData], { type: 'text/csv' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -34,7 +34,8 @@ export class ExportButton {
 
 
   exportToExcel() {
-    const ws = XLSX.utils.json_to_sheet(this.tableData.data);
+    // const ws = XLSX.utils.json_to_sheet(this.tableData.data);
+    const ws = XLSX.utils.json_to_sheet(this.tableData);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Datos');
     XLSX.writeFile(wb, 'tabla-datos.xlsx');
@@ -63,7 +64,7 @@ export class ExportButton {
     format: 'a4'    
   });
 
-  const headers = Object.keys(this.tableData.data[0]);
+  const headers = Object.keys(this.tableData[0]);
   const data = this.tableData.data.map(
     (row: any) => Object.values(row));
 

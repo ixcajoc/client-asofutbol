@@ -6,13 +6,15 @@ import { CommonModule } from '@angular/common';
 import { EditEvent } from "./edit-event/edit-event";
 import { NewEventComponent } from './new-event/new-event';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { Banner } from '../../shared/banner/banner';
 
 @Component({
   selector: 'app-event',
   imports: [
     CommonModule,
     NewEventComponent,
-    RouterModule
+    RouterModule,
+    Banner,
 
 ],
   templateUrl: './event.html',

@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { RouterModule } from '@angular/router';
 import { PlayerService } from '../../../services/player-service.service';
 import { TeamService } from '../../../services/team-service.service';
+import { Banner } from '../../../shared/banner/banner';
 
 @Component({
   selector: 'app-new-futbol-player',
@@ -12,6 +13,7 @@ import { TeamService } from '../../../services/team-service.service';
     RouterModule, 
     FormsModule,
     ReactiveFormsModule,
+    Banner
   ],
   templateUrl: './new-futbol-player.html',
   styleUrl: './new-futbol-player.css'

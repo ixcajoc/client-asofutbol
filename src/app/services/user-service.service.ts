@@ -29,6 +29,13 @@ export class UserService {
 
     return this.http.get<any>(`${this.url}users`, {headers});
   }
+  getUsersById(id:any){
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.authService.getToken()}`
+    });
+    return this.http.get<any>(`${this.url}users/${id}`, { headers });    
+  }
 
   getAllCoaches(rol:string): Observable<any> {
     return this.getAllUsers().pipe(
@@ -44,6 +51,37 @@ export class UserService {
         return { ...response, data: puestos };
       })
     );
-}
+  }
+
+  newUser(newUser: any ){
+    // this.authService.userAutenticated()
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.authService.getToken()}`
+    });
+      
+    return this.http.post<any>(`${this.url}users`,newUser, {headers})
+  }
+  
+  updateUser(userId: number, updatedData: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.authService.getToken()}`
+    });
+
+    return this.http.put<any>(`${this.url}users/${userId}`, updatedData, { headers });
+  }
+
+
+  deleteUser(userId: number): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.authService.getToken()}`
+    });
+
+    return this.http.delete<any>(`${this.url}users/${userId}`, { headers });
+  }
+
+
 
 }

@@ -2,12 +2,14 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { PlayerCard } from './player-card/player-card';
 import { PlayerService } from '../../../services/player-service.service';
+import { Banner } from '../../../shared/banner/banner';
 
 @Component({
   selector: 'app-player-panel',
   imports: [
     CommonModule,
     PlayerCard,
+    Banner
   ],
   templateUrl: './player-panel.html',
   styleUrl: './player-panel.css'

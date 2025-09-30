@@ -1,4 +1,4 @@
-<a class="flex flex-col group bg-white border border-gray-200 shadow-2xs rounded-xl overflow-hidden hover:shadow-lg focus:outline-hidden focus:shadow-lg transition dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70">
+<!-- <a class="flex flex-col group bg-white border border-gray-200 shadow-2xs rounded-xl overflow-hidden hover:shadow-lg focus:outline-hidden focus:shadow-lg transition dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70">
       <div class="relative pt-[50%] sm:pt-[60%] lg:pt-[80%] rounded-t-xl overflow-hidden">
         <img class="size-full absolute top-0 start-0 object-cover group-hover:scale-105 group-focus:scale-105 transition-transform duration-500 ease-in-out rounded-t-xl" src="https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=560&q=80" alt="Card Image">
       </div>
@@ -32,4 +32,150 @@
         Eliminar
       </button>
 </a>
+ -->
+<div
+  class="relative w-64 border-4 rounded-3xl shadow-xl overflow-hidden group
+         bg-gradient-to-b dark:bg-gradient-to-b"
+  [ngClass]="{
 
+    'from-emerald-200 via-emerald-100 to-teal-50': isPos('PORTERO'),
+    'from-sky-200 via-sky-100 to-blue-50': isPos('DEFENSA'),
+    'from-amber-200 via-amber-100 to-yellow-50': isPos('MEDIOCAMPISTA'),
+    'from-rose-200 via-rose-100 to-orange-50': isPos('DELANTERO'),
+
+ 
+    'dark:from-emerald-800 dark:via-emerald-900 dark:to-teal-950': isPos('PORTERO'),
+    'dark:from-sky-800 dark:via-sky-900 dark:to-blue-950': isPos('DEFENSA'),
+    'dark:from-amber-800 dark:via-amber-900 dark:to-yellow-950': isPos('MEDIOCAMPISTA'),
+    'dark:from-rose-800 dark:via-rose-900 dark:to-orange-950': isPos('DELANTERO'),
+
+ 
+    'border-emerald-400 dark:border-emerald-500': isPos('PORTERO'),
+    'border-sky-400 dark:border-sky-500': isPos('DEFENSA'),
+    'border-amber-400 dark:border-amber-500': isPos('MEDIOCAMPISTA'),
+    'border-rose-400 dark:border-rose-500': isPos('DELANTERO')
+  }"
+>
+  <!-- Encabezado -->
+  <div class="flex justify-between items-center px-4 pt-4">
+    <div class="text-center">
+      <p class="text-3xl font-extrabold text-gray-900 dark:text-white">
+        {{ playerData.numero_camiseta }}
+      </p>
+      <p class="text-xs uppercase font-bold text-gray-600 dark:text-gray-400">
+        Dorsal
+      </p>
+    </div>
+    <div class="flex flex-col items-center">
+      <!-- Icono de Posición -->
+      <div class="w-8 h-8 flex items-center justify-center rounded-full bg-white/20 dark:bg-black/20">
+        <ng-container *ngIf="isPos('PORTERO')">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><!--!Font Awesome Pro v7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2025 Fonticons, Inc.--><path d="M320 64C324.6 64 329.2 65 333.4 66.9L521.8 146.8C543.8 156.1 560.2 177.8 560.1 204C559.6 303.2 518.8 484.7 346.5 567.2C329.8 575.2 310.4 575.2 293.7 567.2C121.3 484.7 80.6 303.2 80.1 204C80 177.8 96.4 156.1 118.4 146.8L306.7 66.9C310.9 65 315.4 64 320 64zM320 130.8L320 508.9C458 442.1 495.1 294.1 496 205.5L320 130.9L320 130.9z"/></svg>
+          <!-- <svg class="w-5 h-5 text-emerald-700 dark:text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"></path></svg> -->
+        </ng-container>
+        <ng-container *ngIf="isPos('DEFENSA')">
+          <svg class="w-5 h-5 text-sky-700 dark:text-sky-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        </ng-container>
+        <ng-container *ngIf="isPos('MEDIOCAMPISTA')">
+          <svg class="w-5 h-5 text-amber-700 dark:text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+        </ng-container>
+        <ng-container *ngIf="isPos('DELANTERO')">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><!--!Font Awesome Free v7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M451 292.3C446.6 289.5 443.4 285.3 441.8 280.4C440.2 275.5 440.4 270.2 442.3 265.4L475.6 182C455.7 159.6 431 141.5 403.2 129.3L334.1 186.9C330.1 190.2 325.1 192 320 192C314.9 192 309.8 190.2 305.9 186.9L236.8 129.3C209 141.5 184.3 159.6 164.4 182L197.8 265.4C199.7 270.2 199.9 275.5 198.3 280.4C196.7 285.3 193.4 289.5 189.1 292.3L113 340.2C116 371.1 125.7 399.9 140.6 425.4L230.3 419.4C235.5 419.1 240.6 420.5 244.8 423.6C249 426.7 252 431 253.2 436.1L275.2 523.3C289.6 526.5 304.6 528.1 320 528.1C335.4 528.1 350.3 526.4 364.8 523.3L386.8 436.1C388.1 431.1 391 426.7 395.2 423.6C399.4 420.5 404.5 419.1 409.7 419.4L499.4 425.4C514.4 400 524.1 371.1 527 340.3L451 292.3zM320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576C178.6 576 64 461.4 64 320C64 178.6 178.6 64 320 64zM382 285C390.4 291.1 393.9 301.9 390.7 311.8L372.4 368.1C369.2 378 360 384.7 349.6 384.7L290.4 384.7C280 384.7 270.8 378 267.6 368.1L249.3 311.8C246.1 301.9 249.6 291.1 258 285L305.9 250.2C314.3 244.1 325.7 244.1 334.1 250.2L382 285z"/></svg>
+          <!-- <svg class="w-5 h-5 text-rose-700 dark:text-rose-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg> -->
+        </ng-container>
+      </div>
+      <!-- <p class="text-[10px] font-semibold text-gray-700 dark:text-gray-400 mt-1">
+        {{ playerData.posicion }}
+      </p> -->
+    </div>
+  </div>
+
+  <!-- Imagen del jugador -->
+  <div class="relative flex justify-center -mt-6">
+    <div
+      class="w-28 h-28 rounded-full overflow-hidden shadow-md border-4"
+      [ngClass]="{
+        'border-emerald-400': isPos('PORTERO'),
+        'border-sky-400': isPos('DEFENSA'),
+        'border-amber-400': isPos('MEDIOCAMPISTA'),
+        'border-rose-400': isPos('DELANTERO'),
+        'dark:border-emerald-500': isPos('PORTERO'),
+        'dark:border-sky-500': isPos('DEFENSA'),
+        'dark:border-amber-500': isPos('MEDIOCAMPISTA'),
+        'dark:border-rose-500': isPos('DELANTERO')
+      }"
+    >
+      <img class="w-full h-full object-cover"
+           src="https://images.unsplash.com/photo-1521412644187-c49fa049e84d?auto=format&fit=crop&w=300&q=80"
+           alt="{{ playerData.nombre }} {{ playerData.apellido }}" />
+    </div>
+  </div>
+
+  <!-- Nombre y equipo -->
+  <div class="mt-4 text-center">
+    <h3 class="text-lg font-bold text-gray-900 dark:text-white tracking-wide uppercase">
+      {{ playerData.nombre }} {{ playerData.apellido }}
+    </h3>
+    <p class="text-xs font-medium text-gray-600 dark:text-gray-400">
+      {{ playerData.equipo_nombre_corto }}
+    </p>
+    <p class="text-sm font-bold mt-1"
+       [ngClass]="{
+        'text-emerald-700 dark:text-emerald-300': isPos('PORTERO'),
+        'text-sky-700 dark:text-sky-300': isPos('DEFENSA'),
+        'text-amber-700 dark:text-amber-300': isPos('MEDIOCAMPISTA'),
+        'text-rose-700 dark:text-rose-300': isPos('DELANTERO')
+       }">
+      {{ playerData.posicion }}
+    </p>
+  </div>
+
+  <!-- Stats -->
+  <div class="grid grid-cols-3 gap-y-2 text-center mt-4 px-4 pb-4">
+    <div>
+      <p class="text-sm font-extrabold text-gray-900 dark:text-white">
+        {{ playerData.peso }}
+      </p>
+      <p class="text-[10px] tracking-widest uppercase text-gray-600 dark:text-gray-400">Peso</p>
+    </div>
+    <div>
+      <p class="text-sm font-extrabold text-gray-900 dark:text-white">
+        {{ playerData.altura }}
+      </p>
+      <p class="text-[10px] tracking-widest uppercase text-gray-600 dark:text-gray-400">Altura</p>
+    </div>
+    <div>
+      <p class="text-sm font-extrabold text-gray-900 dark:text-white">
+        {{ playerData.pie_habil }}
+      </p>
+      <p class="text-[10px] tracking-widest uppercase text-gray-600 dark:text-gray-400">Pie</p>
+    </div>
+  </div>
+
+  <!-- Botones -->
+  <div class="flex justify-center gap-3 px-4 pb-6">
+    <!-- Botón Editar -->
+    <button type="button"
+      [routerLink]="['/dashboard1/edit-player', playerData.id_jugador]"
+      class="px-4 py-2 text-xs font-semibold rounded-full text-white shadow-sm transition
+             focus:outline-none focus:ring-2 focus:ring-offset-1"
+      [ngClass]="{
+        'bg-emerald-500 hover:bg-emerald-600 focus:ring-emerald-400': isPos('PORTERO'),
+        'bg-sky-500 hover:bg-sky-600 focus:ring-sky-400': isPos('DEFENSA'),
+        'bg-amber-500 hover:bg-amber-600 focus:ring-amber-400': isPos('MEDIOCAMPISTA'),
+        'bg-rose-500 hover:bg-rose-600 focus:ring-rose-400': isPos('DELANTERO')
+      }">
+      ✏️ Editar
+    </button>
+
+    <!-- Botón Eliminar -->
+    <button type="button"
+      (click)="confirmarEliminar(playerData.id_jugador)"
+      class="px-4 py-2 text-xs font-semibold rounded-full
+             bg-neutral-200 text-neutral-700 hover:bg-neutral-300
+             dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700
+             focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-red-400">
+      🗑️ Eliminar
+    </button>
+  </div>
+</div>

@@ -5,10 +5,15 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { ReportService } from '../../../services/report-service.service';
 import { AuthService } from '../../../services/auth-service.service';
+import { Banner } from '../../../shared/banner/banner';
+import { ExportButton } from '../../../shared/export-button/export-button';
 
 @Component({
   selector: 'app-table',
-  imports: [],
+  imports: [
+    Banner,
+    ExportButton,
+  ],
   templateUrl: './table.html',
   styleUrl: './table.css'
 })
@@ -38,7 +43,7 @@ export class Table {
   getLeaderboard(){
     this.reportService.getLeaderboard().subscribe({
       next:(response)=>{
-        this.leaderBoardList = response;
+        this.leaderBoardList = response.data;
         // console.log(this.leaderBoardList);
       },
       error: (error) => (console.log(error))

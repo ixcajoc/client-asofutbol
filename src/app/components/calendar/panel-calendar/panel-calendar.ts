@@ -3,11 +3,13 @@ import { GamesService } from '../../../services/games-service.service';
 import { environment } from '../../../environments/environment';
 import { RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
+import { Banner } from '../../../shared/banner/banner';
 
 @Component({
   selector: 'app-panel-calendar',
   imports: [
-    RouterModule
+    RouterModule,
+    Banner,
   ],
   templateUrl: './panel-calendar.html',
   styleUrl: './panel-calendar.css'

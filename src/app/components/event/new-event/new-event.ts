@@ -5,6 +5,7 @@ import { MessageService } from '../../../services/message-service.service';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { PlayerService } from '../../../services/player-service.service';
+import { Banner } from '../../../shared/banner/banner';
 
 @Component({
   selector: 'app-new-event',
@@ -13,6 +14,7 @@ import { PlayerService } from '../../../services/player-service.service';
     RouterModule, 
     FormsModule,
     ReactiveFormsModule,
+    Banner,
   ],
   templateUrl: './new-event.html',
   styleUrl: './new-event.css'

@@ -26,12 +26,20 @@ import { NewGame } from './components/calendar/new-game/new-game';
 import { EditGame } from './components/calendar/edit-game/edit-game';
 import { UpcomingGame } from './components/calendar/upcoming-game/upcoming-game';
 import { EventComponent } from './components/event/event';
+import { PanelUser } from './components/user/panel-user/panel-user';
+import { PanelDashboard } from './pages/dashboards/panel-dashboard/panel-dashboard';
 
 export const routes: Routes = [
+    // {
+    //     path: '',
+    //     component: Dashboard1,
+    //     title: 'Admin dashboard',
+    // },
+    
     {
         path: '',
-        component: Dashboard1,
-        title: 'Admin dashboard',
+        component: Home,
+        title: 'Home',
     },
     {
         path: 'home',
@@ -69,10 +77,11 @@ export const routes: Routes = [
             //     title: 'All Teams',
             // },
             {
-                path: "new-team",
-                component: NewFutbolTeam,
-                title: 'New Team',
+                path: "panel-dashboard",
+                component: PanelDashboard,
+                title: 'Graph Dashboard',
             },
+            
             {
                 path: "edit-team/:teamId",
                 component: EditFutbolTeam,
@@ -109,6 +118,11 @@ export const routes: Routes = [
                 component: PlayerPanel,
                 title: 'player-panel',
             },
+            {
+                path: "panel-users",
+                component: PanelUser,
+                title: 'panel users',
+            },
 
             {
                 path: "new-user",
@@ -120,6 +134,7 @@ export const routes: Routes = [
                 component: EditUser,
                 title: 'Edit User',
             },
+            
 
             {
                 path: 'reportes',

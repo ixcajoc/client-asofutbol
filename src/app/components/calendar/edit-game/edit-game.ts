@@ -7,6 +7,7 @@ import { MessageService } from '../../../services/message-service.service';
 import { UserService } from '../../../services/user-service.service';
 import { JornadaService } from '../../../services/jornada-service.service';
 import { GamesService } from '../../../services/games-service.service';
+import { Banner } from '../../../shared/banner/banner';
 
 @Component({
   selector: 'app-edit-game',
@@ -15,6 +16,7 @@ import { GamesService } from '../../../services/games-service.service';
     RouterModule, 
     FormsModule,
     ReactiveFormsModule,
+    Banner,
   ],
   templateUrl: './edit-game.html',
   styleUrl: './edit-game.css'

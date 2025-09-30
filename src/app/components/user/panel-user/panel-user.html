@@ -1,0 +1,90 @@
+<div class="container">
+    <app-banner [title]="`Gestion de usuarios`"></app-banner>
+    <app-export-button [tableData]="userList"></app-export-button>
+</div>
+<div class="container">
+    <div class="flex flex-col">
+        <div class="-m-1.5 overflow-x-auto">
+            <div class="p-1.5 min-w-full inline-block align-middle">
+            <div class="overflow-hidden">
+                <table class="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
+                    <thead>
+                        <tr>
+                        <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">ID</th>
+                        <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Usuario</th>
+                        <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Nombre</th>
+                        <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Apellido</th>
+                        <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Email</th>
+                        <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Teléfono</th>
+                        <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Fecha Nacimiento</th>
+                        <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Rol</th>
+                        <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Descripción Rol</th>
+                        <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Activo</th>
+                        <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Último Acceso</th>
+                        <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Registrado</th>
+                        <th scope="col" class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @for (user of userList; track $index) {
+
+                        <tr class="odd:bg-white even:bg-gray-100 hover:bg-gray-100 dark:odd:bg-neutral-800 dark:even:bg-neutral-700 dark:hover:bg-neutral-700">
+                        
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{{ user.id_usuario }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{{ user.username }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{{ user.nombre }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{{ user.apellido }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{{ user.email }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{{ user.telefono || '-' }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{{ user.fecha_nacimiento | date:'yyyy-MM-dd' }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{{ user.nombre_rol }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{{ user.rol_descripcion }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                            <span [ngClass]="user.activo ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'">
+                                {{ user.activo ? 'Sí' : 'No' }}
+                            </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{{ user.ultimo_acceso | date:'yyyy-MM-dd HH:mm' }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{{ user.fecha_registro | date:'yyyy-MM-dd HH:mm' }}</td>
+
+                            <!-- Botones de acción -->
+                            <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
+                            <!-- <button type="button"
+                                class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 focus:outline-hidden dark:text-blue-500 dark:hover:text-blue-400">
+                                Ver
+                            </button> -->
+                            <button type="button"
+                                [routerLink]="['/dashboard1/edit-user',user.id_usuario]"
+                                class="ml-2 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-yellow-600 hover:text-yellow-800 focus:outline-hidden dark:text-yellow-500 dark:hover:text-yellow-400">
+                                Editar
+                            </button>
+                            @if (user.activo){
+                                <button type="button"
+                                    (click)="confirmarEliminar(user.id_usuario)"  
+                                    class="ml-2 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-red-600 hover:text-red-800 focus:outline-hidden dark:text-red-500 dark:hover:text-red-400">
+                                   
+                                    Eliminar
+                                </button>
+                            }@else {
+                                <button type="button"
+                                    disabled
+                                    class="ml-2 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-red-900 hover:text-red-800 focus:outline-hidden dark:text-red-300 dark:hover:text-red-400">         
+                                    Eliminar
+                                </button>
+                            }
+
+                            </td>
+                        </tr>
+                    }
+
+                        <!-- @for (user of userList; track $index) {
+                            <app-table-users [userData]="user"></app-table-users>
+                        } -->
+                    </tbody>
+            </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
