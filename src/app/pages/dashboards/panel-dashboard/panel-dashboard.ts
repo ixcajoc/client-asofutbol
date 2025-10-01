@@ -18,7 +18,8 @@ import { RecentGames } from "../../home/recent-games/recent-games";
     RouterModule,
     PositionTable,
     TopScorersCard,
-    RecentGames
+    RecentGames,
+   
 ],
   templateUrl: './panel-dashboard.html',
   styleUrl: './panel-dashboard.css'
@@ -26,7 +27,7 @@ import { RecentGames } from "../../home/recent-games/recent-games";
 export class PanelDashboard {
 
  
-   constructor(
+  constructor(
     private teamService: TeamService,
     private seasonservice: SeasonService,
     private gamesService: GamesService,
@@ -44,14 +45,6 @@ export class PanelDashboard {
     this.getSeasonSummary();
     this.getAllUsers();
     this.getDisciplineReport();
-
-  }
-
-  scrollToSection(sectionId: string) {
-    const el = document.getElementById(sectionId);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
   }
 
   statList: any = []
@@ -76,7 +69,7 @@ export class PanelDashboard {
     });
   }
 
-  disciplineList: any = {}
+  disciplineList: any = []
   getDisciplineReport(){
     this.reportService.getDisciplineTable().subscribe({
       next:(response)=>{
@@ -87,8 +80,12 @@ export class PanelDashboard {
     });
   }
   get yellowCards(): number {
-  return this.disciplineList.reduce((acc: number, j: any) => acc + j.tarjetas_amarillas, 0);
+    return this.disciplineList.reduce((acc: number, j: any) => acc + j.tarjetas_amarillas, 0);
   }
+  // get yellowCards(): number {
+  //   if (!Array.isArray(this.disciplineList)) return 0;
+  //   return this.disciplineList.reduce((acc: number, j: any) => acc + j.tarjetas_amarillas, 0);
+  // }
 
   get redCards(): number {
     return this.disciplineList.reduce((acc: number, j: any) => acc + j.tarjetas_rojas, 0);
@@ -142,11 +139,44 @@ export class PanelDashboard {
     this.reportService.getLeaderboard().subscribe({
       next:(response)=>{
         this.leaderBoardList = response.data;
-        console.log(this.leaderBoardList);
+        // console.log(this.leaderBoardList);
       },
       error: (error) => (console.log(error))
     });
   }
+
+  get totalVictorias(): number {
+    return this.leaderBoardList.reduce((acc: number, e: any) => acc + e.partidos_ganados, 0);
+  }
+
+  get totalEmpates(): number {
+    return this.leaderBoardList.reduce((acc: number, e: any) => acc + e.partidos_empatados, 0);
+  }
+
+  get totalDerrotas(): number {
+    return this.leaderBoardList.reduce((acc: number, e: any) => acc + e.partidos_perdidos, 0);
+  }
+
+  get totalPartidos(): number {
+    return this.totalVictorias + this.totalEmpates + this.totalDerrotas;
+  }
+
+  // Porcentajes
+  get victoriasPct(): number {
+    return this.totalPartidos > 0 ? (this.totalVictorias / this.totalPartidos) * 100 : 0;
+  }
+
+  get empatesPct(): number {
+    return this.totalPartidos > 0 ? (this.totalEmpates / this.totalPartidos) * 100 : 0;
+  }
+
+  get derrotasPct(): number {
+    return this.totalPartidos > 0 ? (this.totalDerrotas / this.totalPartidos) * 100 : 0;
+  }
+
+
+
+
 
   scorersList: any = []
   getScorersTop(){

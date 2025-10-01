@@ -77,11 +77,21 @@ export const routes: Routes = [
             //     title: 'All Teams',
             // },
             {
+                path: '',
+                redirectTo: 'panel-dashboard',
+                pathMatch: 'full',
+            },
+            {
                 path: "panel-dashboard",
                 component: PanelDashboard,
                 title: 'Graph Dashboard',
             },
             
+            {
+                path: "new-team",
+                component: NewFutbolTeam,
+                title: 'New Team',
+            },
             {
                 path: "edit-team/:teamId",
                 component: EditFutbolTeam,

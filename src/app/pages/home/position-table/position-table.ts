@@ -33,7 +33,7 @@ export class PositionTable {
     this.reportService.getLeaderboard().subscribe({
       next:(response)=>{
         this.leaderBoardList = response.data;
-        console.log(this.leaderBoardList);
+        // console.log(this.leaderBoardList);
       },
       error: (error) => (console.log(error))
     });
