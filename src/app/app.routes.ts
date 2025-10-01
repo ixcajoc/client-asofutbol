@@ -28,6 +28,9 @@ import { UpcomingGame } from './components/calendar/upcoming-game/upcoming-game'
 import { EventComponent } from './components/event/event';
 import { PanelUser } from './components/user/panel-user/panel-user';
 import { PanelDashboard } from './pages/dashboards/panel-dashboard/panel-dashboard';
+import { NewSeason } from './components/season/new-season/new-season';
+import { ActiveSeason } from './components/season/active-season/active-season';
+import { AllSeasonsComponent } from './components/season/all-seasons/all-seasons';
 
 export const routes: Routes = [
     // {
@@ -212,6 +215,28 @@ export const routes: Routes = [
                         path: "upcoming-game",
                         component: UpcomingGame,
                         title: 'Proximos juegos',
+                    }
+                ]
+            },
+            {
+                path: 'season',
+                title:'Temporadas',
+                children:[
+                    {
+                        path: "new-season",
+                        component: NewSeason,
+                        title: 'Nueva temporada',
+                    },
+                    {
+                        path: "active-season",
+                        component: ActiveSeason,
+                        title: 'Temporada activa',
+                    },
+                    
+                    {
+                        path: "all-seasons",
+                        component: AllSeasonsComponent,
+                        title: 'Todas las temporadas',
                     }
                 ]
             },

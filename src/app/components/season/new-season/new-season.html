@@ -1,0 +1,126 @@
+<!-- Card Section -->
+<div class="max-w-4xl px-4 py-10 sm:px-6 lg:px-8 mx-auto">
+  <!-- Card -->
+  <div class="bg-white rounded-xl shadow-xs p-4 sm:p-7 dark:bg-neutral-800">
+    <div class="mb-8">
+      <h2 class="text-xl font-bold text-gray-800 dark:text-neutral-200">
+        Nueva temporada
+      </h2>
+      <p class="text-sm text-gray-600 dark:text-neutral-400">
+        Registrar una nueva temporada
+      </p>
+    </div>
+
+    <form [formGroup]="seasonForm" (ngSubmit)="submitSeason()">
+      <!-- Grid -->
+      <div class="grid sm:grid-cols-12 gap-2 sm:gap-6">
+
+        <!-- Nombre -->
+        <div class="sm:col-span-3">
+          <label for="nombre" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
+            Nombre
+          </label>
+        </div>
+        <div class="sm:col-span-9">
+          <input 
+            id="nombre" 
+            formControlName="nombre" 
+            type="text"
+            maxlength="100"
+            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-xs sm:text-sm rounded-lg
+                   focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 
+                   dark:text-neutral-300 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+            placeholder="Ej: Temporada Primavera 2025">
+        </div>
+
+        <!-- Año -->
+        <div class="sm:col-span-3">
+          <label for="año" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
+            Año
+          </label>
+        </div>
+        <div class="sm:col-span-9">
+          <input 
+            id="año" 
+            formControlName="año" 
+            type="number" 
+            min="2020" max="2050"
+            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-xs sm:text-sm rounded-lg
+                   focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 
+                   dark:text-neutral-300 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+            placeholder="2025">
+        </div>
+
+        <!-- Fecha Inicio -->
+        <div class="sm:col-span-3">
+          <label for="fecha_inicio" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
+            Fecha inicio
+          </label>
+        </div>
+        <div class="sm:col-span-9">
+          <input 
+            id="fecha_inicio" 
+            formControlName="fecha_inicio" 
+            type="date"
+            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-xs sm:text-sm rounded-lg
+                   focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 
+                   dark:text-neutral-300 dark:focus:ring-neutral-600">
+        </div>
+
+        <!-- Fecha Fin -->
+        <div class="sm:col-span-3">
+          <label for="fecha_fin" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
+            Fecha fin
+          </label>
+        </div>
+        <div class="sm:col-span-9">
+          <input 
+            id="fecha_fin" 
+            formControlName="fecha_fin" 
+            type="date"
+            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-xs sm:text-sm rounded-lg
+                   focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 
+                   dark:text-neutral-300 dark:focus:ring-neutral-600">
+        </div>
+
+        <!-- Descripción -->
+        <div class="sm:col-span-3">
+          <label for="descripcion" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
+            Descripción
+          </label>
+        </div>
+        <div class="sm:col-span-9">
+          <textarea 
+            id="descripcion" 
+            formControlName="descripcion" 
+            rows="3" maxlength="500"
+            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-xs sm:text-sm rounded-lg
+                   focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 
+                   dark:text-neutral-300 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+            placeholder="Detalles de la temporada (opcional)"></textarea>
+        </div>
+
+      </div>
+      <!-- End Grid -->
+
+      <!-- Botones -->
+      <div class="mt-5 flex justify-end gap-x-2">
+        <button type="button"
+          class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg
+                 border border-gray-200 bg-white text-gray-800 shadow-xs
+                 hover:bg-red-500 hover:text-white disabled:opacity-50 disabled:pointer-events-none
+                 focus:outline-hidden dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300">
+          Cancelar
+        </button>
+        <button type="submit" [disabled]="seasonForm.invalid"
+          class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg
+                 border border-transparent bg-blue-600 text-white hover:bg-blue-700
+                 focus:outline-hidden disabled:opacity-50 disabled:pointer-events-none">
+          Guardar temporada
+        </button>
+      </div>
+    </form>
+  </div>
+  <!-- End Card -->
+</div>
+<!-- End Card Section -->
