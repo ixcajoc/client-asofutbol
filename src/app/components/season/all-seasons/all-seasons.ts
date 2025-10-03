@@ -56,7 +56,7 @@ export class AllSeasonsComponent implements OnInit {
   }
 
   activateSeason(id: number) {
-    this.seasonService.updateSeason(id, { activa: true }).subscribe({
+    this.seasonService.activateSeason(id).subscribe({
       next: () => {
         this.message.successAlert();
         this.loadSeasons();

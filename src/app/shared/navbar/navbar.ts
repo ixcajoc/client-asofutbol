@@ -29,4 +29,8 @@ export class Navbar {
     });
   }
 
+  logout(){
+    this.authService.logout();
+  }
+
 }

@@ -66,6 +66,17 @@ export class SeasonService {
     return this.http.delete<any>(`${this.url}seasons/${seasonId}`, { headers });
   }
 
+  activateSeason(seasonId: number): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.authService.getToken()}`
+    });
+
+    return this.http.put<any>(`${this.url}seasons/${seasonId}/activate`,{},{ headers });
+  }
+
+  
+
 
 
   

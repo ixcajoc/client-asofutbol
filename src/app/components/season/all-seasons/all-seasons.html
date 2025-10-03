@@ -4,7 +4,7 @@
     <div class="p-4 border-b border-gray-200 dark:border-neutral-700 flex items-center justify-between">
       <h2 class="text-lg font-semibold text-gray-800 dark:text-neutral-200">Lista de Temporadas</h2>
       <button 
-        routerLink="/seasons/new" 
+        routerLink="/dashboard1/season/new-season" 
         class="px-3 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg shadow-sm hover:bg-blue-700
                focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
         + Nueva Temporada
@@ -51,10 +51,17 @@
                   class="text-sm px-2 py-1 rounded-lg bg-red-500 text-white hover:bg-red-600"
                   (click)="deleteSeason(season.id_temporada)">Eliminar</button>
 
-                <button 
+                <!-- <button 
                   *ngIf="!season.activa" 
                   class="text-sm px-2 py-1 rounded-lg bg-green-500 text-white hover:bg-green-600"
-                  (click)="activateSeason(season.id_temporada)">Activar</button>
+                  (click)="activateSeason(season.id_temporada)">Activar</button
+                  > -->
+
+                  <button 
+                  *ngIf="!season.activa" 
+                  class="text-sm px-2 py-1 rounded-lg bg-green-500 text-white hover:bg-green-600"
+                  (click)="activateSeason(season.id_temporada)">Activar</button
+                  >
               </td>
             </tr>
           }

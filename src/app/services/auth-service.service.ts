@@ -53,6 +53,11 @@ export class AuthService {
       } 
     }); 
   }
+  
+  logout(): void {
+    localStorage.removeItem('token');
+    this.router.navigate(['/home']);
+  }
 
   userAutenticated(): Observable<any> {
     const headers = new HttpHeaders({
