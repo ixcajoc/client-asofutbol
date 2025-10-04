@@ -1,100 +1,418 @@
-<div class="container">
-    <app-banner [title]="`Gestion de fechas, eventos y calendario`"></app-banner>
-</div>
+<div class="min-h-screen dark:bg-neutral-900 py-8">
+  <div class="container mx-auto px-4">
+    <!-- Header + Filtros -->
+    <div class="mb-6">
+      <app-banner [title]="'Calendario de Partidos'"></app-banner>
 
-<div class="flex flex-col">
-  <div class="-m-1.5 overflow-x-auto">
-    <div class="p-1.5 min-w-full inline-block align-middle">
-      <div class="overflow-hidden">
-        <table class="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
-          <thead>
+      <!-- Filtros -->
+      <div class="mt-4 grid grid-cols-1 md:grid-cols-5 gap-3 items-end">
+        <!-- Búsqueda -->
+        <div class="md:col-span-2">
+          <label class="block text-xs font-medium text-gray-600 dark:text-neutral-300 mb-1">Buscar</label>
+          <div class="relative">
+            <input
+              type="text"
+              class="w-full px-3 py-2 pl-9 rounded-lg border border-gray-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white focus:ring-2 focus:ring-blue-500"
+              placeholder="Equipo, estadio o árbitro..."
+              [(ngModel)]="search"
+              (input)="applyFilters()"
+            />
+            <svg class="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Temporada -->
+        <div>
+          <label class="block text-xs font-medium text-gray-600 dark:text-neutral-300 mb-1">Temporada</label>
+          <select
+            class="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white focus:ring-2 focus:ring-blue-500"
+            [(ngModel)]="selectedSeason"
+            (ngModelChange)="onSeasonChange()"
+          >
+            @for (s of seasons; track s.id) {
+              <option [ngValue]="s.id">{{ s.nombre }}</option>
+            }
+          </select>
+        </div>
+
+        <!-- Jornada -->
+        <div>
+          <label class="block text-xs font-medium text-gray-600 dark:text-neutral-300 mb-1">Jornada</label>
+          <select
+            class="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white focus:ring-2 focus:ring-blue-500"
+            [(ngModel)]="selectedMatchday"
+            (ngModelChange)="onMatchdayChange()"
+          >
+            <option [ngValue]="'TODAS'">TODAS</option>
+            @for (j of visibleJornadas; track j.id_jornada) {
+              <option [ngValue]="j.id_jornada">J{{ j.numero_jornada }} — {{ j.nombre }}</option>
+            }
+          </select>
+        </div>
+
+        <!-- Estado -->
+        <div>
+          <label class="block text-xs font-medium text-gray-600 dark:text-neutral-300 mb-1">Estado</label>
+          <select
+            class="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white focus:ring-2 focus:ring-blue-500"
+            [(ngModel)]="selectedStatus"
+            (ngModelChange)="applyFilters()"
+          >
+            <option value="TODOS">TODOS</option>
+            @for (st of statuses; track st) {
+              <option [ngValue]="st">{{ st }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <!-- Nota temporada activa -->
+      @if (activeSeason) {
+        <div class="mt-3 text-sm">
+          <span class="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-blue-50 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
+            <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16Zm3.707-9.707a1 1 0 00-1.414-1.414L9 10.172 7.707 8.879A1 1 0 106.293 10.293l2 2a1 1 0 001.414 0l4-4Z" clip-rule="evenodd" />
+            </svg>
+            Estás viendo la temporada activa: <span class="font-semibold">{{ activeSeason.nombre }}</span>
+          </span>
+        </div>
+      }
+
+      <!-- KPIs y Export -->
+      <div class="mt-3 flex items-center justify-between flex-wrap gap-4">
+        <div class="flex items-center gap-6 text-sm">
+          <span class="text-gray-600 dark:text-gray-400">Total partidos: <span class="font-semibold text-gray-900 dark:text-white">{{ filteredList.length }}</span></span>
+          <span class="text-gray-600 dark:text-gray-400">Goles totales: <span class="font-semibold text-gray-900 dark:text-white">{{ getTotalGoals() }}</span></span>
+          <span class="text-gray-600 dark:text-gray-400">Promedio goles/partido: <span class="font-semibold text-gray-900 dark:text-white">{{ getAvgGoalsPerMatch() }}</span></span>
+        </div>
+        <app-export-button [tableData]="exportData"></app-export-button>
+      </div>
+    </div>
+
+    <!-- Vista Desktop: Tabla tipo fixture -->
+    <div class="hidden lg:block bg-white dark:bg-neutral-800 rounded-2xl shadow-xl overflow-hidden border border-gray-200 dark:border-neutral-700">
+      <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4">
+        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>
+          </svg>
+          Calendario de Partidos
+        </h2>
+        <p class="text-blue-100 text-sm mt-1">Resultados, horarios y estadios</p>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="min-w-full">
+          <thead class="bg-gray-50 dark:bg-neutral-900 border-b-2 border-gray-200 dark:border-neutral-700">
             <tr>
-              <!-- <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">id_partido</th>
-              <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">id_jornada</th>
-              <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">id_equipo_local</th>
-              <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">id_equipo_visitante</th> -->
-              <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">fecha_partido</th>
-              <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">fecha_creacion</th>
-              <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">numero_jornada</th>
-              <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">jornada_nombre</th>
-              <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">estadio</th>
-              <!-- <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">id_arbitro</th> -->
-              <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">estado</th>
-              <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">equipo_local_nombre</th>
-              <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">equipo_local_logo</th>
-              <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">goles_local</th>
-              <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">goles_visitante</th>
-              <!-- <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">equipo_local_corto</th> -->
-              <!-- <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">equipo_visitante_corto</th> -->
-              <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">equipo_visitante_logo</th>
-              <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">equipo_visitante_nombre</th>
-              <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Arbitro</th>
-              <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">temporada_nombre</th>
-              <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">observaciones</th>
+              <th class="px-4 py-3 text-left">
+                <span class="text-xs font-bold text-gray-600 dark:text-neutral-400 uppercase tracking-wider">Jornada</span>
+              </th>
+              <th class="px-4 py-3 text-left">
+                <span class="text-xs font-bold text-gray-600 dark:text-neutral-400 uppercase tracking-wider">Fecha</span>
+              </th>
+              <th class="px-4 py-3 text-left">
+                <span class="text-xs font-bold text-gray-600 dark:text-neutral-400 uppercase tracking-wider">Estadio</span>
+              </th>
+              <th class="px-6 py-3 text-center" colspan="3">
+                <span class="text-xs font-bold text-gray-600 dark:text-neutral-400 uppercase tracking-wider">Partido</span>
+              </th>
+              <th class="px-4 py-3 text-center">
+                <span class="text-xs font-bold text-gray-600 dark:text-neutral-400 uppercase tracking-wider">Estado</span>
+              </th>
+              <th class="px-4 py-3 text-left">
+                <span class="text-xs font-bold text-gray-600 dark:text-neutral-400 uppercase tracking-wider">Árbitro</span>
+              </th>
+              <th class="px-4 py-3 text-center">
+                <span class="text-xs font-bold text-gray-600 dark:text-neutral-400 uppercase tracking-wider">Acciones</span>
+              </th>
             </tr>
           </thead>
-          <tbody>            
-            @for (game of gamesList; track $index) {
-              <tr class="odd:bg-white even:bg-gray-100 hover:bg-gray-100 dark:odd:bg-neutral-800 dark:even:bg-neutral-700 dark:hover:bg-neutral-700">                
-                <!-- <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{{game.id_partido}}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{{game.id_jornada}}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{{game.id_equipo_local}}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{{game.id_equipo_visitante}}</td> -->
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{{this.formatDate(game.fecha_partido)}}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{{game.fecha_creacion}}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{{game.numero_jornada}}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{{game.jornada_nombre}}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{{game.estadio}}</td>
-                <!-- <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{{game.id_arbitro}}</td> -->
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{{game.estado}}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{{game.equipo_local_nombre}}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
-                  <img [src]="game.equipo_local_logo" alt="logo local" class="h-8 w-8 object-contain" />
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{{game.goles_local}}</td>
-                <!-- <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{{game.equipo_local_corto}}</td> -->
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{{game.goles_visitante}}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
-                  <img [src]="game.equipo_visitante_logo" alt="logo visitante" class="h-8 w-8 object-contain" />
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{{game.equipo_visitante_nombre}}</td>
-                <!-- <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{{game.equipo_visitante_corto}}</td> -->
-                {{game.arbitro_nombre}} {{game.arbitro_apellido}}
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{{game.temporada_nombre}}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{{game.observaciones}}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
+
+          <tbody class="divide-y divide-gray-200 dark:divide-neutral-700">
+            @for (game of filteredList; track game.id_partido) {
+              <tr class="group hover:bg-blue-50 dark:hover:bg-neutral-700/50 transition-colors">
+                <!-- Jornada -->
+                <td class="px-4 py-4">
+                  <div class="flex flex-col">
+                    <span class="text-xs font-semibold text-blue-600 dark:text-blue-400">J{{ game.numero_jornada }}</span>
+                    <span class="text-[10px] text-gray-500 dark:text-gray-400 max-w-[80px] truncate" [title]="game.jornada_nombre">
+                      {{ game.jornada_nombre }}
+                    </span>
+                  </div>
                 </td>
 
-                <!-- Botón de acción -->
-                <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-                  <button type="button" 
-                    [routerLink]="['/dashboard1/calendar/edit-game',game.id_partido]"
-                    class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 focus:outline-hidden focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 dark:focus:text-blue-400">
-                    Editar
-                  </button>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-                  <button type="button" 
-                    routerLink="/dashboard1/events"
-                    [routerLink]="['/dashboard1/events/match',game.id_partido]"
-
-                    class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 focus:outline-hidden focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 dark:focus:text-blue-400">
-                    Eventos
-                  </button>
+                <!-- Fecha -->
+                <td class="px-4 py-4">
+                  <div class="flex flex-col">
+                    <span class="text-xs font-semibold text-gray-900 dark:text-white">
+                      {{ formatDate(game.fecha_partido) }}
+                    </span>
+                    <span class="text-[10px] text-gray-500 dark:text-gray-400">
+                      {{ formatTime(game.fecha_partido) }}
+                    </span>
+                  </div>
                 </td>
 
-                <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-                  <button type="button" 
-                    (click)="confirmarEliminar(game.id_partido)"
-                    class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 focus:outline-hidden focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 dark:focus:text-blue-400">
-                    Eliminar
-                  </button>
+                <!-- Estadio -->
+                <td class="px-4 py-4">
+                  <div class="flex items-center gap-1.5">
+                    <svg class="w-3.5 h-3.5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="text-xs text-gray-700 dark:text-neutral-300 max-w-[120px] truncate" [title]="game.estadio">
+                      {{ game.estadio }}
+                    </span>
+                  </div>
+                </td>
+
+                <!-- Equipo Local -->
+                <td class="px-3 py-4 text-right">
+                  <div class="flex items-center justify-end gap-2">
+                    <span class="text-sm font-semibold text-gray-900 dark:text-white truncate max-w-[150px]" [title]="game.equipo_local">
+                      {{ game.equipo_local }}
+                    </span>
+                    <span class="text-[10px] font-bold text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-neutral-700 px-1.5 py-0.5 rounded">
+                      {{ game.local_corto }}
+                    </span>
+                  </div>
+                </td>
+
+                <!-- Marcador -->
+                <td class="px-4 py-4">
+                  <div class="flex items-center justify-center gap-2">
+                    <div 
+                      class="flex items-center justify-center w-8 h-8 rounded-lg font-bold text-sm"
+                      [ngClass]="getScoreClass(game.goles_local, game.goles_visitante, 'local', game.estado)"
+                    >
+                      {{ game.goles_local ?? '-' }}
+                    </div>
+                    <span class="text-gray-400 dark:text-neutral-500 font-bold">:</span>
+                    <div 
+                      class="flex items-center justify-center w-8 h-8 rounded-lg font-bold text-sm"
+                      [ngClass]="getScoreClass(game.goles_local, game.goles_visitante, 'visitante', game.estado)"
+                    >
+                      {{ game.goles_visitante ?? '-' }}
+                    </div>
+                  </div>
+                </td>
+
+                <!-- Equipo Visitante -->
+                <td class="px-3 py-4 text-left">
+                  <div class="flex items-center gap-2">
+                    <span class="text-[10px] font-bold text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-neutral-700 px-1.5 py-0.5 rounded">
+                      {{ game.visitante_corto }}
+                    </span>
+                    <span class="text-sm font-semibold text-gray-900 dark:text-white truncate max-w-[150px]" [title]="game.equipo_visitante">
+                      {{ game.equipo_visitante }}
+                    </span>
+                  </div>
+                </td>
+
+                <!-- Estado -->
+                <td class="px-4 py-4 text-center">
+                  <span 
+                    class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide"
+                    [ngClass]="getStatusClass(game.estado)"
+                  >
+                    {{ game.estado || 'PROGRAMADO' }}
+                  </span>
+                </td>
+
+                <!-- Árbitro -->
+                <td class="px-4 py-4">
+                  <div class="flex items-center gap-1.5">
+                    <svg class="w-3.5 h-3.5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="text-xs text-gray-700 dark:text-neutral-300">
+                      {{ game.arbitro_nombre }} {{ game.arbitro_apellido }}
+                    </span>
+                  </div>
+                </td>
+
+                <!-- Acciones -->
+                <td class="px-4 py-4">
+                  <div class="flex items-center justify-center gap-2">
+                    <a 
+                      [routerLink]="['/panel/calendar/edit', game.id_partido]"
+                      class="p-1.5 text-blue-600 hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-blue-900/30 rounded-lg transition-colors"
+                      title="Editar"
+                    >
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                      </svg>
+                    </a>
+
+                    <button
+                      type="button"
+                      [routerLink]="['/dashboard1/events/match', game.id_partido]"
+                      class="p-2 text-green-600 hover:bg-green-50 dark:text-green-400 dark:hover:bg-green-900/20 rounded-lg transition-colors"
+                      title="Eventos">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                      </svg>
+                    </button>
+                    <button
+                      (click)="confirmarEliminar(game.id_partido)"
+                      class="p-1.5 text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/30 rounded-lg transition-colors"
+                      title="Eliminar"
+                    >
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                      </svg>
+                    </button>
+                  </div>
                 </td>
               </tr>
             }
           </tbody>
         </table>
       </div>
+
+      <!-- Footer -->
+      <div class="bg-gray-50 dark:bg-neutral-900 px-6 py-4 border-t border-gray-200 dark:border-neutral-700">
+        <div class="flex flex-wrap items-center gap-4 text-xs">
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+            <span class="text-gray-600 dark:text-neutral-400">Finalizado</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full bg-blue-500"></span>
+            <span class="text-gray-600 dark:text-neutral-400">En curso</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+            <span class="text-gray-600 dark:text-neutral-400">Programado</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full bg-gray-400"></span>
+            <span class="text-gray-600 dark:text-neutral-400">Suspendido</span>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <!-- Vista Mobile: Cards tipo fixture -->
+    <div class="lg:hidden space-y-4">
+      @for (game of filteredList; track game.id_partido) {
+        <div class="bg-white dark:bg-neutral-800 rounded-xl shadow-md overflow-hidden border border-gray-200 dark:border-neutral-700">
+          <!-- Header: Jornada + Estado -->
+          <div class="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-neutral-900 dark:to-neutral-800 border-b border-gray-200 dark:border-neutral-700">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-bold text-blue-600 dark:text-blue-400">J{{ game.numero_jornada }}</span>
+              <span class="text-[10px] text-gray-500 dark:text-gray-400">{{ game.jornada_nombre }}</span>
+            </div>
+            <span 
+              class="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-bold uppercase"
+              [ngClass]="getStatusClass(game.estado)"
+            >
+              {{ game.estado || 'PROGRAMADO' }}
+            </span>
+          </div>
+
+          <!-- Partido -->
+          <div class="p-4">
+            <!-- Equipos y marcador -->
+            <div class="flex items-center justify-between mb-4">
+              <!-- Local -->
+              <div class="flex-1 text-right">
+                <div class="text-xs font-bold text-gray-500 dark:text-gray-400 mb-1">{{ game.local_corto }}</div>
+                <div class="text-sm font-semibold text-gray-900 dark:text-white truncate">{{ game.equipo_local }}</div>
+              </div>
+
+              <!-- Marcador -->
+              <div class="flex items-center gap-3 mx-4">
+                <div 
+                  class="flex items-center justify-center w-10 h-10 rounded-lg font-bold text-lg"
+                  [ngClass]="getScoreClass(game.goles_local, game.goles_visitante, 'local', game.estado)"
+                >
+                  {{ game.goles_local ?? '-' }}
+                </div>
+                <span class="text-gray-400 dark:text-neutral-500 font-bold text-lg">:</span>
+                <div 
+                  class="flex items-center justify-center w-10 h-10 rounded-lg font-bold text-lg"
+                  [ngClass]="getScoreClass(game.goles_local, game.goles_visitante, 'visitante', game.estado)"
+                >
+                  {{ game.goles_visitante ?? '-' }}
+                </div>
+              </div>
+
+              <!-- Visitante -->
+              <div class="flex-1 text-left">
+                <div class="text-xs font-bold text-gray-500 dark:text-gray-400 mb-1">{{ game.visitante_corto }}</div>
+                <div class="text-sm font-semibold text-gray-900 dark:text-white truncate">{{ game.equipo_visitante }}</div>
+              </div>
+            </div>
+
+            <!-- Info adicional -->
+            <div class="grid grid-cols-2 gap-3 pt-3 border-t border-gray-200 dark:border-neutral-700">
+              <div class="flex items-center gap-2 text-xs">
+                <svg class="w-3.5 h-3.5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>
+                </svg>
+                <div>
+                  <div class="text-gray-900 dark:text-white font-medium">{{ formatDate(game.fecha_partido) }}</div>
+                  <div class="text-gray-500 dark:text-gray-400">{{ formatTime(game.fecha_partido) }}</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 text-xs">
+                <svg class="w-3.5 h-3.5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
+                </svg>
+                <div class="text-gray-700 dark:text-neutral-300 truncate" [title]="game.estadio">{{ game.estadio }}</div>
+              </div>
+            </div>
+
+            <!-- Árbitro -->
+            <div class="flex items-center gap-2 mt-3 pt-3 border-t border-gray-200 dark:border-neutral-700 text-xs">
+              <svg class="w-3.5 h-3.5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-gray-600 dark:text-gray-400">Árbitro:</span>
+              <span class="text-gray-900 dark:text-white font-medium">{{ game.arbitro_nombre }} {{ game.arbitro_apellido }}</span>
+            </div>
+
+            <!-- Acciones mobile -->
+            <div class="flex gap-2 mt-4">
+              <a 
+                [routerLink]="['/panel/calendar/edit', game.id_partido]"
+                class="flex-1 px-3 py-2 text-sm font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-400 dark:hover:bg-blue-900/50 rounded-lg transition-colors text-center"
+              >
+                Editar
+              </a>
+              
+              <button
+                  [routerLink]="['/dashboard1/events/match', game.id_partido]" 
+                  class="flex-1 px-3 py-2 text-sm font-medium text-green-600 bg-green-50 hover:bg-green-100 dark:bg-green-900/30 dark:text-green-400 dark:hover:bg-green-900/50 rounded-lg transition-colors"
+              >
+                Nuevo Evento
+              </button>
+              
+              <button
+                (click)="confirmarEliminar(game.id_partido)"
+                class="flex-1 px-3 py-2 text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/50 rounded-lg transition-colors"
+              >
+                Eliminar
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Empty state -->
+    @if (filteredList.length === 0) {
+      <div class="bg-white dark:bg-neutral-800 rounded-2xl shadow-xl p-12 text-center">
+        <svg class="mx-auto h-16 w-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+        </svg>
+        <h3 class="mt-4 text-lg font-medium text-gray-900 dark:text-white">No hay partidos</h3>
+        <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">Selecciona otra temporada, jornada o ajusta los filtros.</p>
+      </div>
+    }
   </div>
 </div>

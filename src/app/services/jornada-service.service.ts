@@ -22,7 +22,7 @@ export class JornadaService {
   ) {}
 
   getAllJornadas(): Observable<any> {
-      return this.http.get<any>(`${this.url}jornadas`);
+    return this.http.get<any>(`${this.url}jornadas`);
   }
 
   getJornadaByid(id:string): Observable<any>{
