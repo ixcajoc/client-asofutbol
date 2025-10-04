@@ -32,9 +32,18 @@ export class ReportService {
   getTeamStats(): Observable<any>{
     return this.http.get(`${this.url}reports/team-stats?seasonId=1`);
   }
-  getGamesByDay(): Observable<any>{
-    return this.http.get(`${this.url}reports/matchday?seasonId=1&matchday=1`);
+  // getGamesByDay(): Observable<any>{
+  //   return this.http.get(`${this.url}reports/matchday?seasonId=1&matchday=1`);
+  // }
+   // En ReportService
+  getGamesByDay(seasonId: number): Observable<any> {
+    return this.http.get(`${this.url}/reports/matchday?seasonId=${seasonId}`);
   }
+
+  getGamesByMatchday(seasonId: number, matchday: number): Observable<any> {
+    return this.http.get(`${this.url}/reports/matchday?seasonId=${seasonId}&matchday=${matchday}`);
+  }
+
   getSeasonSummary(): Observable<any>{
     return this.http.get(`${this.url}reports/season-summary?seasonId=1`);
   }
