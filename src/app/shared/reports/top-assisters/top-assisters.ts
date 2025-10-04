@@ -1,41 +1,176 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ReportService } from '../../../services/report-service.service';
-import { environment } from '../../../environments/environment';
 import { ExportButton } from '../../export-button/export-button';
 import { Banner } from '../../banner/banner';
 
+type SortKey = 'asistencias' | 'goles' | 'promedio' | 'aporte';
+
 @Component({
   selector: 'app-top-assisters',
-  imports: [
-    ExportButton,
-    Banner
-  ],
+  imports: [CommonModule, FormsModule, ExportButton, Banner],
   templateUrl: './top-assisters.html',
   styleUrl: './top-assisters.css'
 })
 export class TopAssisters {
+  asisistsList: any[] = [];
+  filteredList: any[] = [];
 
-  constructor(
-      private reportService: ReportService,
-    
-    ) {}
-  
-    ngOnInit():void{
-      this.getAssistsTop();
+  // Filtros
+  teams: string[] = [];
+  positions: string[] = ['PORTERO', 'DEFENSA', 'MEDIOCAMPISTA', 'MEDIO', 'DELANTERO'];
+  selectedTeam = 'TODOS';
+  selectedPosition = 'TODAS';
+  search = '';
+
+  // Ordenamiento
+  sortKey: SortKey = 'asistencias';
+  sortDir: 'asc' | 'desc' = 'desc';
+
+  constructor(private reportService: ReportService) {}
+
+  ngOnInit(): void {
+    this.getAssistsTop();
+  }
+
+  getAssistsTop() {
+    this.reportService.getAssistsTop().subscribe({
+      next: (response) => {
+        this.asisistsList = (response.data || []).map((p: any) => ({
+          ...p,
+          _promedioCalc: this.getAssistAverageNumber(p.asistencias, p.partidos_jugados),
+          _aportePct: this.getContributionPct(p.asistencias, p.goles, p.partidos_jugados)
+        }));
+        this.teams = ['TODOS', ...Array.from(new Set(this.asisistsList.map(p => p.equipo).filter(Boolean)))];
+        this.applyFilters();
+      },
+      error: (error) => console.error(error)
+    });
+  }
+
+  // Helpers de cálculo
+  getAssistAverage(asistencias: number, pj: number): string {
+    return this.getAssistAverageNumber(asistencias, pj).toFixed(2);
+  }
+  getAssistAverageNumber(asistencias: number, pj: number): number {
+    if (!pj) return 0;
+    return asistencias / pj;
+  }
+  getContributionPct(asist: number, goles: number, pj: number): number {
+    if (!pj) return 0;
+    const porPartido = (asist + goles) / pj;
+    const umbral = 1.5;
+    return Math.min(100, Math.round((porPartido / umbral) * 100));
+  }
+
+  // Totales
+  getTotalAssists(): number {
+    return this.filteredList.reduce((sum, p) => sum + (p.asistencias || 0), 0);
+  }
+  getGlobalAssistAvg(): string {
+    const totalPj = this.filteredList.reduce((sum, p) => sum + (p.partidos_jugados || 0), 0);
+    if (!totalPj) return '0.00';
+    const totalAsist = this.getTotalAssists();
+    return (totalAsist / totalPj).toFixed(2);
+  }
+
+  // Estilo por posición
+  getPositionGradient(pos: string): string {
+    switch ((pos || '').toUpperCase()) {
+      case 'PORTERO': return 'bg-gradient-to-br from-emerald-500 to-teal-600';
+      case 'DEFENSA': return 'bg-gradient-to-br from-sky-500 to-blue-600';
+      case 'MEDIOCAMPISTA':
+      case 'MEDIO':   return 'bg-gradient-to-br from-amber-500 to-orange-600';
+      case 'DELANTERO': return 'bg-gradient-to-br from-rose-500 to-red-600';
+      default: return 'bg-gradient-to-br from-gray-500 to-gray-700';
     }
-  
-    asisistsList: any = []
-  
-    getAssistsTop(){
-      this.reportService.getAssistsTop().subscribe({
-        next:(response)=>{
-          this.asisistsList = response.data;
-          // console.log(this.asisistsList);
-        },
-        error: (error) => (console.log(error))
-      });
-  
-  
+  }
+  getPositionBadgeColor(pos: string): string {
+    switch ((pos || '').toUpperCase()) {
+      case 'PORTERO': return 'bg-emerald-500 text-white';
+      case 'DEFENSA': return 'bg-sky-500 text-white';
+      case 'MEDIOCAMPISTA':
+      case 'MEDIO':   return 'bg-amber-500 text-white';
+      case 'DELANTERO': return 'bg-rose-500 text-white';
+      default: return 'bg-gray-500 text-white';
+    }
+  }
+  getPositionAbbr(pos: string): string {
+    switch ((pos || '').toUpperCase()) {
+      case 'PORTERO': return 'PT';
+      case 'DEFENSA': return 'DF';
+      case 'MEDIOCAMPISTA':
+      case 'MEDIO':   return 'MC';
+      case 'DELANTERO': return 'DL';
+      default: return '?';
+    }
+  }
+  getAvgColorClass(avg: number | string): string {
+    const v = typeof avg === 'string' ? parseFloat(avg) : avg || 0;
+    if (v >= 0.6) return 'text-emerald-600 dark:text-emerald-400';
+    if (v >= 0.35) return 'text-yellow-600 dark:text-yellow-400';
+    return 'text-gray-700 dark:text-neutral-300';
+  }
+
+  // Filtrado + orden
+  applyFilters() {
+    const term = this.search.trim().toLowerCase();
+    const team = this.selectedTeam;
+    const pos = this.selectedPosition;
+
+    let list = [...this.asisistsList];
+
+    if (team && team !== 'TODOS') {
+      list = list.filter(p => p.equipo === team);
     }
 
+    if (pos && pos !== 'TODAS') {
+      list = list.filter(p => (p.posicion || '').toUpperCase() === pos);
+    }
+
+    if (term) {
+      list = list.filter(p =>
+        `${p.nombre || ''} ${p.apellido || ''}`.toLowerCase().includes(term) ||
+        (p.equipo || '').toLowerCase().includes(term) ||
+        (p.posicion || '').toLowerCase().includes(term)
+      );
+    }
+
+    this.filteredList = this.sortList(list);
+  }
+
+  sortBy(key: SortKey) {
+    if (this.sortKey === key) {
+      this.sortDir = this.sortDir === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortKey = key;
+      this.sortDir = 'desc';
+    }
+    this.filteredList = this.sortList(this.filteredList);
+  }
+
+  private sortList(list: any[]): any[] {
+    const dir = this.sortDir === 'asc' ? 1 : -1;
+    return [...list].sort((a, b) => {
+      const va = this.getSortValue(a);
+      const vb = this.getSortValue(b);
+      return (va - vb) * dir;
+    });
+  }
+
+  private getSortValue(p: any): number {
+    switch (this.sortKey) {
+      case 'asistencias': return Number(p.asistencias) || 0;
+      case 'goles': return Number(p.goles) || 0;
+      case 'promedio': return Number(p._promedioCalc) || 0;
+      case 'aporte': return Number(p._aportePct) || 0;
+      default: return 0;
+    }
+  }
+
+  // Para exportar la lista filtrada
+  get exportData() {
+    return this.filteredList;
+  }
 }

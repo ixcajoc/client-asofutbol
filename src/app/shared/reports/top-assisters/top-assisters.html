@@ -1,47 +1,373 @@
-<div>
-  <app-banner [title]="`Reporte Asistidores`"></app-banner>
-  <app-export-button [tableData]="asisistsList" ></app-export-button>
+<!-- <div class="min-h-screen bg-gray-50 dark:bg-neutral-900 py-8"> -->
+<div class="min-h-screen  dark:bg-neutral-900 py-8">
+  <div class="container mx-auto px-4">
+    <!-- Header -->
+    <div class="mb-6">
+  <app-banner [title]="'Reporte Asistidores'"></app-banner>
+  <div class="mt-4 grid grid-cols-1 md:grid-cols-4 gap-3 items-end">
+    <!-- Búsqueda -->
+    <div class="md:col-span-2">
+      <label class="block text-xs font-medium text-gray-600 dark:text-neutral-300 mb-1">Buscar</label>
+      <div class="relative">
+        <input
+          type="text"
+          class="w-full px-3 py-2 pl-9 rounded-lg border border-gray-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white focus:ring-2 focus:ring-emerald-500"
+          placeholder="Nombre, equipo o posición..."
+          [(ngModel)]="search"
+          (input)="applyFilters()"
+        />
+        <svg class="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Equipo -->
+    <div>
+      <label class="block text-xs font-medium text-gray-600 dark:text-neutral-300 mb-1">Equipo</label>
+      <select
+        class="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white focus:ring-2 focus:ring-emerald-500"
+        [(ngModel)]="selectedTeam"
+        (change)="applyFilters()"
+      >
+        <option *ngFor="let t of teams" [ngValue]="t">{{ t }}</option>
+      </select>
+    </div>
+
+    <!-- Posición -->
+    <div>
+      <label class="block text-xs font-medium text-gray-600 dark:text-neutral-300 mb-1">Posición</label>
+      <select
+        class="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white focus:ring-2 focus:ring-emerald-500"
+        [(ngModel)]="selectedPosition"
+        (change)="applyFilters()"
+      >
+        <option value="TODAS">TODAS</option>
+        <option *ngFor="let p of positions" [ngValue]="p">{{ p }}</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="mt-3 flex items-center justify-between flex-wrap gap-4">
+    <div class="flex items-center gap-6 text-sm">
+      <span class="text-gray-600 dark:text-gray-400">Total asistencias: <span class="font-semibold text-gray-900 dark:text-white">{{ getTotalAssists() }}</span></span>
+      <span class="text-gray-600 dark:text-gray-400">Promedio global: <span class="font-semibold text-gray-900 dark:text-white">{{ getGlobalAssistAvg() }}</span></span>
+      <span class="text-gray-600 dark:text-gray-400">Jugadores: <span class="font-semibold text-gray-900 dark:text-white">{{ filteredList.length }}</span></span>
+    </div>
+    <app-export-button [tableData]="exportData"></app-export-button>
+  </div>
 </div>
-<div class="container flex flex-col">
-  <div class="-m-1.5 overflow-x-auto">
-    <div class="p-1.5 min-w-full inline-block align-middle">
-      <div class="overflow-hidden">
-        <table class="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
-          <thead>
-            <tr>
-              <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Nombre</th>
-              <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Apellido</th>
-              <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">No. Camisola</th>
-              <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Posicion</th>
-              <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Equipo</th>
-              <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Asistencias</th>
-              <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Goles</th>
-              <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Partidos jugados</th>
-              <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Prom. Asistencias</th>
-            </tr>
+
+    <!-- Tabla Desktop -->
+    <div class="hidden lg:block bg-white dark:bg-neutral-800 rounded-2xl shadow-xl overflow-hidden border border-gray-200 dark:border-neutral-700">
+      <div class="bg-gradient-to-r from-emerald-600 to-blue-600 px-6 py-4">
+        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M4 3a1 1 0 000 2h3l1 2h4l1-2h3a1 1 0 100-2H4zM3 8a1 1 0 011-1h12a1 1 0 011 1v6.5A2.5 2.5 0 0114.5 17h-9A2.5 2.5 0 013 14.5V8z"></path>
+          </svg>
+          Top Asistidores
+        </h2>
+        <p class="text-emerald-100 text-sm mt-1">Asistencias, goles y promedio por partido</p>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="min-w-full">
+          <thead class="bg-gray-50 dark:bg-neutral-900 border-b-2 border-gray-200 dark:border-neutral-700">
+            <!-- <tr>
+              <th class="px-4 py-3 text-left">
+                <span class="text-xs font-bold text-gray-600 dark:text-neutral-400 uppercase tracking-wider">#</span>
+              </th>
+              <th class="px-6 py-3 text-left">
+                <span class="text-xs font-bold text-gray-600 dark:text-neutral-400 uppercase tracking-wider">Jugador</span>
+              </th>
+              <th class="px-4 py-3 text-left">
+                <span class="text-xs font-bold text-gray-600 dark:text-neutral-400 uppercase tracking-wider">Equipo</span>
+              </th>
+              <th class="px-3 py-3 text-center">
+                <span class="text-xs font-bold text-gray-600 dark:text-neutral-400 uppercase">PJ</span>
+              </th>
+              <th class="px-3 py-3 text-center">
+                <span class="text-xs font-bold text-gray-600 dark:text-neutral-400 uppercase">Asist.</span>
+              </th>
+              <th class="px-3 py-3 text-center">
+                <span class="text-xs font-bold text-gray-600 dark:text-neutral-400 uppercase">Goles</span>
+              </th>
+              <th class="px-4 py-3 text-center">
+                <span class="text-xs font-bold text-gray-600 dark:text-neutral-400 uppercase">Promedio A.</span>
+              </th>
+              <th class="px-4 py-3 text-center">
+                <span class="text-xs font-bold text-gray-600 dark:text-neutral-400 uppercase">Aporte</span>
+              </th>
+            </tr> -->
+            <th class="px-4 py-3 text-left">
+                <span class="text-xs font-bold text-gray-600 dark:text-neutral-400 uppercase tracking-wider">#</span>
+              </th>
+              <th class="px-6 py-3 text-left">
+                <span class="text-xs font-bold text-gray-600 dark:text-neutral-400 uppercase tracking-wider">Jugador</span>
+              </th>
+              <th class="px-4 py-3 text-left">
+                <span class="text-xs font-bold text-gray-600 dark:text-neutral-400 uppercase tracking-wider">Equipo</span>
+              </th>
+              <th class="px-3 py-3 text-center">
+                <span class="text-xs font-bold text-gray-600 dark:text-neutral-400 uppercase">PJ</span>
+          
+            <th class="px-3 py-3 text-center cursor-pointer select-none" (click)="sortBy('asistencias')">
+              <span class="text-xs font-bold uppercase text-gray-600 dark:text-neutral-400">Asist.</span>
+              <span *ngIf="sortKey === 'asistencias'">
+                <span class="ml-1 text-gray-400" [ngClass]="{'rotate-180 inline-block': sortDir === 'asc'}">▲</span>
+              </span>
+            </th>
+            <th class="px-3 py-3 text-center cursor-pointer select-none" (click)="sortBy('goles')">
+              <span class="text-xs font-bold uppercase text-gray-600 dark:text-neutral-400">Goles</span>
+              <span *ngIf="sortKey === 'goles'">
+                <span class="ml-1 text-gray-400" [ngClass]="{'rotate-180 inline-block': sortDir === 'asc'}">▲</span>
+              </span>
+            </th>
+            <th class="px-4 py-3 text-center cursor-pointer select-none" (click)="sortBy('promedio')">
+              <span class="text-xs font-bold uppercase text-gray-600 dark:text-neutral-400">Promedio A.</span>
+              <span *ngIf="sortKey === 'promedio'">
+                <span class="ml-1 text-gray-400" [ngClass]="{'rotate-180 inline-block': sortDir === 'asc'}">▲</span>
+              </span>
+            </th>
+            <th class="px-4 py-3 text-center cursor-pointer select-none" (click)="sortBy('aporte')">
+              <span class="text-xs font-bold uppercase text-gray-600 dark:text-neutral-400">Aporte</span>
+              <span *ngIf="sortKey === 'aporte'">
+                <span class="ml-1 text-gray-400" [ngClass]="{'rotate-180 inline-block': sortDir === 'asc'}">▲</span>
+              </span>
+            </th>
+          
           </thead>
-          <tbody>            
-            @for (player of asisistsList.data; track $index) {
-              
-              <tr class="odd:bg-white even:bg-gray-100 hover:bg-gray-100 dark:odd:bg-neutral-800 dark:even:bg-neutral-700 dark:hover:bg-neutral-700">
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{{player.nombre}}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{{player.apellido}}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{{player.numero_camiseta}}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{{player.posicion}}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{{player.equipo}}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{{player.asistencias}}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{{player.goles}}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{{player.partidos_jugados}}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">{{player.promedio_asistencias}}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-                  <button type="button" class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 focus:outline-hidden focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 dark:focus:text-blue-400">Ver</button>
+          <tbody class="divide-y divide-gray-200 dark:divide-neutral-700">
+            <!-- @for (player of asisistsList; track $index) { -->
+             @for (player of filteredList; track $index) {
+              <tr class="group hover:bg-emerald-50 dark:hover:bg-neutral-700/50 transition-colors">
+                <!-- Ranking -->
+                <td class="px-4 py-4">
+                  @if ($index < 3) {
+                    <span 
+                      class="inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold text-white"
+                      [ngClass]="{
+                        'bg-yellow-500': $index === 0,
+                        'bg-gray-400': $index === 1,
+                        'bg-orange-600': $index === 2
+                      }"
+                    >
+                      {{ $index + 1 }}
+                    </span>
+                  } @else {
+                    <span class="text-sm font-semibold text-gray-600 dark:text-gray-400">{{ $index + 1 }}</span>
+                  }
+                </td>
+
+                <!-- Jugador -->
+                <td class="px-6 py-4">
+                  <div class="flex items-center gap-3">
+                    <!-- Avatar con dorsal -->
+                    <div class="relative">
+                      <div 
+                        class="w-10 h-10 rounded-full flex items-center justify-center text-white text-xs font-bold"
+                        [ngClass]="getPositionGradient(player.posicion)"
+                      >
+                        {{ player.numero_camiseta }}
+                      </div>
+                      <div 
+                        class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full border-2 border-white dark:border-neutral-800 flex items-center justify-center text-[8px] font-bold"
+                        [ngClass]="getPositionBadgeColor(player.posicion)"
+                        [title]="player.posicion"
+                      >
+                        {{ getPositionAbbr(player.posicion) }}
+                      </div>
+                    </div>
+
+                    <div class="min-w-0">
+                      <p class="text-sm font-semibold text-gray-900 dark:text-white truncate">
+                        {{ player.nombre }} {{ player.apellido }}
+                      </p>
+                      <p class="text-xs text-gray-500 dark:text-gray-400">
+                        {{ player.posicion }}
+                      </p>
+                    </div>
+                  </div>
+                </td>
+
+                <!-- Equipo -->
+                <td class="px-4 py-4">
+                  <span class="text-sm text-gray-700 dark:text-neutral-300 font-medium truncate max-w-[180px] inline-block" [title]="player.equipo">
+                    {{ player.equipo }}
+                  </span>
+                </td>
+
+                <!-- PJ -->
+                <td class="px-3 py-4 text-center text-sm text-gray-700 dark:text-neutral-300 font-medium">
+                  {{ player.partidos_jugados }}
+                </td>
+
+                <!-- Asistencias -->
+                <td class="px-3 py-4 text-center">
+                  <span class="inline-flex items-center justify-center px-2.5 py-1 rounded-full text-sm font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300">
+                    {{ player.asistencias }}
+                  </span>
+                </td>
+
+                <!-- Goles -->
+                <td class="px-3 py-4 text-center">
+                  <span class="inline-flex items-center justify-center px-2.5 py-1 rounded-full text-sm font-semibold bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
+                    {{ player.goles }}
+                  </span>
+                </td>
+
+                <!-- Promedio asistencias -->
+                <td class="px-4 py-4 text-center">
+                  <span 
+                    class="text-sm font-bold"
+                    [ngClass]="getAvgColorClass(player.promedio_asistencias)"
+                  >
+                    {{ getAssistAverage(player.asistencias, player.partidos_jugados) }}
+                  </span>
+                </td>
+
+                <!-- Aporte (Asist + Gol por partido) -->
+                <td class="px-4 py-4">
+                  <div class="flex items-center justify-center gap-3">
+                    <div class="text-center">
+                      <div class="w-24 h-2 rounded-full bg-gray-200 dark:bg-neutral-700 overflow-hidden">
+                        <div 
+                          class="h-full rounded-full bg-gradient-to-r from-emerald-500 to-blue-500 transition-all duration-500"
+                          [style.width.%]="getContributionPct(player.asistencias, player.goles, player.partidos_jugados)"
+                        ></div>
+                      </div>
+                      <div class="text-[11px] text-gray-500 dark:text-gray-400 mt-1">
+                        {{ getContributionPct(player.asistencias, player.goles, player.partidos_jugados) | number:'1.0-0' }}%
+                      </div>
+                    </div>
+                  </div>
                 </td>
               </tr>
             }
-
           </tbody>
         </table>
       </div>
+
+      <!-- Leyenda -->
+      <div class="bg-gray-50 dark:bg-neutral-900 px-6 py-4 border-t border-gray-200 dark:border-neutral-700">
+        <div class="flex flex-wrap items-center gap-4 text-xs">
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+            <span class="text-gray-600 dark:text-neutral-400">Asistencias</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full bg-blue-500"></span>
+            <span class="text-gray-600 dark:text-neutral-400">Goles</span>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <!-- Vista Mobile: Cards -->
+    <div class="lg:hidden space-y-3">
+      @for (player of asisistsList; track $index) {
+        <div class="bg-white dark:bg-neutral-800 rounded-xl shadow-md overflow-hidden border border-gray-200 dark:border-neutral-700 hover:shadow-lg transition">
+          <div class="p-4 bg-gradient-to-r from-emerald-50 to-blue-50 dark:from-neutral-900 dark:to-neutral-800">
+            <div class="flex items-start justify-between">
+              <div class="flex items-center gap-3">
+                <!-- Ranking -->
+                @if ($index < 3) {
+                  <span 
+                    class="flex items-center justify-center w-8 h-8 rounded-full text-sm font-bold text-white"
+                    [ngClass]="{
+                      'bg-yellow-500': $index === 0,
+                      'bg-gray-400': $index === 1,
+                      'bg-orange-600': $index === 2
+                    }"
+                  >
+                    {{ $index + 1 }}
+                  </span>
+                } @else {
+                  <span class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-200 dark:bg-neutral-700 text-sm font-bold text-gray-700 dark:text-gray-300">
+                    {{ $index + 1 }}
+                  </span>
+                }
+
+                <!-- Avatar -->
+                <div class="relative">
+                  <div 
+                    class="w-12 h-12 rounded-full flex items-center justify-center text-white text-sm font-bold"
+                    [ngClass]="getPositionGradient(player.posicion)"
+                  >
+                    {{ player.numero_camiseta }}
+                  </div>
+                  <div 
+                    class="absolute -bottom-1 -right-1 w-6 h-6 rounded-full border-2 border-white dark:border-neutral-800 flex items-center justify-center text-[9px] font-bold"
+                    [ngClass]="getPositionBadgeColor(player.posicion)"
+                  >
+                    {{ getPositionAbbr(player.posicion) }}
+                  </div>
+                </div>
+
+                <div>
+                  <h3 class="text-sm font-bold text-gray-900 dark:text-white">
+                    {{ player.nombre }} {{ player.apellido }}
+                  </h3>
+                  <p class="text-xs text-gray-500 dark:text-gray-400">
+                    {{ player.equipo }} • {{ player.posicion }}
+                  </p>
+                </div>
+              </div>
+
+              <!-- Asistencias -->
+              <div class="text-right">
+                <div class="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
+                  {{ player.asistencias }}
+                </div>
+                <div class="text-xs text-gray-500 dark:text-gray-400">asist.</div>
+              </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="grid grid-cols-3 gap-3 mt-4">
+              <div class="text-center">
+                <div class="text-[11px] text-gray-500 dark:text-gray-400">PJ</div>
+                <div class="text-sm font-bold text-gray-900 dark:text-white">{{ player.partidos_jugados }}</div>
+              </div>
+              <div class="text-center">
+                <div class="text-[11px] text-gray-500 dark:text-gray-400">Goles</div>
+                <div class="text-sm font-bold text-blue-600 dark:text-blue-400">{{ player.goles }}</div>
+              </div>
+              <div class="text-center">
+                <div class="text-[11px] text-gray-500 dark:text-gray-400">Prom. A.</div>
+                <div class="text-sm font-bold" [ngClass]="getAvgColorClass(player.promedio_asistencias)">
+                  {{ getAssistAverage(player.asistencias, player.partidos_jugados) }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Aporte -->
+            <div class="mt-4">
+              <div class="flex items-center justify-between text-xs text-gray-600 dark:text-gray-400 mb-1">
+                <span>Aporte ofensivo</span>
+                <span class="font-semibold">{{ getContributionPct(player.asistencias, player.goles, player.partidos_jugados) | number:'1.0-0' }}%</span>
+              </div>
+              <div class="w-full bg-gray-200 dark:bg-neutral-700 rounded-full h-2 overflow-hidden">
+                <div 
+                  class="h-full rounded-full bg-gradient-to-r from-emerald-500 to-blue-500 transition-all duration-500"
+                  [style.width.%]="getContributionPct(player.asistencias, player.goles, player.partidos_jugados)"
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Empty state -->
+    @if (asisistsList.length === 0) {
+      <div class="bg-white dark:bg-neutral-800 rounded-2xl shadow-xl p-12 text-center">
+        <svg class="mx-auto h-16 w-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+        </svg>
+        <h3 class="mt-4 text-lg font-medium text-gray-900 dark:text-white">No hay datos de asistencias</h3>
+        <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">Se mostrarán cuando existan registros.</p>
+      </div>
+    }
   </div>
 </div>
