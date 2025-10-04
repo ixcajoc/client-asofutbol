@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth-service.service';
@@ -21,8 +21,13 @@ export class PlayerService {
 
   ) {}
 
-  getAllPlayers(): Observable<any> {
-    return this.http.get<any>(`${this.url}players`);
+  getAllPlayers(page = 1,limit = 10, orderBy: string = 'id_jugador', order: 'ASC' | 'DESC' = 'ASC'): Observable<any> {
+    let params = new HttpParams()
+      .set('page', page)
+      .set('limit', limit)
+      .set('orderBy', orderBy)
+      .set('order', order);
+    return this.http.get<any>(`${this.url}players`, { params });
   }
   // getAllPlayers(page: number, limit: number): Observable<any> {
   //   return this.http.get(`${this.url}players?page=${page}&limit=${limit}`);
@@ -41,7 +46,7 @@ export class PlayerService {
 
   // players/5/stats?seasonId=1
   getPlayerStats(id:number,seasonId:number){
-    return this.http.get(`${this.url}players/${id}stats?seasonId=${seasonId}`);
+    return this.http.get(`${this.url}players/${id}/stats?seasonId=${seasonId}`);
   }
 
   newPlayer(newPlayer: any ){
@@ -56,7 +61,7 @@ export class PlayerService {
         next: (response)=> {
           response;
           this.message.successAlert();
-          this.router.navigate(['/']);
+          this.router.navigate(['/dashboaard1/panel-users']);
         },
         // error: (error) => {
         //   // error;
@@ -110,7 +115,7 @@ export class PlayerService {
   //   });
   // }
 
-  
+
 
   deletePlayer(playerId: number): Observable<any> {
     const headers = new HttpHeaders({

@@ -35,17 +35,6 @@ export class PlayerCard {
   //   this.getAllPlayers();
   // }
 
-  // getAllPlayers(){
-  //     this.playerService.getAllPlayers(this.currentPage, this.limit).subscribe({
-  //       next:(response)=>{
-  //           this.totalItems = response.pagination.total;
-  //           this.totalPages = response.pagination.pages;
-  //           this.playerList = response.data;
-  //           console.log(this.playerList);
-  //       },
-  //       error: (error) => (console.log(error))
-  //     });
-  // } 
   getAllPlayers(){
       this.playerService.getAllPlayers().subscribe({
         next:(response)=>{
@@ -101,6 +90,47 @@ export class PlayerCard {
     });
 
 
+  }
+
+  get playerImgUrl(): string {
+    // Si luego tienes campo foto, cámbialo aquí
+    return 'https://images.unsplash.com/photo-1521412644187-c49fa049e84d?auto=format&fit=crop&w=300&q=80';
+  }
+
+  onImgError(e: Event) {
+    const el = e.target as HTMLImageElement;
+    el.src = 'data:image/svg+xml;utf8,' + encodeURIComponent(`
+      <svg xmlns="http://www.w3.org/2000/svg" width="300" height="300">
+        <rect width="100%" height="100%" fill="#e5e7eb"/>
+        <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle"
+              fill="#6b7280" font-size="14" font-family="Arial">Sin foto</text>
+      </svg>
+    `);
+  }
+
+  getEdad(fechaIso?: string): number | null {
+    if (!fechaIso) return null;
+    const d = new Date(fechaIso);
+    const hoy = new Date();
+    let edad = hoy.getFullYear() - d.getFullYear();
+    const m = hoy.getMonth() - d.getMonth();
+    if (m < 0 || (m === 0 && hoy.getDate() < d.getDate())) edad--;
+    return edad;
+  }
+
+  formatAltura(a?: string): string {
+    if (!a) return '—';
+    const n = Number(a);
+    if (isNaN(n)) return a;
+    // Si viene en metros como "1.85"
+    return `${n.toFixed(2)} m`;
+  }
+
+  formatPeso(p?: string): string {
+    if (!p) return '—';
+    const n = Number(p);
+    if (isNaN(n)) return p;
+    return `${n.toFixed(1)} kg`;
   }
 
 

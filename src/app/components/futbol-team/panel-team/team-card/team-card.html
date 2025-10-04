@@ -1,28 +1,157 @@
-<a class="flex flex-col group bg-white border border-gray-200 shadow-2xs rounded-xl overflow-hidden hover:shadow-lg focus:outline-hidden focus:shadow-lg transition dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70">
-      <div class="relative pt-[50%] sm:pt-[60%] lg:pt-[80%] rounded-t-xl overflow-hidden">
-        <!-- <img class="size-full absolute top-0 start-0 object-cover group-hover:scale-105 group-focus:scale-105 transition-transform duration-500 ease-in-out rounded-t-xl" src="https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=560&q=80" alt="Card Image"> -->
-        <img class="size-full absolute top-0 start-0 object-fit group-hover:scale-105 group-focus:scale-105 transition-transform duration-500 ease-in-out rounded-t-xl" 
-          [src]="teamData.logo_url"    
-          alt="Card Image">
-      </div>
-      <div class="p-4 md:p-5">
-        <h3 class="text-lg font-bold text-gray-800 dark:text-white">
-          {{teamData.nombre}}
-        </h3>
-        <p class="mt-1 text-gray-500 dark:text-neutral-400">
-          Some quick example text to build on the card title and make up the bulk of the card's content.
-        </p>
-        <button type="button" 
-          [routerLink]="['/dashboard1/edit-team',teamData.id_equipo]"
-          class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-blue-600 text-blue-600 hover:border-blue-500 hover:text-blue-500 focus:outline-hidden focus:border-blue-500 focus:text-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:border-blue-500 dark:text-blue-500 dark:hover:text-blue-400 dark:hover:border-blue-400">
-          Editar
-        </button>
+<!-- Team Card -->
+<div
+  class="group relative block rounded-xl overflow-hidden border border-neutral-200 bg-white shadow-sm hover:shadow-xl transition-all dark:bg-neutral-900 dark:border-neutral-700"
+  [style.--c1]="teamData?.color_principal || '#FFD700'"
+  [style.--c2]="teamData?.color_secundario || '#000000'"
+>
+  <!-- Banda superior con colores del equipo -->
+  <div class="h-2 w-full flex">
+    <div class="h-full w-2/3" [style.background]="'linear-gradient(90deg, ' + (teamData?.color_principal || '#FFD700') + ', ' + (teamData?.color_secundario || '#000000') + ')'"></div>
+    <div class="h-full w-1/3" [style.background]="teamData?.color_secundario || '#000000'"></div>
+  </div>
 
-      <button type="button" 
-        (click)="confirmarEliminar(teamData.id_equipo)" 
-        class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-blue-600 text-blue-600 hover:border-blue-500 hover:text-blue-500 focus:outline-hidden focus:border-blue-500 focus:text-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:border-blue-500 dark:text-blue-500 dark:hover:text-blue-400 dark:hover:border-blue-400">
-        Eliminar
-      </button>
+  <!-- Header: Logo + Nombre -->
+  <div class="p-4 pb-3 flex items-center gap-3">
+    <div class="relative">
+      <div class="size-16 rounded-full ring-2 ring-white/90 dark:ring-neutral-800 overflow-hidden bg-white">
+        <img
+          class="size-full object-contain p-1 transition-transform duration-500 group-hover:scale-105"
+          [src]="teamData?.logo_url"
+          [alt]="'Escudo de ' + (teamData?.nombre || 'equipo')"
+          loading="lazy"
+          (error)="onLogoError($event)"
+        />
       </div>
-</a>
-    
+      <!-- Badge activo -->
+      <span
+        *ngIf="teamData?.activo"
+        class="absolute -bottom-1 -right-1 inline-flex items-center gap-1 rounded-full bg-emerald-600 text-white text-[11px] px-2 py-0.5 shadow"
+        title="Equipo activo"
+      >
+        <span class="size-1.5 rounded-full bg-white"></span> Activo
+      </span>
+    </div>
+
+    <div class="min-w-0 flex-1">
+      <h3 class="text-base sm:text-lg font-extrabold text-neutral-900 dark:text-white leading-tight truncate">
+        {{ teamData?.nombre }}
+      </h3>
+      <div class="mt-0.5 flex items-center gap-2 text-xs flex-wrap">
+        <span
+          class="inline-flex items-center rounded-full px-2 py-0.5 font-semibold tracking-wide"
+          [style.background]="teamData?.color_principal || '#FFD700'"
+          [style.color]="getContrast(teamData?.color_principal || '#FFD700')"
+        >
+          {{ teamData?.nombre_corto }}
+        </span>
+        <span class="text-neutral-500 dark:text-neutral-400 truncate">
+          Fundado: {{ teamData?.fecha_fundacion | date:'yyyy' }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Imagen de estadio estilo banner -->
+  <div class="relative">
+    <div class="aspect-[16/7] overflow-hidden">
+      <img
+        class="size-full object-contain bg-gradient-to-br from-[color:var(--c1)]/10 to-[color:var(--c2)]/10 dark:from-[color:var(--c1)]/20 dark:to-[color:var(--c2)]/20"
+        [src]="teamData?.logo_url"
+        [alt]="'Banner ' + (teamData?.nombre || '')"
+        loading="lazy"
+      />
+    </div>
+    <!-- Gradiente decorativo -->
+    <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+    <!-- Listón con colores -->
+    <div class="absolute top-2 left-2 flex rounded overflow-hidden shadow">
+      <span class="w-3 h-3" [style.background]="teamData?.color_principal || '#FFD700'"></span>
+      <span class="w-3 h-3" [style.background]="teamData?.color_secundario || '#000000'"></span>
+    </div>
+  </div>
+
+  <!-- Body: datos -->
+  <div class="p-4 pt-3">
+    <dl class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-sm">
+      <div class="col-span-2 sm:col-span-3">
+        <dt class="text-neutral-500 dark:text-neutral-400 text-xs">Estadio</dt>
+        <dd class="font-medium text-neutral-900 dark:text-neutral-100 truncate">
+          {{ teamData?.estadio || 'No registrado' }}
+        </dd>
+      </div>
+
+      <div>
+        <dt class="text-neutral-500 dark:text-neutral-400 text-xs">DT</dt>
+        <dd class="font-medium text-neutral-900 dark:text-neutral-100 truncate">
+          {{ teamData?.entrenador || '—' }}
+        </dd>
+      </div>
+
+      <div>
+        <dt class="text-neutral-500 dark:text-neutral-400 text-xs">Jugadores</dt>
+        <dd class="font-medium text-neutral-900 dark:text-neutral-100">
+          {{ teamData?.total_jugadores ?? 0 }}
+        </dd>
+      </div>
+
+      <div>
+        <dt class="text-neutral-500 dark:text-neutral-400 text-xs">Registro</dt>
+        <dd class="font-medium text-neutral-900 dark:text-neutral-100">
+          {{ teamData?.fecha_registro | date:'dd/MM/yy' }}
+        </dd>
+      </div>
+    </dl>
+
+    <!-- Responsable -->
+    <div class="mt-3 flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400">
+      <svg class="size-4 opacity-80 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M12 12a5 5 0 100-10 5 5 0 000 10zm0 2c-5 0-9 2.5-9 5.5V22h18v-2.5C21 16.5 17 14 12 14z"/>
+      </svg>
+      <span class="truncate">
+        {{ teamData?.responsable_nombre }} {{ teamData?.responsable_apellido }} 
+        <span class="opacity-70">({{ teamData?.responsable_username }})</span>
+      </span>
+    </div>
+  </div>
+
+  <!-- Footer: acciones -->
+  <div class="px-4 pb-4 flex items-center justify-between gap-2">
+    <div class="flex items-center gap-1.5">
+      <span class="text-xs text-neutral-500 dark:text-neutral-400">ID</span>
+      <span class="text-xs font-semibold text-neutral-700 dark:text-neutral-200">
+        #{{ teamData?.id_equipo }}
+      </span>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <button
+        type="button"
+        class="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold border transition
+               hover:-translate-y-0.5 hover:shadow-md active:translate-y-0"
+        [style.background]="teamData?.color_principal || '#FFD700'"
+        [style.color]="getContrast(teamData?.color_principal || '#FFD700')"
+        [style.border-color]="teamData?.color_secundario || '#000000'"
+        [routerLink]="['/dashboard1/edit-team', teamData?.id_equipo]"
+      >
+        ✏️ Editar
+      </button>
+
+      <!-- <button
+        type="button"
+        class="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold border border-red-600 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition active:scale-95"
+        (click)="onEliminar(teamData?.id_equigo, $event)"
+      >
+        🗑️ Eliminar
+      </button> -->
+
+
+      <button
+        type="button"
+        class="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold border border-red-600 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition active:scale-95"
+        (click)="confirmarEliminar(teamData?.id_equigo)"
+      >
+        🗑️ Eliminar
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from '../environments/environment';
@@ -19,8 +19,13 @@ export class TeamService {
 
   private url = environment.url;
 
-  getAllTeams(): Observable<any>{
-    return this.http.get(`${this.url}teams`);
+  getAllTeams(page = 1,limit = 10, orderBy: string = 'id_jugador', order: 'ASC' | 'DESC' = 'ASC'): Observable<any>{
+    let params = new HttpParams()
+      .set('page', page)
+      .set('limit', limit)
+      .set('orderBy', orderBy)
+      .set('order', order);
+    return this.http.get<any>(`${this.url}teams`, { params });
   }
 
   getTeamByid(id:string): Observable<any>{

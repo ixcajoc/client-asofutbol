@@ -6,3 +6,15 @@
         />
     }
 </div>
+<div class="">
+    <div class="container">
+        <app-paginator
+            [currentPage]="this.currentPage"
+            [totalPages]="this.totalPages"
+            [totalItems]="this.totalItems"
+            [limit]="this.limit"
+            (pageChange)="onPageChange($event)"
+            (limitChange)="onLimitChange($event)">
+        ></app-paginator>
+    </div>
+</div>

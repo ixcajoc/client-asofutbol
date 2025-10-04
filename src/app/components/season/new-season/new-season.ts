@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { SeasonService } from '../../../services/season-service.service';
 import { MessageService } from '../../../services/message-service.service';
 
@@ -22,7 +22,8 @@ export class NewSeason {
   constructor(
     private fb: FormBuilder,
     private seasonService: SeasonService,
-    private message: MessageService
+    private message: MessageService,
+    private router: Router
   ) {
     this.seasonForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.maxLength(100)]],
@@ -38,7 +39,8 @@ export class NewSeason {
       const newSeason = this.seasonForm.value;
       this.seasonService.newSeason(newSeason).subscribe({
         next: (response) => {
-          this.message.successAlert;
+          this.message.successAlert();
+        this.router.navigate(['/dashboard1/season/all-seasons']);
           // console.log(response);
         },
         error: (error) => {
