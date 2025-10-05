@@ -85,6 +85,11 @@ export class EditFutbolTeam {
 
 
   updateTeam(){
+
+    if (this.teamForm.invalid) {
+      this.teamForm.markAllAsTouched();
+      return;
+    }
     let editedTeam = {
       nombre: this.teamForm.value.nombre ?? '',
       nombre_corto: this.teamForm.value.nombre_corto ?? '',
@@ -130,6 +135,19 @@ export class EditFutbolTeam {
         },
         error: (error) => (console.log(error))
       });
+  }
+
+  ctrl(name: string) { return this.teamForm.get(name)!; }
+
+  isInvalid(name: string): boolean {
+    const c = this.ctrl(name);
+    return c.invalid && (c.dirty || c.touched);
+  }
+
+  getError(name: string): string {
+    const c = this.ctrl(name);
+    if (c.hasError('required')) return 'Este campo es obligatorio.';
+    return 'Valor inválido.';
   }
 
 }
