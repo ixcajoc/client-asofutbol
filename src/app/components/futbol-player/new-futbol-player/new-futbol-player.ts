@@ -125,6 +125,18 @@ export class NewFutbolPlayer {
 
   //   console.log(newPlayer);
   // }
-  
+    
+  ctrl(name: string) { return this.playerForm.get(name)!; }
 
+  isInvalid(name: string): boolean {
+    const c = this.ctrl(name);
+    return c.invalid && (c.dirty || c.touched);
+  }
+
+  getError(name: string): string {
+    const c = this.ctrl(name);
+    if (c.hasError('required')) return 'Este campo es obligatorio.';
+    if (name === 'email' && c.hasError('email')) return 'Ingrese un correo válido.';
+    return 'Valor inválido.';
+  }
 }

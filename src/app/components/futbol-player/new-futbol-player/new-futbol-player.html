@@ -1,193 +1,340 @@
 <div class="container">
-    <app-banner [title]="`Jugadores`"></app-banner>
+  <app-banner [title]="'Jugadores'"></app-banner>
 </div>
 
-<!-- Card Section -->
-<div class="max-w-4xl px-4 py-10 sm:px-6 lg:px-8 mx-auto">
+<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <!-- Page header -->
+  <div class="mb-8">
+    <h1 class="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+      Perfil de jugador
+    </h1>
+    <p class="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+      Ingresa la información del jugador.
+    </p>
+  </div>
+
   <!-- Card -->
-  <div class="bg-white rounded-xl shadow-xs p-4 sm:p-7 dark:bg-neutral-800">
-    <div class="mb-8">
-      <h2 class="text-xl font-bold text-gray-800 dark:text-neutral-200">
-        Perfil de jugador
-      </h2>
-      <p class="text-sm text-gray-600 dark:text-neutral-400">
-        Ingresa la información del jugador
-      </p>
-    </div>
-
-    <form [formGroup]="playerForm" (ngSubmit)="submitPlayerForm()">
+  <div class="rounded-2xl border border-zinc-200/70 bg-white/70 backdrop-blur-sm shadow-sm dark:bg-neutral-900/60 dark:border-neutral-800">
+    <form [formGroup]="playerForm" (ngSubmit)="submitPlayerForm()" class="p-4 sm:p-6 lg:p-8">
       <!-- Grid -->
-      <div class="grid sm:grid-cols-12 gap-2 sm:gap-6">
-        <div class="sm:col-span-3">
-          <label for="id_equipo" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
-            Equipo
-          </label>
-        </div>
-        <div class="sm:col-span-9">
-          <select id="id_equipo" formControlName="id_equipo" 
-            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" 
-            required>
-            @for (team of teamList['data']; track $index) {
-              <option [value]="team.id_equipo">{{ team.nombre }}</option>
-            }
-          </select>
-        </div>
-        <div class="sm:col-span-3">
-          <label for="numero_camiseta" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
-            Número de camiseta
-          </label>
-        </div>
-        <div class="sm:col-span-9">
-          <input id="numero_camiseta" formControlName="numero_camiseta" type="text" 
-            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" 
-            placeholder="Número de camiseta" required>
-        </div>
-
-        <div class="sm:col-span-3">
-          <label for="nombre" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
-            Nombre
-          </label>
-        </div>
-        <div class="sm:col-span-9">
-          <input id="nombre" formControlName="nombre" type="text" 
-            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" 
-            placeholder="Nombre" required>
+      <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+        <!-- Equipo -->
+        <div class="space-y-1.5">
+          <label for="id_equipo" class="text-sm font-medium text-zinc-800 dark:text-zinc-200">Equipo</label>
+          <div class="relative">
+            <select
+              id="id_equipo"
+              formControlName="id_equipo"
+              [attr.aria-invalid]="isInvalid('id_equipo')"
+              [attr.aria-describedby]="isInvalid('id_equipo') ? 'id_equipo-error' : null"
+              class="w-full appearance-none rounded-xl border border-zinc-300 bg-white px-3 pr-9 py-2.5 text-[15px] leading-6 text-zinc-900 shadow-[0_1px_0_0_rgba(0,0,0,0.02)]
+                     dark:bg-neutral-900 dark:border-neutral-700 dark:text-zinc-100
+                     focus:outline-none focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500
+                     aria-[invalid=true]:border-red-500 aria-[invalid=true]:focus:ring-red-500/20"
+              required
+            >
+              <option value="" disabled>Seleccione equipo</option>
+              @for (team of teamList['data']; track $index) {
+                <option [value]="team.id_equipo">{{ team.nombre }}</option>
+              }
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-zinc-400">
+              <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.18l3.71-3.95a.75.75 0 1 1 1.08 1.04l-4.25 4.52a.75.75 0 0 1-1.08 0L5.21 8.27a.75.75 0 0 1 .02-1.06Z" clip-rule="evenodd"/></svg>
+            </div>
+          </div>
+          <p *ngIf="isInvalid('id_equipo')" id="id_equipo-error" class="text-xs text-red-600">
+            {{ getError('id_equipo') }}
+          </p>
         </div>
 
-        <div class="sm:col-span-3">
-          <label for="apellido" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
-            Apellido
-          </label>
-        </div>
-        <div class="sm:col-span-9">
-          <input id="apellido" formControlName="apellido" type="text" 
-            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" 
-            placeholder="Apellido" required>
-        </div>
-
-        <div class="sm:col-span-3">
-          <label for="fecha_nacimiento" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
-            Fecha de nacimiento
-          </label>
-        </div>
-        <div class="sm:col-span-9">
-          <input id="fecha_nacimiento" formControlName="fecha_nacimiento" type="date" 
-            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" 
-            required>
-        </div>
-
-        <div class="sm:col-span-3">
-          <label for="posicion" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
-            Posición
-          </label>
-        </div>
-        <div class="sm:col-span-9">
-          <select id="posicion" formControlName="posicion" 
-            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" 
-            required>
-            @for (position of playerPositionList; track $index) {
-              <option [value]="position">{{position}}</option>
-            }
-          </select>
+        <!-- Número de camiseta -->
+        <div class="space-y-1.5">
+          <label for="numero_camiseta" class="text-sm font-medium text-zinc-800 dark:text-zinc-200">Número de camiseta</label>
+          <input
+            id="numero_camiseta"
+            formControlName="numero_camiseta"
+            type="text"
+            inputmode="numeric"
+            [attr.aria-invalid]="isInvalid('numero_camiseta')"
+            [attr.aria-describedby]="isInvalid('numero_camiseta') ? 'numero_camiseta-error' : null"
+            class="w-full rounded-xl border border-zinc-300 bg-white px-3 py-2.5 text-[15px] leading-6 text-zinc-900 placeholder:text-zinc-400 shadow-[0_1px_0_0_rgba(0,0,0,0.02)]
+                   dark:bg-neutral-900 dark:border-neutral-700 dark:text-zinc-100 dark:placeholder-neutral-500
+                   focus:outline-none focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500
+                   aria-[invalid=true]:border-red-500 aria-[invalid=true]:focus:ring-red-500/20"
+            placeholder="Ej. 10"
+            required
+          />
+          <p *ngIf="isInvalid('numero_camiseta')" id="numero_camiseta-error" class="text-xs text-red-600">
+            {{ getError('numero_camiseta') }}
+          </p>
         </div>
 
-        <div class="sm:col-span-3">
-          <label for="peso" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
-            Peso
-          </label>
-        </div>
-        <div class="sm:col-span-9">
-          <input id="peso" formControlName="peso" type="number" 
-            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" 
-            placeholder="Peso en kg" required>
-        </div>
-
-        <div class="sm:col-span-3">
-          <label for="altura" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
-            Altura
-          </label>
-        </div>
-        <div class="sm:col-span-9">
-          <input id="altura" formControlName="altura" type="number" 
-            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" 
-            placeholder="1.80" required>
-        </div>
-
-        <div class="sm:col-span-3">
-          <label for="pie_habil" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
-            Pie hábil
-          </label>
-        </div>
-        <div class="sm:col-span-9">
-          <select id="pie_habil" formControlName="pie_habil" 
-            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" 
-            required>
-            <option value="" disabled selected>Seleccione</option>
-            <option value="DERECHO">Derecho</option>
-            <option value="IZQUIERDO">Izquierdo</option>
-          </select>
+        <!-- Nombre -->
+        <div class="space-y-1.5">
+          <label for="nombre" class="text-sm font-medium text-zinc-800 dark:text-zinc-200">Nombre</label>
+          <input
+            id="nombre"
+            formControlName="nombre"
+            type="text"
+            [attr.aria-invalid]="isInvalid('nombre')"
+            [attr.aria-describedby]="isInvalid('nombre') ? 'nombre-error' : null"
+            class="w-full rounded-xl border border-zinc-300 bg-white px-3 py-2.5 text-[15px] leading-6 text-zinc-900 placeholder:text-zinc-400 shadow-[0_1px_0_0_rgba(0,0,0,0.02)]
+                   dark:bg-neutral-900 dark:border-neutral-700 dark:text-zinc-100 dark:placeholder-neutral-500
+                   focus:outline-none focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500
+                   aria-[invalid=true]:border-red-500 aria-[invalid=true]:focus:ring-red-500/20"
+            placeholder="Nombre"
+            required
+          />
+          <p *ngIf="isInvalid('nombre')" id="nombre-error" class="text-xs text-red-600">
+            {{ getError('nombre') }}
+          </p>
         </div>
 
-        <div class="sm:col-span-3">
-          <label for="nacionalidad" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
-            Nacionalidad
-          </label>
-        </div>
-        <div class="sm:col-span-9">
-          <input id="nacionalidad" formControlName="nacionalidad" type="text" 
-            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" 
-            placeholder="Nacionalidad" required>
-        </div>
-
-        <div class="sm:col-span-3">
-          <label for="documento_identidad" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
-            Documento de Identidad
-          </label>
-        </div>
-        <div class="sm:col-span-9">
-          <input id="documento_identidad" formControlName="documento_identidad" type="text" 
-            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" 
-            placeholder="Número de documento" required>
-        </div>
-
-        <div class="sm:col-span-3">
-          <label for="telefono" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
-            Teléfono
-          </label>
-        </div>
-        <div class="sm:col-span-9">
-          <input id="telefono" formControlName="telefono" type="text" 
-            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" 
-            placeholder="Teléfono">
+        <!-- Apellido -->
+        <div class="space-y-1.5">
+          <label for="apellido" class="text-sm font-medium text-zinc-800 dark:text-zinc-200">Apellido</label>
+          <input
+            id="apellido"
+            formControlName="apellido"
+            type="text"
+            [attr.aria-invalid]="isInvalid('apellido')"
+            [attr.aria-describedby]="isInvalid('apellido') ? 'apellido-error' : null"
+            class="w-full rounded-xl border border-zinc-300 bg-white px-3 py-2.5 text-[15px] leading-6 text-zinc-900 placeholder:text-zinc-400 shadow-[0_1px_0_0_rgba(0,0,0,0.02)]
+                   dark:bg-neutral-900 dark:border-neutral-700 dark:text-zinc-100 dark:placeholder-neutral-500
+                   focus:outline-none focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500
+                   aria-[invalid=true]:border-red-500 aria-[invalid=true]:focus:ring-red-500/20"
+            placeholder="Apellido"
+            required
+          />
+          <p *ngIf="isInvalid('apellido')" id="apellido-error" class="text-xs text-red-600">
+            {{ getError('apellido') }}
+          </p>
         </div>
 
-        <div class="sm:col-span-3">
-          <label for="email" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
-            Correo electrónico
-          </label>
-        </div>
-        <div class="sm:col-span-9">
-          <input id="email" formControlName="email" type="email" 
-            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" 
-            placeholder="correo@site.com" required>
+        <!-- Fecha de nacimiento -->
+        <div class="space-y-1.5">
+          <label for="fecha_nacimiento" class="text-sm font-medium text-zinc-800 dark:text-zinc-200">Fecha de nacimiento</label>
+          <input
+            id="fecha_nacimiento"
+            formControlName="fecha_nacimiento"
+            type="date"
+            [attr.aria-invalid]="isInvalid('fecha_nacimiento')"
+            [attr.aria-describedby]="isInvalid('fecha_nacimiento') ? 'fecha_nacimiento-error' : null"
+            class="w-full rounded-xl border border-zinc-300 bg-white px-3 py-2.5 text-[15px] leading-6 text-zinc-900 shadow-[0_1px_0_0_rgba(0,0,0,0.02)]
+                   dark:bg-neutral-900 dark:border-neutral-700 dark:text-zinc-100
+                   focus:outline-none focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500
+                   aria-[invalid=true]:border-red-500 aria-[invalid=true]:focus:ring-red-500/20"
+            required
+          />
+          <p *ngIf="isInvalid('fecha_nacimiento')" id="fecha_nacimiento-error" class="text-xs text-red-600">
+            {{ getError('fecha_nacimiento') }}
+          </p>
         </div>
 
+        <!-- Posición -->
+        <div class="space-y-1.5">
+          <label for="posicion" class="text-sm font-medium text-zinc-800 dark:text-zinc-200">Posición</label>
+          <div class="relative">
+            <select
+              id="posicion"
+              formControlName="posicion"
+              [attr.aria-invalid]="isInvalid('posicion')"
+              [attr.aria-describedby]="isInvalid('posicion') ? 'posicion-error' : null"
+              class="w-full appearance-none rounded-xl border border-zinc-300 bg-white px-3 pr-9 py-2.5 text-[15px] leading-6 text-zinc-900 shadow-[0_1px_0_0_rgba(0,0,0,0.02)]
+                     dark:bg-neutral-900 dark:border-neutral-700 dark:text-zinc-100
+                     focus:outline-none focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500
+                     aria-[invalid=true]:border-red-500 aria-[invalid=true]:focus:ring-red-500/20"
+              required
+            >
+              <option value="" disabled>Seleccione posición</option>
+              @for (position of playerPositionList; track $index) {
+                <option [value]="position">{{ position }}</option>
+              }
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-zinc-400">
+              <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.18l3.71-3.95a.75.75 0 1 1 1.08 1.04l-4.25 4.52a.75.75 0 0 1-1.08 0L5.21 8.27a.75.75 0 0 1 .02-1.06Z" clip-rule="evenodd"/></svg>
+            </div>
+          </div>
+          <p *ngIf="isInvalid('posicion')" id="posicion-error" class="text-xs text-red-600">
+            {{ getError('posicion') }}
+          </p>
+        </div>
+
+        <!-- Peso -->
+        <div class="space-y-1.5">
+          <label for="peso" class="text-sm font-medium text-zinc-800 dark:text-zinc-200">Peso (kg)</label>
+          <input
+            id="peso"
+            formControlName="peso"
+            type="number"
+            step="0.1"
+            min="0"
+            [attr.aria-invalid]="isInvalid('peso')"
+            [attr.aria-describedby]="isInvalid('peso') ? 'peso-error' : null"
+            class="w-full rounded-xl border border-zinc-300 bg-white px-3 py-2.5 text-[15px] leading-6 text-zinc-900 placeholder:text-zinc-400 shadow-[0_1px_0_0_rgba(0,0,0,0.02)]
+                   dark:bg-neutral-900 dark:border-neutral-700 dark:text-zinc-100 dark:placeholder-neutral-500
+                   focus:outline-none focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500
+                   aria-[invalid=true]:border-red-500 aria-[invalid=true]:focus:ring-red-500/20"
+            placeholder="Ej. 75.0"
+            required
+          />
+          <p *ngIf="isInvalid('peso')" id="peso-error" class="text-xs text-red-600">
+            {{ getError('peso') }}
+          </p>
+        </div>
+
+        <!-- Altura -->
+        <div class="space-y-1.5">
+          <label for="altura" class="text-sm font-medium text-zinc-800 dark:text-zinc-200">Altura (m)</label>
+          <input
+            id="altura"
+            formControlName="altura"
+            type="number"
+            step="0.01"
+            min="0"
+            [attr.aria-invalid]="isInvalid('altura')"
+            [attr.aria-describedby]="isInvalid('altura') ? 'altura-error' : null"
+            class="w-full rounded-xl border border-zinc-300 bg-white px-3 py-2.5 text-[15px] leading-6 text-zinc-900 placeholder:text-zinc-400 shadow-[0_1px_0_0_rgba(0,0,0,0.02)]
+                   dark:bg-neutral-900 dark:border-neutral-700 dark:text-zinc-100 dark:placeholder-neutral-500
+                   focus:outline-none focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500
+                   aria-[invalid=true]:border-red-500 aria-[invalid=true]:focus:ring-red-500/20"
+            placeholder="Ej. 1.80"
+            required
+          />
+          <p *ngIf="isInvalid('altura')" id="altura-error" class="text-xs text-red-600">
+            {{ getError('altura') }}
+          </p>
+        </div>
+
+        <!-- Pie hábil -->
+        <div class="space-y-1.5">
+          <label for="pie_habil" class="text-sm font-medium text-zinc-800 dark:text-zinc-200">Pie hábil</label>
+          <div class="relative">
+            <select
+              id="pie_habil"
+              formControlName="pie_habil"
+              [attr.aria-invalid]="isInvalid('pie_habil')"
+              [attr.aria-describedby]="isInvalid('pie_habil') ? 'pie_habil-error' : null"
+              class="w-full appearance-none rounded-xl border border-zinc-300 bg-white px-3 pr-9 py-2.5 text-[15px] leading-6 text-zinc-900 shadow-[0_1px_0_0_rgba(0,0,0,0.02)]
+                     dark:bg-neutral-900 dark:border-neutral-700 dark:text-zinc-100
+                     focus:outline-none focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500
+                     aria-[invalid=true]:border-red-500 aria-[invalid=true]:focus:ring-red-500/20"
+              required
+            >
+              <option value="" disabled>Seleccione</option>
+              <option value="DERECHO">Derecho</option>
+              <option value="IZQUIERDO">Izquierdo</option>
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-zinc-400">
+              <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.18l3.71-3.95a.75.75 0 1 1 1.08 1.04l-4.25 4.52a.75.75 0 0 1-1.08 0L5.21 8.27a.75.75 0 0 1 .02-1.06Z" clip-rule="evenodd"/></svg>
+            </div>
+          </div>
+          <p *ngIf="isInvalid('pie_habil')" id="pie_habil-error" class="text-xs text-red-600">
+            {{ getError('pie_habil') }}
+          </p>
+        </div>
+
+        <!-- Nacionalidad -->
+        <div class="space-y-1.5">
+          <label for="nacionalidad" class="text-sm font-medium text-zinc-800 dark:text-zinc-200">Nacionalidad</label>
+          <input
+            id="nacionalidad"
+            formControlName="nacionalidad"
+            type="text"
+            [attr.aria-invalid]="isInvalid('nacionalidad')"
+            [attr.aria-describedby]="isInvalid('nacionalidad') ? 'nacionalidad-error' : null"
+            class="w-full rounded-xl border border-zinc-300 bg-white px-3 py-2.5 text-[15px] leading-6 text-zinc-900 placeholder:text-zinc-400 shadow-[0_1px_0_0_rgba(0,0,0,0.02)]
+                   dark:bg-neutral-900 dark:border-neutral-700 dark:text-zinc-100 dark:placeholder-neutral-500
+                   focus:outline-none focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500
+                   aria-[invalid=true]:border-red-500 aria-[invalid=true]:focus:ring-red-500/20"
+            placeholder="País"
+            required
+          />
+          <p *ngIf="isInvalid('nacionalidad')" id="nacionalidad-error" class="text-xs text-red-600">
+            {{ getError('nacionalidad') }}
+          </p>
+        </div>
+
+        <!-- Documento de Identidad -->
+        <div class="space-y-1.5">
+          <label for="documento_identidad" class="text-sm font-medium text-zinc-800 dark:text-zinc-200">Documento de Identidad</label>
+          <input
+            id="documento_identidad"
+            formControlName="documento_identidad"
+            type="text"
+            [attr.aria-invalid]="isInvalid('documento_identidad')"
+            [attr.aria-describedby]="isInvalid('documento_identidad') ? 'documento_identidad-error' : null"
+            class="w-full rounded-xl border border-zinc-300 bg-white px-3 py-2.5 text-[15px] leading-6 text-zinc-900 placeholder:text-zinc-400 shadow-[0_1px_0_0_rgba(0,0,0,0.02)]
+                   dark:bg-neutral-900 dark:border-neutral-700 dark:text-zinc-100 dark:placeholder-neutral-500
+                   focus:outline-none focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500
+                   aria-[invalid=true]:border-red-500 aria-[invalid=true]:focus:ring-red-500/20"
+            placeholder="Número de documento"
+            required
+          />
+          <p *ngIf="isInvalid('documento_identidad')" id="documento_identidad-error" class="text-xs text-red-600">
+            {{ getError('documento_identidad') }}
+          </p>
+        </div>
+
+        <!-- Teléfono (opcional) -->
+        <div class="space-y-1.5">
+          <label for="telefono" class="text-sm font-medium text-zinc-800 dark:text-zinc-200">Teléfono</label>
+          <input
+            id="telefono"
+            formControlName="telefono"
+            type="text"
+            inputmode="tel"
+            class="w-full rounded-xl border border-zinc-300 bg-white px-3 py-2.5 text-[15px] leading-6 text-zinc-900 placeholder:text-zinc-400 shadow-[0_1px_0_0_rgba(0,0,0,0.02)]
+                   dark:bg-neutral-900 dark:border-neutral-700 dark:text-zinc-100 dark:placeholder-neutral-500
+                   focus:outline-none focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500"
+            placeholder="+502 5555-5555"
+          />
+        </div>
+
+        <!-- Correo -->
+        <div class="space-y-1.5">
+          <label for="email" class="text-sm font-medium text-zinc-800 dark:text-zinc-200">Correo electrónico</label>
+          <input
+            id="email"
+            formControlName="email"
+            type="email"
+            [attr.aria-invalid]="isInvalid('email')"
+            [attr.aria-describedby]="isInvalid('email') ? 'email-error' : null"
+            class="w-full rounded-xl border border-zinc-300 bg-white px-3 py-2.5 text-[15px] leading-6 text-zinc-900 placeholder:text-zinc-400 shadow-[0_1px_0_0_rgba(0,0,0,0.02)]
+                   dark:bg-neutral-900 dark:border-neutral-700 dark:text-zinc-100 dark:placeholder-neutral-500
+                   focus:outline-none focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500
+                   aria-[invalid=true]:border-red-500 aria-[invalid=true]:focus:ring-red-500/20"
+            placeholder="correo@site.com"
+            required
+          />
+          <p *ngIf="isInvalid('email')" id="email-error" class="text-xs text-red-600">
+            {{ getError('email') }}
+          </p>
+        </div>
       </div>
       <!-- End Grid -->
 
-      <div class="mt-5 flex justify-end gap-x-2">
-        <button type="button" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-red-500 hover:text-white disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-50 dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800">
+      <!-- Divider -->
+      <div class="my-8 border-t border-zinc-200 dark:border-neutral-800"></div>
+
+      <!-- Actions -->
+      <div class="flex justify-end gap-2">
+        <button
+          type="button"
+          class="inline-flex items-center gap-2 rounded-lg border border-zinc-300 bg-white px-4 py-2 text-sm font-medium text-zinc-800 shadow-sm
+                 hover:bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:ring-offset-2
+                 dark:bg-neutral-900 dark:border-neutral-700 dark:text-zinc-100 dark:hover:bg-neutral-800">
           Cancelar
         </button>
-        <button type="submit" [disabled]="playerForm.invalid" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-hidden focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
+        <button
+          type="submit"
+          [disabled]="playerForm.invalid"
+          class="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm
+                 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:ring-offset-2
+                 disabled:opacity-50 disabled:pointer-events-none">
           Registrar
         </button>
-          <!-- <button type="submit" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-hidden focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
-          Registrar
-        </button> -->
       </div>
     </form>
   </div>
-  <!-- End Card -->
 </div>
-<!-- End Card Section -->
