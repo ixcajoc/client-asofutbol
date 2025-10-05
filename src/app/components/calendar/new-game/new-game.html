@@ -1,146 +1,318 @@
 <div class="container">
-    <app-banner [title]="`Partidos`"></app-banner>
+  <app-banner [title]="'Partidos'"></app-banner>
 </div>
 
-<!-- Card Section -->
-<div class="max-w-4xl px-4 py-10 sm:px-6 lg:px-8 mx-auto">
+<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <!-- Page header -->
+  <div class="mb-8">
+    <h1 class="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+      Nuevo partido
+    </h1>
+    <p class="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+      Programar un nuevo partido.
+    </p>
+  </div>
+
   <!-- Card -->
-  <div class="bg-white rounded-xl shadow-xs p-4 sm:p-7 dark:bg-neutral-800">
-    <div class="mb-8">
-      <h2 class="text-xl font-bold text-gray-800 dark:text-neutral-200">
-        Nuevo partido
-      </h2>
-      <p class="text-sm text-gray-600 dark:text-neutral-400">
-        Programar un nuevo partido
-      </p>
-    </div>
-
-    <form [formGroup]="matchForm" (ngSubmit)="submitMatchForm()">
+  <div class="rounded-2xl border border-zinc-200/70 bg-white/70 backdrop-blur-sm shadow-sm dark:bg-neutral-900/60 dark:border-neutral-800">
+    <form [formGroup]="matchForm" (ngSubmit)="submitMatchForm()" class="p-4 sm:p-6 lg:p-8">
       <!-- Grid -->
-      <div class="grid sm:grid-cols-12 gap-2 sm:gap-6">
+      <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+
         
-        <!-- Jornada -->
-        <div class="sm:col-span-3">
-          <label for="id_jornada" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
-            Jornada
-          </label>
-        </div>
-        <div class="sm:col-span-9">
-          <select id="id_jornada" formControlName="id_jornada" 
-            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" 
-            required>
-            <option value="" disabled selected>Seleccione jornada</option>
-            @for (jornada of jornadaList; track $index) {
-              <option [value]="jornada.id_jornada">{{ jornada.numero_jornada }} - {{ jornada.nombre }}</option>
-            }
-          </select>
+
+        <!-- Temporada -->
+        <div class="space-y-1.5">
+          <label for="id_temporada" class="text-sm font-medium text-zinc-800 dark:text-zinc-200">Temporada</label>
+          <div class="relative">
+            <select
+              id="id_temporada"
+              formControlName="id_temporada"
+              [attr.aria-invalid]="isInvalid('id_temporada')"
+              [attr.aria-describedby]="isInvalid('id_temporada') ? 'id_temporada-error' : null"
+              class="w-full appearance-none rounded-xl border border-zinc-300 bg-white px-3 pr-9 py-2.5 text-[15px] leading-6 text-zinc-900 shadow-[0_1px_0_0_rgba(0,0,0,0.02)]
+                    dark:bg-neutral-900 dark:border-neutral-700 dark:text-zinc-100
+                    focus:outline-none focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500
+                    aria-[invalid=true]:border-red-500 aria-[invalid=true]:focus:ring-red-500/20"
+              required
+            >
+              <option value="" disabled>Seleccione temporada</option>
+              @for (season of seasonList; track $index) {
+                <option [value]="season.id_temporada">
+                  <!-- {{ season.nombre }} ({{ season.año }}) -->
+                  {{ season.nombre }}
+                </option>
+              }
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-zinc-400">
+              <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.18l3.71-3.95a.75.75 0 1 1 1.08 1.04l-4.25 4.52a.75.75 0 0 1-1.08 0L5.21 8.27a.75.75 0 0 1 .02-1.06Z" clip-rule="evenodd"/></svg>
+            </div>
+          </div>
+          <p *ngIf="isInvalid('id_temporada')" id="id_temporada-error" class="text-xs text-red-600">
+            {{ getError('id_temporada') }}
+          </p>
+
+          <!-- Mensaje con rango de fechas de la temporada -->
+          <ng-container *ngIf="selectedSeason">
+            <p class="text-xs text-zinc-600 dark:text-zinc-400 mt-1">
+              Fecha de la temporada:
+              <span class="font-medium text-zinc-800 dark:text-zinc-200">
+                {{ selectedSeason.fecha_inicio | date:'dd/MM/yyyy' }}
+              </span>
+              –
+              <span class="font-medium text-zinc-800 dark:text-zinc-200">
+                {{ selectedSeason.fecha_fin | date:'dd/MM/yyyy' }}
+              </span>
+            </p>
+          </ng-container>
         </div>
 
-        <!-- Equipo Local -->
-        <div class="sm:col-span-3">
-          <label for="id_equipo_local" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
-            Equipo Local
-          </label>
-        </div>
-        <div class="sm:col-span-9">
-          <select id="id_equipo_local" formControlName="id_equipo_local" 
-            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" 
-            required>
-            <option value="" disabled selected>Seleccione equipo local</option>
-            @for (team of teamList; track $index) {
-              <option [value]="team.id_equipo">{{ team.nombre }}</option>
-            }
-          </select>
+         <!-- Jornada (dependiente de temporada) -->
+        <div class="space-y-1.5">
+          <label for="id_jornada" class="text-sm font-medium text-zinc-800 dark:text-zinc-200">Jornada</label>
+          <div class="relative">
+        
+            <select
+              id="id_jornada"
+              formControlName="id_jornada"
+              [attr.aria-invalid]="isInvalid('id_jornada')"
+              [attr.aria-describedby]="isInvalid('id_jornada') ? 'id_jornada-error' : null"
+              class="w-full appearance-none rounded-xl border border-zinc-300 bg-white px-3 pr-9 py-2.5 text-[15px] leading-6 text-zinc-900 shadow-[0_1px_0_0_rgba(0,0,0,0.02)]
+                    dark:bg-neutral-900 dark:border-neutral-700 dark:text-zinc-100
+                    focus:outline-none focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500
+                    aria-[invalid=true]:border-red-500 aria-[invalid=true]:focus:ring-red-500/20
+                    disabled:opacity-50"
+              required
+            >
+              <option value="" disabled>Seleccione jornada</option>
+              @for (jornada of filteredJornadas; track $index) {
+                <option [value]="jornada.id_jornada">
+                  {{ jornada.numero_jornada }} — {{ jornada.nombre }}
+                </option>
+              }
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-zinc-400">
+              <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.18l3.71-3.95a.75.75 0 1 1 1.08 1.04l-4.25 4.52a.75.75 0 0 1-1.08 0L5.21 8.27a.75.75 0 0 1 .02-1.06Z" clip-rule="evenodd"/></svg>
+            </div>
+          </div>
+          <p *ngIf="isInvalid('id_jornada')" id="id_jornada-error" class="text-xs text-red-600">
+            {{ getError('id_jornada') }}
+          </p>
+          <p *ngIf="matchForm.value?.id_temporada && filteredJornadas.length === 0" class="text-xs text-zinc-500">
+            Esta temporada no tiene jornadas disponibles.
+          </p>
         </div>
 
-        <!-- Equipo Visitante -->
-        <div class="sm:col-span-3">
-          <label for="id_equipo_visitante" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
-            Equipo Visitante
-          </label>
-        </div>
-        <div class="sm:col-span-9">
-          <select id="id_equipo_visitante" formControlName="id_equipo_visitante" 
-            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" 
-            required>
-            <option value="" disabled selected>Seleccione equipo visitante</option>
-            @for (team of teamList; track $index) {
-              <option [value]="team.id_equipo">{{ team.nombre }}</option>
-            }
-          </select>
+         <!-- Equipo local -->
+        <div class="space-y-1.5">
+          <label for="id_equipo_local" class="text-sm font-medium text-zinc-800 dark:text-zinc-200">Equipo local</label>
+          <div class="relative">
+            <select
+              id="id_equipo_local"
+              formControlName="id_equipo_local"
+              [attr.aria-invalid]="isInvalid('id_equipo_local')"
+              [attr.aria-describedby]="isInvalid('id_equipo_local') ? 'id_equipo_local-error' : null"
+              class="w-full appearance-none rounded-xl border border-zinc-300 bg-white px-3 pr-9 py-2.5 text-[15px] leading-6 text-zinc-900 shadow-[0_1px_0_0_rgba(0,0,0,0.02)]
+                     dark:bg-neutral-900 dark:border-neutral-700 dark:text-zinc-100
+                     focus:outline-none focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500
+                     aria-[invalid=true]:border-red-500 aria-[invalid=true]:focus:ring-red-500/20"
+              required
+            >
+              <option value="" disabled>Seleccione equipo local</option>
+              @for (team of teamList; track $index) {
+                <option [value]="team.id_equipo">{{ team.nombre }}</option>
+              }
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-zinc-400">
+              <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.18l3.71-3.95a.75.75 0 1 1 1.08 1.04l-4.25 4.52a.75.75 0 0 1-1.08 0L5.21 8.27a.75.75 0 0 1 .02-1.06Z" clip-rule="evenodd"/></svg>
+            </div>
+          </div>
+          <p *ngIf="isInvalid('id_equipo_local')" id="id_equipo_local-error" class="text-xs text-red-600">
+            {{ getError('id_equipo_local') }}
+          </p>
         </div>
 
-        <!-- Fecha y hora del partido -->
-        <div class="sm:col-span-3">
-          <label for="fecha_partido" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
-            Fecha y hora
-          </label>
+        <!-- Equipo visitante -->
+        <div class="space-y-1.5">
+          <label for="id_equipo_visitante" class="text-sm font-medium text-zinc-800 dark:text-zinc-200">Equipo visitante</label>
+          <div class="relative">
+            <select
+              id="id_equipo_visitante"
+              formControlName="id_equipo_visitante"
+              [attr.aria-invalid]="isInvalid('id_equipo_visitante')"
+              [attr.aria-describedby]="isInvalid('id_equipo_visitante') ? 'id_equipo_visitante-error' : null"
+              class="w-full appearance-none rounded-xl border border-zinc-300 bg-white px-3 pr-9 py-2.5 text-[15px] leading-6 text-zinc-900 shadow-[0_1px_0_0_rgba(0,0,0,0.02)]
+                     dark:bg-neutral-900 dark:border-neutral-700 dark:text-zinc-100
+                     focus:outline-none focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500
+                     aria-[invalid=true]:border-red-500 aria-[invalid=true]:focus:ring-red-500/20"
+              required
+            >
+              <option value="" disabled>Seleccione equipo visitante</option>
+              @for (team of teamList; track $index) {
+                <option [value]="team.id_equipo">{{ team.nombre }}</option>
+              }
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-zinc-400">
+              <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.18l3.71-3.95a.75.75 0 1 1 1.08 1.04l-4.25 4.52a.75.75 0 0 1-1.08 0L5.21 8.27a.75.75 0 0 1 .02-1.06Z" clip-rule="evenodd"/></svg>
+            </div>
+          </div>
+          <p *ngIf="isInvalid('id_equipo_visitante')" id="id_equipo_visitante-error" class="text-xs text-red-600">
+            {{ getError('id_equipo_visitante') }}
+          </p>
         </div>
-        <div class="sm:col-span-9">
-          <input id="fecha_partido" formControlName="fecha_partido" type="datetime-local" 
-            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" 
-            required>
+
+
+
+        <!-- Fecha y hora -->
+        <div class="space-y-1.5">
+          <label for="fecha_partido" class="text-sm font-medium text-zinc-800 dark:text-zinc-200">Fecha y hora</label>
+          <input
+            id="fecha_partido"
+            formControlName="fecha_partido"
+            type="datetime-local"
+            [min]="seasonMinDateTime"
+            [max]="seasonMaxDateTime"
+            [attr.aria-invalid]="isInvalid('fecha_partido')"
+            [attr.aria-describedby]="isInvalid('fecha_partido') ? 'fecha_partido-error' : null"
+            class="w-full rounded-xl border border-zinc-300 bg-white px-3 py-2.5 text-[15px] leading-6 text-zinc-900 shadow-[0_1px_0_0_rgba(0,0,0,0.02)]
+                  dark:bg-neutral-900 dark:border-neutral-700 dark:text-zinc-100
+                  focus:outline-none focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500
+                  aria-[invalid=true]:border-red-500 aria-[invalid=true]:focus:ring-red-500/20"
+            required
+          />
+          <p *ngIf="isInvalid('fecha_partido')" id="fecha_partido-error" class="text-xs text-red-600">
+            {{ getError('fecha_partido') }}
+          </p>
+          <p class="text-xs text-zinc-500">Usa la zona horaria local del sistema. Restringido a las fechas de la temporada seleccionada.</p>
         </div>
 
         <!-- Estadio -->
-        <div class="sm:col-span-3">
-          <label for="estadio" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
-            Estadio
-          </label>
-        </div>
-        <div class="sm:col-span-9">
-          <input id="estadio" formControlName="estadio" type="text" 
-            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" 
-            placeholder="Nombre del estadio">
+        <div class="space-y-1.5">
+          <label for="estadio" class="text-sm font-medium text-zinc-800 dark:text-zinc-200">Estadio</label>
+          <input
+            id="estadio"
+            formControlName="estadio"
+            type="text"
+            class="w-full rounded-xl border border-zinc-300 bg-white px-3 py-2.5 text-[15px] leading-6 text-zinc-900 placeholder:text-zinc-400 shadow-[0_1px_0_0_rgba(0,0,0,0.02)]
+                   dark:bg-neutral-900 dark:border-neutral-700 dark:text-zinc-100 dark:placeholder-neutral-500
+                   focus:outline-none focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500"
+            placeholder="Nombre del estadio"
+          />
         </div>
 
+        <!-- Fecha y hora -->
+        <!-- <div class="space-y-1.5">
+          <label for="fecha_partido" class="text-sm font-medium text-zinc-800 dark:text-zinc-200">Fecha y hora</label>
+          <input
+            id="fecha_partido"
+            formControlName="fecha_partido"
+            type="datetime-local"
+            [attr.aria-invalid]="isInvalid('fecha_partido')"
+            [attr.aria-describedby]="isInvalid('fecha_partido') ? 'fecha_partido-error' : null"
+            class="w-full rounded-xl border border-zinc-300 bg-white px-3 py-2.5 text-[15px] leading-6 text-zinc-900 shadow-[0_1px_0_0_rgba(0,0,0,0.02)]
+                   dark:bg-neutral-900 dark:border-neutral-700 dark:text-zinc-100
+                   focus:outline-none focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500
+                   aria-[invalid=true]:border-red-500 aria-[invalid=true]:focus:ring-red-500/20"
+            required
+          />
+          <p *ngIf="isInvalid('fecha_partido')" id="fecha_partido-error" class="text-xs text-red-600">
+            {{ getError('fecha_partido') }}
+          </p>
+          <p class="text-xs text-zinc-500">Usa la zona horaria local del sistema.</p>
+        </div> -->
+
+
         <!-- Árbitro -->
-        <div class="sm:col-span-3">
-          <label for="id_arbitro" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
-            Árbitro
-          </label>
-        </div>
-        <div class="sm:col-span-9">
-          <select id="id_arbitro" formControlName="id_arbitro" 
-            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
-            <option value="" disabled selected>Seleccione árbitro</option>
-            @for (referee of refereeList; track $index) {
-              <option [value]="referee.id_usuario">{{ referee.nombre }} {{ referee.apellido }}</option>
-            }
-          </select>
+        <div class="space-y-1.5">
+          <label for="id_arbitro" class="text-sm font-medium text-zinc-800 dark:text-zinc-200">Árbitro</label>
+          <div class="relative">
+            <select
+              id="id_arbitro"
+              formControlName="id_arbitro"
+              [attr.aria-invalid]="isInvalid('id_arbitro')"
+              [attr.aria-describedby]="isInvalid('id_arbitro') ? 'id_arbitro-error' : null"
+              class="w-full appearance-none rounded-xl border border-zinc-300 bg-white px-3 pr-9 py-2.5 text-[15px] leading-6 text-zinc-900 shadow-[0_1px_0_0_rgba(0,0,0,0.02)]
+                     dark:bg-neutral-900 dark:border-neutral-700 dark:text-zinc-100
+                     focus:outline-none focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500
+                     aria-[invalid=true]:border-red-500 aria-[invalid=true]:focus:ring-red-500/20"
+            >
+              <option value="" disabled>Seleccione árbitro</option>
+              @for (referee of refereeList; track $index) {
+                <option [value]="referee.id_usuario">{{ referee.nombre }} {{ referee.apellido }}</option>
+              }
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-zinc-400">
+              <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.18l3.71-3.95a.75.75 0 1 1 1.08 1.04l-4.25 4.52a.75.75 0 0 1-1.08 0L5.21 8.27a.75.75 0 0 1 .02-1.06Z" clip-rule="evenodd"/></svg>
+            </div>
+          </div>
+          <p *ngIf="isInvalid('id_arbitro')" id="id_arbitro-error" class="text-xs text-red-600">
+            {{ getError('id_arbitro') }}
+          </p>
         </div>
 
         <!-- Estado -->
-        <div class="sm:col-span-3">
-          <label for="estado" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
-            Estado
-          </label>
+        <div class="space-y-1.5">
+          <label for="estado" class="text-sm font-medium text-zinc-800 dark:text-zinc-200">Estado</label>
+          <div class="relative">
+            <select
+              id="estado"
+              formControlName="estado"
+              [attr.aria-invalid]="isInvalid('estado')"
+              [attr.aria-describedby]="isInvalid('estado') ? 'estado-error' : null"
+              class="w-full appearance-none rounded-xl border border-zinc-300 bg-white px-3 pr-9 py-2.5 text-[15px] leading-6 text-zinc-900 shadow-[0_1px_0_0_rgba(0,0,0,0.02)]
+                     dark:bg-neutral-900 dark:border-neutral-700 dark:text-zinc-100
+                     focus:outline-none focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500
+                     aria-[invalid=true]:border-red-500 aria-[invalid=true]:focus:ring-red-500/20"
+            >
+              <option value="" disabled>Seleccione estado</option>
+              <option value="PROGRAMADO">Programado</option>
+              <option value="EN_CURSO">En curso</option>
+              <option value="FINALIZADO">Finalizado</option>
+              <option value="SUSPENDIDO">Suspendido</option>
+              <option value="CANCELADO">Cancelado</option>
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-zinc-400">
+              <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.18l3.71-3.95a.75.75 0 1 1 1.08 1.04l-4.25 4.52a.75.75 0 0 1-1.08 0L5.21 8.27a.75.75 0 0 1 .02-1.06Z" clip-rule="evenodd"/></svg>
+            </div>
+          </div>
+          <p *ngIf="isInvalid('estado')" id="estado-error" class="text-xs text-red-600">
+            {{ getError('estado') }}
+          </p>
         </div>
-        <div class="sm:col-span-9">
-          <select id="estado" formControlName="estado" 
-            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600">
-            <option value="" disabled selected>Seleccione estado</option>
-            <option value="PROGRAMADO">Programado</option>
-            <option value="EN_CURSO">En curso</option>
-            <option value="FINALIZADO">Finalizado</option>
-            <option value="SUSPENDIDO">Suspendido</option>
-            <option value="CANCELADO">Cancelado</option>
-          </select>
-        </div>
-
       </div>
       <!-- End Grid -->
 
-      <div class="mt-5 flex justify-end gap-x-2">
-        <button type="button" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-red-500 hover:text-white disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-50 dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800">
+      <!-- Errores a nivel de formulario -->
+      <div class="mt-4 space-y-1" *ngIf="matchForm.touched && matchForm.invalid">
+        <p class="text-sm text-red-600" *ngIf="matchForm.hasError('mismosEquipos')">
+          El equipo local y visitante no pueden ser el mismo.
+        </p>
+        <p class="text-sm text-red-600" *ngIf="matchForm.hasError('fechaFueraDeTemporada')">
+          La fecha del partido debe estar dentro del rango de la temporada seleccionada.
+        </p>
+      </div>
+
+      <div class="my-8 border-t border-zinc-200 dark:border-neutral-800"></div>
+
+      <!-- Actions -->
+      <div class="flex justify-end gap-2">
+        <button
+          type="button"
+          routerLink="/dashboard1/calendar/panel-calendar"
+          class="inline-flex items-center gap-2 rounded-lg border border-zinc-300 bg-white px-4 py-2 text-sm font-medium text-zinc-800 shadow-sm
+                 hover:bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:ring-offset-2
+                 dark:bg-neutral-900 dark:border-neutral-700 dark:text-zinc-100 dark:hover:bg-neutral-800">
           Cancelar
         </button>
-        <button type="submit" [disabled]="matchForm.invalid" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-hidden focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
+        <button
+          type="submit"
+          [disabled]="matchForm.invalid"
+          class="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm
+                 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:ring-offset-2
+                 disabled:opacity-50 disabled:pointer-events-none">
           Programar partido
         </button>
       </div>
     </form>
   </div>
-  <!-- End Card -->
 </div>
-<!-- End Card Section -->
