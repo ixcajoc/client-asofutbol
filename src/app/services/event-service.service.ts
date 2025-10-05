@@ -48,25 +48,7 @@ export class EventService {
       'Authorization': `Bearer ${this.authService.getToken()}`
     });
 
-    return this.http.post<any>(`${this.url}events`, newEvent, { headers }).subscribe({
-      next: (response) => {
-        this.message.successAlert();
-        this.router.navigate(['/dashboard1/calendar/panel-calendar']);
-      },
-      error: (error) => {
-        console.error('Error al crear evento:', error);
-        const errorMessage = error.error?.message || 'Error desconocido';
-
-        if (error.error?.errors) {
-          error.error.errors.forEach((err: any) => {
-            const fieldMessage = `Error en el campo ${err.path}: ${err.msg}`;
-            this.message.errorAlert(fieldMessage);
-          });
-        } else {
-          this.message.errorAlert(errorMessage);
-        }
-      }
-    });
+    return this.http.post<any>(`${this.url}events`, newEvent, { headers });
   }
 
   /** Actualizar un evento */

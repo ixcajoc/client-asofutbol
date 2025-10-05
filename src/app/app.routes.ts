@@ -11,7 +11,6 @@ import { Login } from './pages/authentication/login/login';
 import { ForgotPassword } from './pages/authentication/forgot-password/forgot-password';
 import { CreateAccount } from './pages/authentication/create-account/create-account';
 import { Home } from './pages/home/home';
-import { PlayerCard } from './components/futbol-player/player-panel/player-card/player-card';
 import { PlayerPanel } from './components/futbol-player/player-panel/player-panel';
 import { PanelTeam } from './components/futbol-team/panel-team/panel-team';
 import { Table } from './components/leaderboard/table/table';

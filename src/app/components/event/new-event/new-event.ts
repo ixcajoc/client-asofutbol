@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { EventService } from '../../../services/event-service.service';
 import { MessageService } from '../../../services/message-service.service';
@@ -23,7 +23,7 @@ export class NewEventComponent {
 
 
   
-  // @Input() eventData: any;
+  @Input() eventData?: number;
   // @Output() close = new EventEmitter<void>();
   route: ActivatedRoute = inject(ActivatedRoute);
 
@@ -47,12 +47,23 @@ export class NewEventComponent {
       descripcion: ['', [Validators.maxLength(500)]],
       id_jugador_asistencia: ['']
     });
+    
   }
 
   ngOnInit(): void {
     this.getAllPlayers()
-    this.fieldEventId  = this.eventForm.value.id_partido ?? '';
+    
+    // this.fieldEventId  = this.eventForm.value.id_partido ?? '';
   }
+  
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['eventData'] && changes['eventData'].currentValue !== undefined) {
+      this.eventForm.patchValue({
+        id_partido: changes['eventData'].currentValue // Actualiza el campo con eventData
+      });
+    }
+  }
+
   // closeModal(): void {
   //   this.close.emit();
   // }
@@ -68,7 +79,34 @@ export class NewEventComponent {
     };
 
     console.log(newEvent);
-    this.eventService.newEvent(newEvent);
+
+    // this.eventService.newEvent(newEvent);
+    this.createEvent(newEvent);
+  }
+  createEvent(newEvent:any){
+    this.eventService.newEvent(newEvent).subscribe({
+      next: (response) => {
+        this.message.successAlert();
+        this.eventForm.reset()
+        this.eventService.getAllEvents()
+        // this.eventService.getEventsByMatch()
+
+        // this.router.navigate(['/dashboard1/calendar/panel-calendar']);    
+      },
+      error: (error) => {
+        console.error('Error al crear evento:', error);
+        const errorMessage = error.error?.message || 'Error desconocido';
+
+        if (error.error?.errors) {
+          error.error.errors.forEach((err: any) => {
+            const fieldMessage = `Error en el campo ${err.path}: ${err.msg}`;
+            this.message.errorAlert(fieldMessage);
+          });
+        } else {
+          this.message.errorAlert(errorMessage);
+        }
+      }
+    });
   }
 
 

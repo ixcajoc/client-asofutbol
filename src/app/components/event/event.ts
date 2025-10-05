@@ -51,12 +51,14 @@ export class EventComponent {
   
     }
 
+    gameId : number = 0
     getMatchEvents() {
     const matchEventId = this.route.snapshot.params['matchEventId'];
 
     this.eventService.getEventsByMatch(matchEventId).subscribe({
       next: (response)=> {
         this.eventGameList = response.data;
+        this.gameId = matchEventId;
 
 
         console.log(this.eventGameList)
