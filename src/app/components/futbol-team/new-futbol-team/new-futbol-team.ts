@@ -73,6 +73,11 @@ export class NewFutbolTeam {
       id_usuario_responsable: this.teamForm.value.id_usuario_responsable ?? ''
     };
 
+    if (this.teamForm.invalid) {
+      this.teamForm.markAllAsTouched();
+      return;
+    }
+
     console.log(newTeam);
     this.newTeam(newTeam);
   }
@@ -119,6 +124,21 @@ export class NewFutbolTeam {
         error: (error) => (console.log(error))
       });
   }
+
+  ctrl(name: string) { return this.teamForm.get(name)!; }
+
+  isInvalid(name: string): boolean {
+    const c = this.ctrl(name);
+    return c.invalid && (c.dirty || c.touched);
+  }
+
+  getError(name: string): string {
+    const c = this.ctrl(name);
+    if (c.hasError('required')) return 'Este campo es obligatorio.';
+    return 'Valor inválido.';
+  }
+
+  
 }
 
 

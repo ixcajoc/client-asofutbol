@@ -1,153 +1,254 @@
-<!-- Card Section -->
-<div class="max-w-4xl px-4 py-10 sm:px-6 lg:px-8 mx-auto">
-  <!-- Card -->
-  <div class="bg-white rounded-xl shadow-xs p-4 sm:p-7 dark:bg-neutral-800">
-    <div class="mb-8">
-      <h2 class="text-xl font-bold text-gray-800 dark:text-neutral-200">
-        Nuevo equipo
-      </h2>
-      <p class="text-sm text-gray-600 dark:text-neutral-400">
-        Registro de nuevos equipos
-      </p>
-    </div>
+<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <!-- Page header -->
+  <div class="mb-8">
+    <h1 class="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+      Nuevo equipo
+    </h1>
+    <p class="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+      Registro de nuevos equipos
+    </p>
+  </div>
 
-    <form [formGroup]="teamForm" (ngSubmit)="submitTeamForm()">
+  <!-- Card -->
+  <div class="rounded-2xl border border-zinc-200/70 bg-white/70 backdrop-blur-sm shadow-sm dark:bg-neutral-900/60 dark:border-neutral-800">
+    <form [formGroup]="teamForm" (ngSubmit)="submitTeamForm()" class="p-4 sm:p-6 lg:p-8">
       <!-- Grid -->
-      <div class="grid sm:grid-cols-12 gap-2 sm:gap-6">
-        
-        <!-- Nombre -->
-        <div class="sm:col-span-3">
-          <label for="nombre" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
-            Nombre del equipo
-          </label>
-        </div>
-        <div class="sm:col-span-9">
-          <input id="nombre" formControlName="nombre" type="text" 
-            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" 
-            placeholder="Nombre del equipo" required>
+      <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+        <!-- Nombre del equipo -->
+        <div class="space-y-1.5">
+          <label for="nombre" class="text-sm font-medium text-zinc-800 dark:text-zinc-200">Nombre del equipo</label>
+          <input
+            id="nombre"
+            formControlName="nombre"
+            type="text"
+            [attr.aria-invalid]="isInvalid('nombre')"
+            [attr.aria-describedby]="isInvalid('nombre') ? 'nombre-error' : null"
+            class="w-full rounded-xl border border-zinc-300 bg-white px-3 py-2.5 text-[15px] leading-6 text-zinc-900 placeholder:text-zinc-400 shadow-[0_1px_0_0_rgba(0,0,0,0.02)]
+                   dark:bg-neutral-900 dark:border-neutral-700 dark:text-zinc-100 dark:placeholder-neutral-500
+                   focus:outline-none focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500
+                   aria-[invalid=true]:border-red-500 aria-[invalid=true]:focus:ring-red-500/20"
+            placeholder="Nombre del equipo"
+            required
+          />
+          <p *ngIf="isInvalid('nombre')" id="nombre-error" class="text-xs text-red-600">
+            {{ getError('nombre') }}
+          </p>
         </div>
 
         <!-- Nombre corto -->
-        <div class="sm:col-span-3">
-          <label for="nombre_corto" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
-            Nombre corto
-          </label>
-        </div>
-        <div class="sm:col-span-9">
-          <input id="nombre_corto" formControlName="nombre_corto" type="text" 
-            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" 
-            placeholder="Nombre corto" required>
+        <div class="space-y-1.5">
+          <label for="nombre_corto" class="text-sm font-medium text-zinc-800 dark:text-zinc-200">Nombre corto</label>
+          <input
+            id="nombre_corto"
+            formControlName="nombre_corto"
+            type="text"
+            [attr.aria-invalid]="isInvalid('nombre_corto')"
+            [attr.aria-describedby]="isInvalid('nombre_corto') ? 'nombre_corto-error' : null"
+            class="w-full rounded-xl border border-zinc-300 bg-white px-3 py-2.5 text-[15px] leading-6 text-zinc-900 placeholder:text-zinc-400 shadow-[0_1px_0_0_rgba(0,0,0,0.02)]
+                   dark:bg-neutral-900 dark:border-neutral-700 dark:text-zinc-100 dark:placeholder-neutral-500
+                   focus:outline-none focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500
+                   aria-[invalid=true]:border-red-500 aria-[invalid=true]:focus:ring-red-500/20"
+            placeholder="Nombre corto"
+            required
+          />
+          <p *ngIf="isInvalid('nombre_corto')" id="nombre_corto-error" class="text-xs text-red-600">
+            {{ getError('nombre_corto') }}
+          </p>
         </div>
 
-        <!-- Logo URL -->
-        <div class="sm:col-span-3">
-          <label for="logo_url" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
-            Logo del equipo
-          </label>
-        </div>
-        <div class="sm:col-span-9">
-          <input id="logo_url" formControlName="logo_url" type="file" 
-            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" 
-            accept="image/*">
+        <!-- Logo (archivo) -->
+        <div class="space-y-1.5">
+          <label for="logo_url" class="text-sm font-medium text-zinc-800 dark:text-zinc-200">Logo del equipo</label>
+          <div class="flex items-center gap-3">
+            <input
+              id="logo_url"
+              type="file"
+              formControlName="logo_url"
+              accept="image/*"
+              class="block w-full rounded-xl border border-zinc-300 bg-white px-3 py-2.5 text-[15px] leading-6 text-zinc-900 shadow-[0_1px_0_0_rgba(0,0,0,0.02)]
+                     file:mr-4 file:rounded-lg file:border-0 file:bg-zinc-100 file:px-3 file:py-2 file:text-sm file:font-medium file:text-zinc-700
+                     hover:file:bg-zinc-200/70
+                     dark:bg-neutral-900 dark:border-neutral-700 dark:text-zinc-100
+                     dark:file:bg-neutral-800 dark:file:text-zinc-200 dark:hover:file:bg-neutral-700
+                     focus:outline-none focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500"
+            />
+          </div>
+          <p class="text-xs text-zinc-500">PNG o JPG. Máx 2MB.</p>
         </div>
 
         <!-- Color principal -->
-        <div class="sm:col-span-3">
-          <label for="color_principal" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
-            Color principal
-          </label>
-        </div>
-        <div class="sm:col-span-9">
-          <input id="color_principal" formControlName="color_principal" type="color" 
-            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" 
-            required>
+        <div class="space-y-1.5">
+          <label for="color_principal" class="text-sm font-medium text-zinc-800 dark:text-zinc-200">Color principal</label>
+          <div class="flex items-center gap-3">
+            <input
+              id="color_principal"
+              formControlName="color_principal"
+              type="color"
+              [attr.aria-invalid]="isInvalid('color_principal')"
+              class="h-10 w-14 cursor-pointer rounded-md border border-zinc-300 bg-white p-1
+                     dark:bg-neutral-900 dark:border-neutral-700
+                     focus:outline-none focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500"
+              required
+            />
+            <input
+              type="text"
+              [value]="teamForm.value.color_principal"
+              readonly
+              class="flex-1 rounded-xl border border-zinc-300 bg-white px-3 py-2.5 text-[15px] leading-6 text-zinc-900 shadow-[0_1px_0_0_rgba(0,0,0,0.02)]
+                     dark:bg-neutral-900 dark:border-neutral-700 dark:text-zinc-100"
+            />
+          </div>
+          <p *ngIf="isInvalid('color_principal')" class="text-xs text-red-600">Seleccione un color válido.</p>
         </div>
 
         <!-- Color secundario -->
-        <div class="sm:col-span-3">
-          <label for="color_secundario" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
-            Color secundario
-          </label>
-        </div>
-        <div class="sm:col-span-9">
-          <input id="color_secundario" formControlName="color_secundario" type="color" 
-            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" 
-            required>
+        <div class="space-y-1.5">
+          <label for="color_secundario" class="text-sm font-medium text-zinc-800 dark:text-zinc-200">Color secundario</label>
+          <div class="flex items-center gap-3">
+            <input
+              id="color_secundario"
+              formControlName="color_secundario"
+              type="color"
+              [attr.aria-invalid]="isInvalid('color_secundario')"
+              class="h-10 w-14 cursor-pointer rounded-md border border-zinc-300 bg-white p-1
+                     dark:bg-neutral-900 dark:border-neutral-700
+                     focus:outline-none focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500"
+              required
+            />
+            <input
+              type="text"
+              [value]="teamForm.value.color_secundario"
+              readonly
+              class="flex-1 rounded-xl border border-zinc-300 bg-white px-3 py-2.5 text-[15px] leading-6 text-zinc-900 shadow-[0_1px_0_0_rgba(0,0,0,0.02)]
+                     dark:bg-neutral-900 dark:border-neutral-700 dark:text-zinc-100"
+            />
+          </div>
+          <p *ngIf="isInvalid('color_secundario')" class="text-xs text-red-600">Seleccione un color válido.</p>
         </div>
 
-        <!-- Fecha fundación -->
-        <div class="sm:col-span-3">
-          <label for="fecha_fundacion" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
-            Fecha de fundación
-          </label>
-        </div>
-        <div class="sm:col-span-9">
-          <input id="fecha_fundacion" formControlName="fecha_fundacion" type="date" 
-            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" 
-            required>
+        <!-- Fecha de fundación -->
+        <div class="space-y-1.5">
+          <label for="fecha_fundacion" class="text-sm font-medium text-zinc-800 dark:text-zinc-200">Fecha de fundación</label>
+          <input
+            id="fecha_fundacion"
+            formControlName="fecha_fundacion"
+            type="date"
+            [attr.aria-invalid]="isInvalid('fecha_fundacion')"
+            [attr.aria-describedby]="isInvalid('fecha_fundacion') ? 'fecha_fundacion-error' : null"
+            class="w-full rounded-xl border border-zinc-300 bg-white px-3 py-2.5 text-[15px] leading-6 text-zinc-900 shadow-[0_1px_0_0_rgba(0,0,0,0.02)]
+                   dark:bg-neutral-900 dark:border-neutral-700 dark:text-zinc-100
+                   focus:outline-none focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500
+                   aria-[invalid=true]:border-red-500 aria-[invalid=true]:focus:ring-red-500/20"
+            required
+          />
+          <p *ngIf="isInvalid('fecha_fundacion')" id="fecha_fundacion-error" class="text-xs text-red-600">
+            {{ getError('fecha_fundacion') }}
+          </p>
         </div>
 
         <!-- Estadio -->
-        <div class="sm:col-span-3">
-          <label for="estadio" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
-            Estadio
-          </label>
-        </div>
-        <div class="sm:col-span-9">
-          <input id="estadio" formControlName="estadio" type="text" 
-            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" 
-            placeholder="Nombre del estadio" required>
+        <div class="space-y-1.5">
+          <label for="estadio" class="text-sm font-medium text-zinc-800 dark:text-zinc-200">Estadio</label>
+          <input
+            id="estadio"
+            formControlName="estadio"
+            type="text"
+            [attr.aria-invalid]="isInvalid('estadio')"
+            [attr.aria-describedby]="isInvalid('estadio') ? 'estadio-error' : null"
+            class="w-full rounded-xl border border-zinc-300 bg-white px-3 py-2.5 text-[15px] leading-6 text-zinc-900 placeholder:text-zinc-400 shadow-[0_1px_0_0_rgba(0,0,0,0.02)]
+                   dark:bg-neutral-900 dark:border-neutral-700 dark:text-zinc-100 dark:placeholder-neutral-500
+                   focus:outline-none focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500
+                   aria-[invalid=true]:border-red-500 aria-[invalid=true]:focus:ring-red-500/20"
+            placeholder="Nombre del estadio"
+            required
+          />
+          <p *ngIf="isInvalid('estadio')" id="estadio-error" class="text-xs text-red-600">
+            {{ getError('estadio') }}
+          </p>
         </div>
 
         <!-- Entrenador -->
-        <div class="sm:col-span-3">
-          <label for="entrenador" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
-            Entrenador
-          </label>
-        </div>
-        <div class="sm:col-span-9">
-          <select id="entrenador" formControlName="entrenador" 
-            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" 
-            required>
-            <option value="" disabled selected>Seleccione entrenador</option>
-            @for (coach of coachList; track $index) {
-              <option [value]="coach.nombre+' '+coach.apellido">{{coach.nombre}} {{coach.apellido}}</option>
-            }
-
-          </select>
+        <div class="space-y-1.5">
+          <label for="entrenador" class="text-sm font-medium text-zinc-800 dark:text-zinc-200">Entrenador</label>
+          <div class="relative">
+            <select
+              id="entrenador"
+              formControlName="entrenador"
+              [attr.aria-invalid]="isInvalid('entrenador')"
+              [attr.aria-describedby]="isInvalid('entrenador') ? 'entrenador-error' : null"
+              class="w-full appearance-none rounded-xl border border-zinc-300 bg-white px-3 pr-9 py-2.5 text-[15px] leading-6 text-zinc-900 shadow-[0_1px_0_0_rgba(0,0,0,0.02)]
+                     dark:bg-neutral-900 dark:border-neutral-700 dark:text-zinc-100
+                     focus:outline-none focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500
+                     aria-[invalid=true]:border-red-500 aria-[invalid=true]:focus:ring-red-500/20"
+              required
+            >
+              <option value="" disabled>Seleccione entrenador</option>
+              @for (coach of coachList; track $index) {
+                <option [value]="coach.nombre + ' ' + coach.apellido">{{ coach.nombre }} {{ coach.apellido }}</option>
+              }
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-zinc-400">
+              <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.18l3.71-3.95a.75.75 0 1 1 1.08 1.04l-4.25 4.52a.75.75 0 0 1-1.08 0L5.21 8.27a.75.75 0 0 1 .02-1.06Z" clip-rule="evenodd"/></svg>
+            </div>
+          </div>
+          <p *ngIf="isInvalid('entrenador')" id="entrenador-error" class="text-xs text-red-600">
+            {{ getError('entrenador') }}
+          </p>
         </div>
 
         <!-- Usuario responsable -->
-        <div class="sm:col-span-3">
-          <label for="id_usuario_responsable" class="inline-block text-sm text-gray-800 mt-2.5 dark:text-neutral-200">
-            Usuario responsable
-          </label>
+        <div class="space-y-1.5">
+          <label for="id_usuario_responsable" class="text-sm font-medium text-zinc-800 dark:text-zinc-200">Usuario responsable</label>
+          <div class="relative">
+            <select
+              id="id_usuario_responsable"
+              formControlName="id_usuario_responsable"
+              [attr.aria-invalid]="isInvalid('id_usuario_responsable')"
+              [attr.aria-describedby]="isInvalid('id_usuario_responsable') ? 'id_usuario_responsable-error' : null"
+              class="w-full appearance-none rounded-xl border border-zinc-300 bg-white px-3 pr-9 py-2.5 text-[15px] leading-6 text-zinc-900 shadow-[0_1px_0_0_rgba(0,0,0,0.02)]
+                     dark:bg-neutral-900 dark:border-neutral-700 dark:text-zinc-100
+                     focus:outline-none focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500
+                     aria-[invalid=true]:border-red-500 aria-[invalid=true]:focus:ring-red-500/20"
+              required
+            >
+              <option value="" disabled>Seleccione usuario responsable</option>
+              @for (user of userList; track $index) {
+                <option [value]="user.id_usuario">{{ user.nombre }} {{ user.apellido }}</option>
+              }
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-zinc-400">
+              <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.18l3.71-3.95a.75.75 0 1 1 1.08 1.04l-4.25 4.52a.75.75 0 0 1-1.08 0L5.21 8.27a.75.75 0 0 1 .02-1.06Z" clip-rule="evenodd"/></svg>
+            </div>
+          </div>
+          <p *ngIf="isInvalid('id_usuario_responsable')" id="id_usuario_responsable-error" class="text-xs text-red-600">
+            {{ getError('id_usuario_responsable') }}
+          </p>
         </div>
-        <div class="sm:col-span-9">
-          <select id="id_usuario_responsable" formControlName="id_usuario_responsable" 
-            class="py-1.5 sm:py-2 px-3 block w-full border-gray-200 shadow-2xs sm:text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" 
-            required>
-            <option value="" disabled selected>Seleccione usuario responsable</option>
-            
-            @for (user of userList; track $index) {
-              <option [value]="user.id_usuario">{{user.nombre}} {{user.apellido}}</option>
-            }
-          </select>
-        </div>
-
       </div>
       <!-- End Grid -->
 
-      <div class="mt-5 flex justify-end gap-x-2">
-        <button type="button" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-red-500 hover:text-white disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-50 dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800">
+      <!-- Divider -->
+      <div class="my-8 border-t border-zinc-200 dark:border-neutral-800"></div>
+
+      <!-- Actions -->
+      <div class="flex justify-end gap-2">
+        <button
+          type="button"
+          routerLink="/dashboard1/panel-team"
+          class="inline-flex items-center gap-2 rounded-lg border border-zinc-300 bg-white px-4 py-2 text-sm font-medium text-zinc-800 shadow-sm
+                 hover:bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:ring-offset-2
+                 dark:bg-neutral-900 dark:border-neutral-700 dark:text-zinc-100 dark:hover:bg-neutral-800">
           Cancelar
         </button>
-        <button type="submit" [disabled]="teamForm.invalid" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-hidden focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
+        <button
+          type="submit"
+          [disabled]="teamForm.invalid"
+          class="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm
+                 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:ring-offset-2
+                 disabled:opacity-50 disabled:pointer-events-none">
           Registrar
         </button>
       </div>
     </form>
   </div>
-  <!-- End Card -->
 </div>
-<!-- End Card Section -->
