@@ -1,195 +1,117 @@
-<div class="min-h-dvh grid grid-cols-1 lg:grid-cols-2 bg-gradient-to-b from-emerald-50 to-white dark:from-neutral-950 dark:to-neutral-900">
 
-  <!-- Panel ilustrado: cancha / fútbol (izquierda) -->
-  <div class="hidden lg:flex relative items-center justify-center overflow-hidden">
-    <!-- Césped y líneas -->
-    <div aria-hidden="true" class="pointer-events-none absolute inset-0">
-      <!-- Césped -->
-      <div class="absolute inset-0 bg-gradient-to-br from-emerald-600 via-emerald-700 to-emerald-800"></div>
-      <!-- Líneas de cancha -->
-      <div class="absolute inset-0 opacity-35">
-        <svg viewBox="0 0 1200 800" class="w-full h-full">
-          <!-- perímetro -->
-          <rect x="40" y="40" width="1120" height="720" fill="none" stroke="white" stroke-width="6"/>
-          <!-- medio campo -->
-          <line x1="600" y1="40" x2="600" y2="760" stroke="white" stroke-width="6"/>
-          <circle cx="600" cy="400" r="70" fill="none" stroke="white" stroke-width="6"/>
-          <!-- áreas -->
-          <rect x="40" y="250" width="160" height="300" fill="none" stroke="white" stroke-width="6"/>
-          <rect x="1000" y="250" width="160" height="300" fill="none" stroke="white" stroke-width="6"/>
-        </svg>
+    <style>
+        @keyframes gradient {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+        .animated-gradient {
+          background: linear-gradient(-45deg, #10b981, #22c55e, #34d399, #059669);
+          background-size: 400% 400%;
+          animation: gradient 15s ease infinite;
+        }
+        .glass-effect {
+          background: rgba(255, 255, 255, 0.95);
+          backdrop-filter: blur(10px);
+          box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        }
+    </style>
+<div class="animated-gradient min-h-screen flex items-center justify-center p-4">
+  <div class="glass-effect rounded-3xl shadow-2xl w-full max-w-md p-8 md:p-10">
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-emerald-600 to-green-500 rounded-2xl mb-4 shadow-lg">
+        <i class="fas fa-lock text-white text-2xl"></i>
       </div>
-      <!-- Destellos con colores del logo -->
-      <div class="absolute -top-24 -left-24 h-96 w-96 rounded-full bg-[#2e9e44]/30 blur-3xl"></div>
-      <div class="absolute -bottom-24 -right-24 h-96 w-96 rounded-full bg-[#3b3b97]/30 blur-3xl"></div>
+      <h1 class="text-3xl font-bold text-gray-800 mb-2">Bienvenido</h1>
+      <p class="text-gray-500 text-sm">Ingresa tus credenciales para continuar</p>
     </div>
 
-    <div class="relative z-10 max-w-lg mx-auto text-center text-white px-10">
-      <img src="assets/logo.jpg" alt="Logo de la liga" class="mx-auto h-20 w-20 object-contain rounded-xl bg-white/10 backdrop-blur-sm p-2 shadow-lg"/>
-      <h2 class="mt-6 text-4xl font-bold tracking-tight drop-shadow">
-        Panel de Ligas de Fútbol
-      </h2>
-      <p class="mt-3 text-white/90">
-        Administra equipos, jornadas y tablas de posiciones en un solo lugar.
-      </p>
-    </div>
-  </div>
-
-  <!-- Formulario (derecha) -->
-  <div class="relative flex items-center justify-center p-6 sm:p-8">
-    <!-- patrón de hexágonos sutil -->
-    <div aria-hidden="true" class="pointer-events-none absolute inset-0 opacity-10 dark:opacity-20">
-      <svg class="w-full h-full text-[#d7a928]" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <pattern id="hex" width="40" height="34.64" patternUnits="userSpaceOnUse" patternTransform="scale(1)">
-            <polygon points="20,0 40,8.66 40,25.98 20,34.64 0,25.98 0,8.66" fill="currentColor"/>
-          </pattern>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#hex)" />
-      </svg>
-    </div>
-
-    <div class="relative z-10 w-full max-w-md">
-      <!-- Marca -->
-      <div class="text-center mb-6">
-        <div class="mx-auto mb-3 h-14 w-14 grid place-items-center rounded-xl bg-[#3b3b97] text-white shadow-md">
-          <!-- balón minimal -->
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-            <circle cx="12" cy="12" r="9"></circle>
-            <path d="M12 3l3 5-3 3-3-3 3-5zm0 9l6 2-2 5H8l-2-5 6-2z"></path>
-          </svg>
+    <form [formGroup]="loginForm" (ngSubmit)="auth()" class="space-y-6">
+      <!-- Usuario -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Usuario</label>
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <i class="fas fa-user text-gray-400"></i>
+          </div>
+          <input
+            formControlName="username"
+            type="text"
+            class="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition outline-none"
+            [class.border-red-500]="isInvalid('username')"
+            placeholder="Ingresa tu usuario"
+          >
         </div>
-        <h1 class="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
-          Iniciar sesión
-        </h1>
-        <p class="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-          Accede para gestionar ligas, equipos y calendarios.
+        <p *ngIf="isInvalid('username')" class="text-red-500 text-xs mt-1">
+          {{ getError('username') }}
         </p>
       </div>
 
-      <!-- Card -->
-      <div class="rounded-2xl border border-zinc-200/70 bg-white/75 backdrop-blur-md shadow-lg dark:bg-neutral-900/60 dark:border-neutral-800">
-        <form [formGroup]="loginForm" (ngSubmit)="auth()" id="loginform" class="p-5 sm:p-6 lg:p-7" novalidate>
-          <div class="grid gap-4">
-            <!-- Usuario -->
-            <div>
-              <label for="username" class="mb-1.5 block text-sm font-medium text-zinc-800 dark:text-zinc-200">Usuario</label>
-              <div class="relative">
-                <span class="pointer-events-none absolute inset-y-0 left-3 grid place-items-center text-zinc-400">
-                  <!-- icon user -->
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A7 7 0 1119 12v.5" />
-                  </svg>
-                </span>
-                <input
-                  id="username"
-                  type="text"
-                  formControlName="username"
-                  [attr.aria-invalid]="isInvalid('username')"
-                  [attr.aria-describedby]="isInvalid('username') ? 'username-error' : null"
-                  placeholder="tu.usuario"
-                  autocomplete="username"
-                  class="w-full rounded-xl border border-zinc-300 bg-white pl-10 pr-3 py-2.5 text-[15px] leading-6 text-zinc-900 placeholder:text-zinc-400 shadow-[0_1px_0_rgba(0,0,0,0.02)]
-                         dark:bg-neutral-900 dark:border-neutral-700 dark:text-zinc-100 dark:placeholder-neutral-500
-                         focus:outline-none focus:ring-4 focus:ring-[#2e9e44]/25 focus:border-[#2e9e44]
-                         aria-[invalid=true]:border-red-500 aria-[invalid=true]:focus:ring-red-500/20"
-                  required
-                />
-              </div>
-              <p *ngIf="isInvalid?.('username')" id="username-error" class="mt-1.5 text-xs text-red-600">
-                {{ getError('username') || 'Por favor ingresa un usuario válido.' }}
-              </p>
-            </div>
-
-            <!-- Clave -->
-            <div>
-              <div class="mb-1.5 flex items-center justify-between">
-                <label for="password" class="text-sm font-medium text-zinc-800 dark:text-zinc-200">Clave</label>
-                <!-- <a routerLink="/recover" class="text-xs text-[#3b3b97] hover:underline">¿Olvidaste tu clave?</a> -->
-              </div>
-
-              <div class="relative">
-                <span class="pointer-events-none absolute inset-y-0 left-3 grid place-items-center text-zinc-400">
-                  <!-- candado -->
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 11c-1.657 0-3 1.343-3 3v2h6v-2c0-1.657-1.343-3-3-3z" />
-                    <rect x="5" y="11" width="14" height="10" rx="2" ry="2" />
-                  </svg>
-                </span>
-                <input
-                  id="password"
-                  [type]="showPassword ? 'text' : 'password'"
-                  formControlName="password"
-                  [attr.aria-invalid]="isInvalid('password')"
-                  [attr.aria-describedby]="isInvalid('password') ? 'password-error' : null"
-                  placeholder="••••••••"
-                  autocomplete="current-password"
-                  class="w-full rounded-xl border border-zinc-300 bg-white pl-10 pr-10 py-2.5 text-[15px] leading-6 text-zinc-900 placeholder:text-zinc-400 shadow-[0_1px_0_rgba(0,0,0,0.02)]
-                         dark:bg-neutral-900 dark:border-neutral-700 dark:text-zinc-100 dark:placeholder-neutral-500
-                         focus:outline-none focus:ring-4 focus:ring-[#2e9e44]/25 focus:border-[#2e9e44]
-                         aria-[invalid=true]:border-red-500 aria-[invalid=true]:focus:ring-red-500/20"
-                  required
-                />
-                <!-- Toggle password -->
-                <button
-                  type="button"
-                  (click)="togglePasswordVisibility()"
-                  class="absolute inset-y-0 right-2 flex items-center px-2 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 focus:outline-none"
-                  [attr.aria-pressed]="showPassword"
-                  aria-label="Mostrar u ocultar clave"
-                >
-                  <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7Z" />
-                    <circle cx="12" cy="12" r="3" stroke-width="1.8" />
-                  </svg>
-                  <svg *ngIf="showPassword" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 3l18 18M10.584 10.59A3 3 0 0012 15a3 3 0 002.121-.879M9.88 4.597A9.956 9.956 0 0112 4c4.477 0 8.268 2.943 9.542 7a9.97 9.97 0 01-4.132 5.225M6.228 6.23A9.969 9.969 0 002.458 12C3.732 16.057 7.523 19 12 19c1.157 0 2.267-.197 3.292-.561" />
-                  </svg>
-                </button>
-              </div>
-              <p *ngIf="isInvalid('password')" id="password-error" class="mt-1.5 text-xs text-red-600">
-                {{ getError('password') || 'La clave debe tener al menos 6 caracteres.' }}
-              </p>
-            </div>
-
-            <!-- Mensaje general -->
-            <div *ngIf="authError" class="rounded-lg border border-red-200/60 bg-red-50 text-red-700 px-3 py-2 text-sm dark:bg-red-950/30 dark:border-red-900/40 dark:text-red-300">
-              {{ authError }}
-            </div>
-
-            <!-- Botón -->
-            <button
-              type="submit"
-              [disabled]="loginForm.invalid || loading"
-              class="inline-flex justify-center items-center rounded-xl bg-[#3b3b97] px-4 py-2.5 text-sm font-semibold text-white shadow-sm
-                     hover:bg-[#323285] focus:outline-none focus:ring-2 focus:ring-[#3b3b97]/40 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-neutral-900
-                     disabled:opacity-50 disabled:pointer-events-none transition-colors"
-            >
-              <svg *ngIf="loading" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" role="img" aria-label="Cargando">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v3a5 5 0 00-5 5H4z"></path>
-              </svg>
-              Entrar al panel
-            </button>
+      <!-- Contraseña -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Contraseña</label>
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <i class="fas fa-lock text-gray-400"></i>
           </div>
-        </form>
+          <input
+            formControlName="password"
+            [type]="showPassword ? 'text' : 'password'"
+            class="w-full pl-11 pr-12 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition outline-none"
+            [class.border-red-500]="isInvalid('password')"
+            placeholder="Ingresa tu contraseña"
+          >
+          <button
+            type="button"
+            (click)="togglePasswordVisibility()"
+            class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600"
+          >
+            <i [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+          </button>
+        </div>
+        <p *ngIf="isInvalid('password')" class="text-red-500 text-xs mt-1">
+          {{ getError('password') }}
+        </p>
       </div>
 
-      <!-- Footer -->
-      <div class="text-center mt-4">
-        <a routerLink="/home" class="text-sm text-[#3b3b97] hover:underline font-medium dark:text-indigo-300">
-          Regresar
+      <!-- Alert de error -->
+      <div *ngIf="authError" class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">
+        <i class="fas fa-exclamation-circle mr-2"></i>{{ authError }}
+      </div>
+
+      <!-- Acciones -->
+      <div class="flex items-center justify-between text-sm">
+        <label class="flex items-center cursor-pointer">
+          <input type="checkbox" class="w-4 h-4 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500">
+          <span class="ml-2 text-gray-600">Recordarme</span>
+        </label>
+        <a href="#" class="text-emerald-600 hover:text-emerald-700 font-medium transition">
+          ¿Olvidaste tu contraseña?
         </a>
       </div>
 
-      <!-- Mini franja con colores del logo -->
-      <div class="mt-6 h-1.5 w-full rounded-full overflow-hidden">
-        <div class="h-full w-full grid grid-cols-3">
-          <div class="bg-[#2e9e44]"></div>
-          <div class="bg-[#d7a928]"></div>
-          <div class="bg-[#3b3b97]"></div>
-        </div>
-      </div>
+      <!-- Botón -->
+      <button
+        type="submit"
+        [disabled]="loading"
+        class="w-full bg-gradient-to-r from-emerald-600 to-green-500 text-white font-semibold py-3 rounded-xl hover:from-emerald-700 hover:to-green-600 focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 transform transition hover:scale-[1.02] active:scale-[0.98] shadow-lg disabled:opacity-50"
+      >
+        <span *ngIf="!loading">Iniciar Sesión</span>
+        <span *ngIf="loading">
+          Iniciando... <i class="fas fa-spinner fa-spin ml-2"></i>
+        </span>
+      </button>
+    </form>
+
+    <!-- Footer -->
+    <div class="mt-8 text-center">
+      <p class="text-gray-600 text-sm">
+        ¿No tienes una cuenta?
+        <a href="#" class="text-emerald-600 hover:text-emerald-700 font-semibold transition">
+          Regístrate aquí
+        </a>
+      </p>
     </div>
   </div>
 </div>
