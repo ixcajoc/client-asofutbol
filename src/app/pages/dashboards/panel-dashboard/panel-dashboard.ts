@@ -10,6 +10,7 @@ import { UserService } from '../../../services/user-service.service';
 import { TopScorers } from "../../../shared/reports/top-scorers/top-scorers";
 import { TopScorersCard } from "../../home/top-stats/top-scorers-card/top-scorers-card";
 import { RecentGames } from "../../home/recent-games/recent-games";
+import { UpcomingGames } from "../../home/upcoming-games/upcoming-games";
 
 @Component({
   selector: 'app-panel-dashboard',
@@ -19,7 +20,7 @@ import { RecentGames } from "../../home/recent-games/recent-games";
     PositionTable,
     TopScorersCard,
     RecentGames,
-   
+    UpcomingGames
 ],
   templateUrl: './panel-dashboard.html',
   styleUrl: './panel-dashboard.css'

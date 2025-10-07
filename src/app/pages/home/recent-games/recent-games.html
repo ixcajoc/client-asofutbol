@@ -1,45 +1,46 @@
 <!-- Resultados Recientes -->
-<section id="results" class="py-12 bg-gray-100">
-    <div class="container mx-auto px-4">
-        <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">Resultados Recientes</h2>
-        <div class="max-w-4xl mx-auto space-y-4">
-            <div class="bg-white rounded-lg p-4 shadow-sm">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center space-x-4">
-                        <div class="w-10 h-10 bg-blue-500 rounded-full"></div>
-                        <span class="font-semibold">Águilas CF</span>
-                    </div>
-                    <div class="text-center">
-                        <span class="text-2xl font-bold text-green-700">2 - 1</span>
-                        <p class="text-xs text-gray-500">21 Sep</p>
-                    </div>
-                    <div class="flex items-center space-x-4">
-                        <span class="font-semibold">Halcones FC</span>
-                        <div class="w-10 h-10 bg-gray-500 rounded-full"></div>
-                    </div>
-                </div>
-            </div>
-            @for (game of gamesList; track $index) {
-                @if($index<2){
-                    <div class="bg-white rounded-lg p-4 shadow-sm">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center space-x-4">
-                                <div class="w-10 h-10 bg-blue-500 rounded-full"></div>
-                                <span class="font-semibold">{{game.equipo_local_nombre}}</span>
-                            </div>
-                            <div class="text-center">
-                                <span class="text-2xl font-bold text-green-700">{{game.goles_local}} - {{game.goles_visitante}}</span>
-                                <p class="text-xs text-gray-500">{{game.fecha_partido | date:'dd/MM/yyyy HH:mm'}}</p>
-                            </div>
-                            <div class="flex items-center space-x-4">
-                                <span class="font-semibold">{{game.equipo_visitante_nombre}}</span>
-                                <div class="w-10 h-10 bg-gray-500 rounded-full"></div>
-                            </div>
-                        </div>
-                    </div>
+<section id="results" class="py-12 bg-gray-100 dark:bg-neutral-900">
+  <div class="container mx-auto px-4">
+    <h2 class="text-3xl font-bold text-center mb-8 text-gray-800 dark:text-zinc-100">Resultados Recientes</h2>
 
-                } 
-            }
+    <div class="max-w-4xl mx-auto space-y-4">
+      <div class="bg-white rounded-lg p-4 shadow-sm border border-gray-100 dark:bg-neutral-900 dark:border-neutral-800">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-4">
+            <div class="w-10 h-10 bg-blue-500 rounded-full"></div>
+            <span class="font-semibold text-gray-900 dark:text-zinc-100">Águilas CF</span>
+          </div>
+          <div class="text-center">
+            <span class="text-2xl font-bold text-green-700 dark:text-green-400">2 - 1</span>
+            <p class="text-xs text-gray-500 dark:text-zinc-500">21 Sep</p>
+          </div>
+          <div class="flex items-center space-x-4">
+            <span class="font-semibold text-gray-900 dark:text-zinc-100">Halcones FC</span>
+            <div class="w-10 h-10 bg-gray-500 rounded-full"></div>
+          </div>
         </div>
+      </div>
+
+      @for (game of gamesList; track $index) {
+        @if ($index < 2) {
+          <div class="bg-white rounded-lg p-4 shadow-sm border border-gray-100 dark:bg-neutral-900 dark:border-neutral-800">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-4">
+                <div class="w-10 h-10 bg-blue-500 rounded-full"></div>
+                <span class="font-semibold text-gray-900 dark:text-zinc-100">{{game.equipo_local_nombre}}</span>
+              </div>
+              <div class="text-center">
+                <span class="text-2xl font-bold text-green-700 dark:text-green-400">{{game.goles_local}} - {{game.goles_visitante}}</span>
+                <p class="text-xs text-gray-500 dark:text-zinc-500">{{game.fecha_partido | date:'dd/MM/yyyy HH:mm'}}</p>
+              </div>
+              <div class="flex items-center space-x-4">
+                <span class="font-semibold text-gray-900 dark:text-zinc-100">{{game.equipo_visitante_nombre}}</span>
+                <div class="w-10 h-10 bg-gray-500 rounded-full"></div>
+              </div>
+            </div>
+          </div>
+        }
+      }
     </div>
+  </div>
 </section>

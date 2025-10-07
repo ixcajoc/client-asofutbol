@@ -1,33 +1,29 @@
-    <!-- Header -->
-    <header class="bg-green-700 shadow-lg">
-        <div class="container mx-auto px-4 py-4">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-4">
-                    <!-- <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center">
-                        <svg class="w-8 h-8 text-green-700" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
-                        </svg>
-                        
-                    </div> -->
-                    <div>
-                        <h1 class="text-2xl font-bold text-white">Asofutbol</h1>
-                        <p class="text-green-100 text-sm">San Lucas Sacatepéquez</p>
-                    </div>
-                </div>
-                <nav class="hidden md:flex space-x-6">
-
-                    <a (click)="scrollToSection('fixtures')" class="text-white hover:text-green-200 transition-colors">Partidos</a>
-                    <a (click)="scrollToSection('results')" class="text-white hover:text-green-200 transition-colors">Resultados</a>
-                    <a (click)="scrollToSection('table')" class="text-white hover:text-green-200 transition-colors">Clasificación</a>
-                    <a (click)="scrollToSection('stats')" class="text-white hover:text-green-200 transition-colors">Estadísticas</a>
-                    <a (click)="scrollToSection('news')" class="text-white hover:text-green-200 transition-colors">Noticias</a>
-                    <a routerLink="/login" class="text-white hover:text-green-200 transition-colors">Iniciar sesion</a>
-                </nav>
-                <button class="md:hidden text-white">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
-            </div>
+<!-- Header -->
+<header class="bg-blue-800 shadow-lg border-b border-white/10 dark:bg-neutral-800 dark:border-neutral-700">
+  <div class="container mx-auto px-4 py-4">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center space-x-4">
+        <div>
+          <h1 class="text-2xl font-bold text-white">Asofutbol</h1>
+          <p class="text-blue-100 text-sm dark:text-neutral-300">San Lucas Sacatepéquez</p>
         </div>
-    </header>
+      </div>
+
+      <nav class="hidden md:flex space-x-6">
+        <a (click)="scrollToSection('fixtures')" class="text-white hover:text-white/80 transition-colors dark:text-neutral-200 dark:hover:text-neutral-100">Partidos</a>
+        <a (click)="scrollToSection('results')" class="text-white hover:text-white/80 transition-colors dark:text-neutral-200 dark:hover:text-neutral-100">Resultados</a>
+        <a (click)="scrollToSection('table')" class="text-white hover:text-white/80 transition-colors dark:text-neutral-200 dark:hover:text-neutral-100">Clasificación</a>
+        <a (click)="scrollToSection('stats')" class="text-white hover:text-white/80 transition-colors dark:text-neutral-200 dark:hover:text-neutral-100">Estadísticas</a>
+        <a (click)="scrollToSection('news')" class="text-white hover:text-white/80 transition-colors dark:text-neutral-200 dark:hover:text-neutral-100">Noticias</a>
+        <a routerLink="/login" class="text-white hover:bg-white/10 px-3 py-1.5 rounded-md transition-colors dark:text-neutral-100 dark:hover:bg-neutral-700">Iniciar sesión</a>
+      </nav>
+
+      <button class="md:hidden text-white hover:text-white/80 dark:text-neutral-200 dark:hover:text-neutral-100" aria-label="Abrir menú">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>

@@ -4,6 +4,7 @@ import { PlayerCard } from './player-card/player-card';
 import { PlayerService } from '../../../services/player-service.service';
 import { Banner } from '../../../shared/banner/banner';
 import { Paginator } from '../../../shared/paginator/paginator';
+import { ExportButton } from "../../../shared/export-button/export-button";
 
 @Component({
   selector: 'app-player-panel',
@@ -12,7 +13,8 @@ import { Paginator } from '../../../shared/paginator/paginator';
     PlayerCard,
     Banner,
     Paginator,
-  ],
+    ExportButton
+],
   templateUrl: './player-panel.html',
   styleUrl: './player-panel.css'
 })

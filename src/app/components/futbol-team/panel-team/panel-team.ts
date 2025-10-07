@@ -3,14 +3,18 @@ import { TeamCard } from './team-card/team-card';
 import { TeamService } from '../../../services/team-service.service';
 import { CommonModule } from '@angular/common';
 import { Paginator } from '../../../shared/paginator/paginator';
+import { Banner } from "../../../shared/banner/banner";
+import { ExportButton } from "../../../shared/export-button/export-button";
 
 @Component({
   selector: 'app-panel-team',
   imports: [
     TeamCard,
     CommonModule,
-    Paginator
-  ],
+    Paginator,
+    Banner,
+    ExportButton
+],
   templateUrl: './panel-team.html',
   styleUrl: './panel-team.css'
 })

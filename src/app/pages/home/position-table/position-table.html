@@ -1,76 +1,78 @@
-<section id="table" class="py-12 bg-white">
-        <div class="container mx-auto px-4">
-            @if (!maxRows) {
-
-                <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">Tabla de Clasificación</h2>
+<section id="table" class="py-12 bg-white dark:bg-neutral-900">
+  <div class="container mx-auto px-4">
+    @if (!maxRows) {
+      <h2 class="text-3xl font-bold text-center mb-8 text-gray-800 dark:text-zinc-100">Tabla de Clasificación</h2>
+    }
+    <div class="overflow-x-auto">
+      <table class="w-full max-w-6xl mx-auto bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100 dark:bg-neutral-900 dark:border-neutral-800">
+        <thead class="bg-blue-700 text-white dark:bg-neutral-800 dark:text-zinc-100">
+          <tr>
+            <th class="px-4 py-3 text-left">Pos</th>
+            <th class="px-4 py-3 text-left">Equipo</th>
+            <th class="px-4 py-3 text-center">PJ</th>
+            <th class="px-4 py-3 text-center">G</th>
+            <th class="px-4 py-3 text-center">E</th>
+            <th class="px-4 py-3 text-center">P</th>
+            <th class="px-4 py-3 text-center">GF</th>
+            <th class="px-4 py-3 text-center">GC</th>
+            <th class="px-4 py-3 text-center">DIF</th>
+            <th class="px-4 py-3 text-center">PTS</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100 dark:divide-neutral-800">
+          @for (team of visibleRows; track $index) {
+            @if ($index == 0) {
+              <tr class="bg-green-50 border-b border-gray-100 dark:bg-green-900/20 dark:border-neutral-800">
+                <td class="px-4 py-3 font-semibold text-gray-900 dark:text-zinc-100">{{team.posicion}}</td>
+                <td class="px-4 py-3">
+                  <div class="flex items-center space-x-2">
+                    <div class="w-6 h-6 bg-red-500 rounded-full"></div>
+                    <span class="font-semibold text-gray-900 dark:text-zinc-100">{{team.equipo}}</span>
+                  </div>
+                </td>
+                <td class="px-4 py-3 text-center text-gray-900 dark:text-zinc-100">{{team.partidos_jugados}}</td>
+                <td class="px-4 py-3 text-center text-gray-900 dark:text-zinc-100">{{team.partidos_ganados}}</td>
+                <td class="px-4 py-3 text-center text-gray-900 dark:text-zinc-100">{{team.partidos_empatados}}</td>
+                <td class="px-4 py-3 text-center text-gray-900 dark:text-zinc-100">{{team.partidos_perdidos}}</td>
+                <td class="px-4 py-3 text-center text-gray-900 dark:text-zinc-100">{{team.goles_favor}}</td>
+                <td class="px-4 py-3 text-center text-gray-900 dark:text-zinc-100">{{team.goles_contra}}</td>
+                <td class="px-4 py-3 text-center font-semibold text-green-600 dark:text-green-400">{{team.diferencia_goles}}</td>
+                <td class="px-4 py-3 text-center font-bold text-gray-900 dark:text-zinc-100">{{team.puntos}}</td>
+              </tr>
+            } @else {
+              <tr class="border-b border-gray-100 hover:bg-gray-50 dark:border-neutral-800 dark:hover:bg-neutral-800/60">
+                <td class="px-4 py-3 font-semibold text-gray-900 dark:text-zinc-100">{{team.posicion}}</td>
+                <td class="px-4 py-3">
+                  <div class="flex items-center space-x-2">
+                    <div class="w-6 h-6 bg-green-500 rounded-full"></div>
+                    <span class="font-semibold text-gray-900 dark:text-zinc-100">{{team.equipo}}</span>
+                  </div>
+                </td>
+                <td class="px-4 py-3 text-center text-gray-900 dark:text-zinc-100">{{team.partidos_jugados}}</td>
+                <td class="px-4 py-3 text-center text-gray-900 dark:text-zinc-100">{{team.partidos_ganados}}</td>
+                <td class="px-4 py-3 text-center text-gray-900 dark:text-zinc-100">{{team.partidos_empatados}}</td>
+                <td class="px-4 py-3 text-center text-gray-900 dark:text-zinc-100">{{team.partidos_perdidos}}</td>
+                <td class="px-4 py-3 text-center text-gray-900 dark:text-zinc-100">{{team.goles_favor}}</td>
+                <td class="px-4 py-3 text-center text-gray-900 dark:text-zinc-100">{{team.goles_contra}}</td>
+                <td class="px-4 py-3 text-center font-semibold text-green-600 dark:text-green-400">{{team.diferencia_goles}}</td>
+                <td class="px-4 py-3 text-center font-bold text-gray-900 dark:text-zinc-100">{{team.puntos}}</td>
+              </tr>
             }
-            <div class="overflow-x-auto">
-                <table class="w-full max-w-6xl mx-auto bg-white rounded-lg overflow-hidden shadow-lg">
-                    <thead class="bg-green-700 text-white">
-                        <tr>
-                            <th class="px-4 py-3 text-left">Pos</th>
-                            <th class="px-4 py-3 text-left">Equipo</th>
-                            <th class="px-4 py-3 text-center">PJ</th>
-                            <th class="px-4 py-3 text-center">G</th>
-                            <th class="px-4 py-3 text-center">E</th>
-                            <th class="px-4 py-3 text-center">P</th>
-                            <th class="px-4 py-3 text-center">GF</th>
-                            <th class="px-4 py-3 text-center">GC</th>
-                            <th class="px-4 py-3 text-center">DIF</th>
-                            <th class="px-4 py-3 text-center">PTS</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- @for (team of leaderBoardList; track $index) { -->
-                        @for (team of visibleRows; track $index) {
-                            @if($index == 0){
-                                <tr class="border-b border-gray-100 bg-green-50">
-                                    <td class="px-4 py-3 font-semibold">{{team.posicion}}</td>
-                                    <td class="px-4 py-3">
-                                        <div class="flex items-center space-x-2">
-                                            <div class="w-6 h-6 bg-red-500 rounded-full"></div>
-                                            <span class="font-semibold">{{team.equipo}}</span>
-                                        </div>
-                                    </td>
-                                    <td class="px-4 py-3 text-center">{{team.partidos_jugados}}</td>
-                                    <td class="px-4 py-3 text-center">{{team.partidos_ganados}}</td>
-                                    <td class="px-4 py-3 text-center">{{team.partidos_empatados}}</td>
-                                    <td class="px-4 py-3 text-center">{{team.partidos_perdidos}}</td>
-                                    <td class="px-4 py-3 text-center">{{team.goles_favor}}</td>
-                                    <td class="px-4 py-3 text-center">{{team.goles_contra}}</td>
-                                    <td class="px-4 py-3 text-center font-semibold text-green-600">{{team.diferencia_goles}}</td>
-                                    <td class="px-4 py-3 text-center font-bold">{{team.puntos}}</td>
-                                </tr>
-                            }@else {
-                                <tr class="border-b border-gray-100">
-                                    <td class="px-4 py-3 font-semibold">{{team.posicion}}</td>
-                                    <td class="px-4 py-3">
-                                        <div class="flex items-center space-x-2">
-                                            <div class="w-6 h-6 bg-green-500 rounded-full"></div>
-                                            <span class="font-semibold">{{team.equipo}}</span>
-                                        </div>
-                                    </td>
-                                    <td class="px-4 py-3 text-center">{{team.partidos_jugados}}</td>
-                                    <td class="px-4 py-3 text-center">{{team.partidos_ganados}}</td>
-                                    <td class="px-4 py-3 text-center">{{team.partidos_empatados}}</td>
-                                    <td class="px-4 py-3 text-center">{{team.partidos_perdidos}}</td>
-                                    <td class="px-4 py-3 text-center">{{team.goles_favor}}</td>
-                                    <td class="px-4 py-3 text-center">{{team.goles_contra}}</td>
-                                    <td class="px-4 py-3 text-center font-semibold text-green-600">{{team.diferencia_goles}}</td>
-                                    <td class="px-4 py-3 text-center font-bold">{{team.puntos}}</td>
-                                </tr>
-                            }
-                        }
-                    
-                    </tbody>
-                </table>
-            </div>
-            <!-- @if (maxRows) {
-                <div class="px-6 py-3 bg-gray-50 border-t border-gray-100">
-                    <button 
-                        routerLink="/dashboard1/reportes/tabla"
-                        class="text-sm text-football-green-600 hover:text-football-green-700 font-medium">Ver tabla completa →</button>
-                </div>
-            } -->
-        </div>
-    </section>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!--
+    @if (maxRows) {
+      <div class="px-6 py-3 bg-gray-50 border-t border-gray-100 dark:bg-neutral-900 dark:border-neutral-800">
+        <button 
+          routerLink="/dashboard1/reportes/tabla"
+          class="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium">
+          Ver tabla completa →
+        </button>
+      </div>
+    }
+    -->
+  </div>
+</section>

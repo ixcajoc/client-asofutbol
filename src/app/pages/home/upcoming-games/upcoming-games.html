@@ -1,70 +1,35 @@
 <!-- Próximos Partidos -->
-<section id="fixtures" class="py-12 bg-white">
-    <div class="container mx-auto px-4">
-        <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">Próximos Partidos</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            
-            @for (game of gamesList; track $index) {
-                @if ($index<3) {
+<section id="fixtures" class="py-12 bg-white dark:bg-neutral-900">
+  <div class="container mx-auto px-4">
+    <h2 class="text-3xl font-bold text-center mb-8 text-gray-800 dark:text-zinc-100">Próximos Partidos</h2>
 
-                    <div class="border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-shadow">
-                        <div class="text-center mb-4">
-                            <!-- <p class="text-sm text-gray-600">Sábado 28 Sep - 19:00</p> -->
-                             <p class="text-sm text-gray-600 capitalize">
-                                {{ game.fecha_partido | date:"d MMM - HH:mm" }}
-                            </p>
-                            <p class="text-xs text-gray-500">{{game.estadio}}</p>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <div class="text-center">
-                                <div class="w-12 h-12 bg-red-500 rounded-full mx-auto mb-2"></div>
-                                <p class="font-semibold">{{game.equipo_local_nombre}}</p>
-                            </div>
-                            <div class="text-2xl font-bold text-gray-400">VS</div>
-                            <div class="text-center">
-                                <div class="w-12 h-12 bg-blue-500 rounded-full mx-auto mb-2"></div>
-                                <p class="font-semibold">{{game.equipo_visitante_nombre}}</p>
-                            </div>
-                        </div>
-                    </div>
-                }
-    
-                <!-- <div class="border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-shadow">
-                    <div class="text-center mb-4">
-                        <p class="text-sm text-gray-600">Domingo 29 Sep - 16:00</p>
-                        <p class="text-xs text-gray-500">Estadio Metropolitano</p>
-                    </div>
-                    <div class="flex items-center justify-between">
-                        <div class="text-center">
-                            <div class="w-12 h-12 bg-green-500 rounded-full mx-auto mb-2"></div>
-                            <p class="font-semibold">León FC</p>
-                        </div>
-                        <div class="text-2xl font-bold text-gray-400">VS</div>
-                        <div class="text-center">
-                            <div class="w-12 h-12 bg-yellow-500 rounded-full mx-auto mb-2"></div>
-                            <p class="font-semibold">Cóndores</p>
-                        </div>
-                    </div>
-                </div>
-    
-                <div class="border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-shadow">
-                    <div class="text-center mb-4">
-                        <p class="text-sm text-gray-600">Domingo 29 Sep - 18:30</p>
-                        <p class="text-xs text-gray-500">Estadio Central</p>
-                    </div>
-                    <div class="flex items-center justify-between">
-                        <div class="text-center">
-                            <div class="w-12 h-12 bg-purple-500 rounded-full mx-auto mb-2"></div>
-                            <p class="font-semibold">Dragones</p>
-                        </div>
-                        <div class="text-2xl font-bold text-gray-400">VS</div>
-                        <div class="text-center">
-                            <div class="w-12 h-12 bg-orange-500 rounded-full mx-auto mb-2"></div>
-                            <p class="font-semibold">Pumas CF</p>
-                        </div>
-                    </div>
-                </div> -->
-            }
-        </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      @for (game of gamesList; track $index) {
+        @if ($index < 3) {
+          <div class="border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-shadow dark:border-neutral-800 dark:bg-neutral-900 dark:hover:bg-neutral-800/60">
+            <div class="text-center mb-4">
+              <p class="text-sm text-gray-600 dark:text-zinc-400 capitalize">
+                {{ game.fecha_partido | date:"d MMM - HH:mm" }}
+              </p>
+              <p class="text-xs text-gray-500 dark:text-zinc-500">{{game.estadio}}</p>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <div class="text-center">
+                <div class="w-12 h-12 bg-red-500 rounded-full mx-auto mb-2"></div>
+                <p class="font-semibold text-gray-900 dark:text-zinc-100">{{game.equipo_local_nombre}}</p>
+              </div>
+
+              <div class="text-2xl font-bold text-gray-400 dark:text-zinc-400">VS</div>
+
+              <div class="text-center">
+                <div class="w-12 h-12 bg-blue-500 rounded-full mx-auto mb-2"></div>
+                <p class="font-semibold text-gray-900 dark:text-zinc-100">{{game.equipo_visitante_nombre}}</p>
+              </div>
+            </div>
+          </div>
+        }
+      }
     </div>
+  </div>
 </section>
