@@ -30,6 +30,8 @@ import { PanelDashboard } from './pages/dashboards/panel-dashboard/panel-dashboa
 import { NewSeason } from './components/season/new-season/new-season';
 import { ActiveSeason } from './components/season/active-season/active-season';
 import { AllSeasonsComponent } from './components/season/all-seasons/all-seasons';
+import { Jornadas } from './components/calendar/jornadas/jornadas';
+import { NewJornada } from './components/calendar/jornadas/new-joranda/new-jornada';
 
 export const routes: Routes = [
     // {
@@ -214,6 +216,16 @@ export const routes: Routes = [
                         path: "upcoming-game",
                         component: UpcomingGame,
                         title: 'Proximos juegos',
+                    },
+                    {
+                        path: "jornada",
+                        component: Jornadas,
+                        title: 'Jornadas',
+                    },
+                    {
+                        path: "new-jornada",
+                        component: NewJornada,
+                        title: 'Jornadas',
                     }
                 ]
             },

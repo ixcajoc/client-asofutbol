@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../environments/environment';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { AuthService } from './auth-service.service';
 import { MessageService } from './message-service.service';
@@ -35,6 +35,16 @@ export class GamesService {
 
   getGameEvents(id:string): Observable<any>{
     return this.http.get<any>(`${this.url}matches/${id}/events`);
+  }
+
+  getUpcomingMatches(limit: number = 10, team?: number): Observable<any> {
+    let params = new HttpParams().set('limit', limit.toString());
+    
+    if (team) {
+      params = params.set('team', team.toString());
+    }
+
+    return this.http.get<any>(`${this.url}matches/upcoming`, { params });
   }
 
   newGame(newGame: any ){

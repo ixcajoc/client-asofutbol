@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { GamesService } from '../../../services/games-service.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-recent-games',
-  imports: [],
+  imports: [DatePipe],
   templateUrl: './recent-games.html',
   styleUrl: './recent-games.css'
 })

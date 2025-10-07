@@ -19,6 +19,7 @@ export class SeasonStatsCard {
   ngOnInit(){
     this.getAllStats();
     this.getSeasonSummary();
+    this.getDisciplineReport();
 
   }
 
@@ -42,6 +43,23 @@ export class SeasonStatsCard {
       },
       error: (error) => (console.log(error))
     });
+  }
+
+  disciplineList: any = []
+  getDisciplineReport(){
+    this.reportService.getDisciplineTable().subscribe({
+      next:(response)=>{
+        this.disciplineList = response.data;
+        // console.log(this.statList);
+      },
+      error: (error) => (console.log(error))
+    });
+  }
+  get yellowCards(): number {
+    return this.disciplineList.reduce((acc: number, j: any) => acc + j.tarjetas_amarillas, 0);
+  }
+  get redCards(): number {
+    return this.disciplineList.reduce((acc: number, j: any) => acc + j.tarjetas_rojas, 0);
   }
   
 

@@ -1,109 +1,195 @@
-<div class="flex justify-center items-center h-dvh">
-    <div style="width: 400px;">
-        
-        <div class="mt-7 bg-white border border-gray-200 rounded-xl shadow-2xs dark:bg-neutral-900 dark:border-neutral-700">
-          <div class="p-4 sm:p-7">
-            <div class="text-center">
-              <h1 class="block text-2xl font-bold text-gray-800 dark:text-white">Iniciar sesión</h1>
-              <!-- <p class="mt-2 text-sm text-gray-600 dark:text-neutral-400">
-                Don't have an account yet?
-                <a class="text-blue-600 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium dark:text-blue-500" href="../examples/html/signup.html">
-                  Sign up here
-                </a>
-              </p> -->
-            </div>
-        
-            <div class="mt-5">
-              <!-- <button type="button" class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800 dark:focus:bg-neutral-800">
-                <svg class="w-4 h-auto" width="46" height="47" viewBox="0 0 46 47" fill="none">
-                  <path d="M46 24.0287C46 22.09 45.8533 20.68 45.5013 19.2112H23.4694V27.9356H36.4069C36.1429 30.1094 34.7347 33.37 31.5957 35.5731L31.5663 35.8669L38.5191 41.2719L38.9885 41.3306C43.4477 37.2181 46 31.1669 46 24.0287Z" fill="#4285F4"/>
-                  <path d="M23.4694 47C29.8061 47 35.1161 44.9144 39.0179 41.3012L31.625 35.5437C29.6301 36.9244 26.9898 37.8937 23.4987 37.8937C17.2793 37.8937 12.0281 33.7812 10.1505 28.1412L9.88649 28.1706L2.61097 33.7812L2.52296 34.0456C6.36608 41.7125 14.287 47 23.4694 47Z" fill="#34A853"/>
-                  <path d="M10.1212 28.1413C9.62245 26.6725 9.32908 25.1156 9.32908 23.5C9.32908 21.8844 9.62245 20.3275 10.0918 18.8588V18.5356L2.75765 12.8369L2.52296 12.9544C0.909439 16.1269 0 19.7106 0 23.5C0 27.2894 0.909439 30.8731 2.49362 34.0456L10.1212 28.1413Z" fill="#FBBC05"/>
-                  <path d="M23.4694 9.07688C27.8699 9.07688 30.8622 10.9863 32.5344 12.5725L39.1645 6.11C35.0867 2.32063 29.8061 0 23.4694 0C14.287 0 6.36607 5.2875 2.49362 12.9544L10.0918 18.8588C11.9987 13.1894 17.25 9.07688 23.4694 9.07688Z" fill="#EB4335"/>
-                </svg>
-                Sign in with Google
-              </button> -->
-        
-              <!-- <div class="py-3 flex items-center text-xs text-gray-400 uppercase before:flex-1 before:border-t before:border-gray-200 before:me-6 after:flex-1 after:border-t after:border-gray-200 after:ms-6 dark:text-neutral-500 dark:before:border-neutral-600 dark:after:border-neutral-600">Or</div> -->
-        
-              <!-- Form -->
-              <form [formGroup]="loginForm" (ngSubmit)="auth()" id="loginform">
-                <div class="grid gap-y-4">
-                  <!-- Form Group email -->
-                  <!-- <div>
-                    <label for="email" class="block text-sm mb-2 dark:text-white">Email address</label>
-                    <div class="relative">
-                      <input type="email" id="email" name="email" class="py-2.5 sm:py-3 px-4 block w-full border-gray-200 rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" required aria-describedby="email-error">
-                      <div class="hidden absolute inset-y-0 end-0 pointer-events-none pe-3">
-                        <svg class="size-5 text-red-500" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
-                          <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
-                        </svg>
-                      </div>
-                    </div>
-                    <p class="hidden text-xs text-red-600 mt-2" id="email-error">Please include a valid email address so we can get back to you</p>
-                  </div> -->
-                  <!-- End Form Group -->
+<div class="min-h-dvh grid grid-cols-1 lg:grid-cols-2 bg-gradient-to-b from-emerald-50 to-white dark:from-neutral-950 dark:to-neutral-900">
 
-                  <!-- Form Group -->
-                  <div>
-                    <label for="username" class="block text-sm mb-2 dark:text-white">Usuario</label>
-                    <div class="relative">
-                      <input type="text" id="username" formControlName="username" name="username" class="py-2.5 sm:py-3 px-4 block w-full border-gray-200 rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" required aria-describedby="username-error">
-                      <div class="hidden absolute inset-y-0 end-0 pointer-events-none pe-3">
-                        <svg class="size-5 text-red-500" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
-                          <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
-                        </svg>
-                      </div>
-                    </div>
-                    <p class="hidden text-xs text-red-600 mt-2" id="email-error">Por favor ingresa un usuario valido</p>
-                  </div>
-                  <!-- End Form Group -->
-        
-                  <!-- Form Group -->
-                  <div>
-                    <div class="flex flex-wrap justify-between items-center gap-2">
-                      <label for="password" class="block text-sm mb-2 dark:text-white">Clave</label>
-                      <!-- <a class="inline-flex items-center gap-x-1 text-sm text-blue-600 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium dark:text-blue-500" href="../examples/html/recover-account.html">Forgot password?</a> -->
-                    </div>
-                    <div class="relative">
-                      <input type="password" id="password" formControlName="password" name="password" class="py-2.5 sm:py-3 px-4 block w-full border-gray-200 rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" required aria-describedby="password-error">
-                      <div class="hidden absolute inset-y-0 end-0 pointer-events-none pe-3">
-                        <svg class="size-5 text-red-500" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
-                          <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
-                        </svg>
-                      </div>
-                    </div>
-                    <p class="hidden text-xs text-red-600 mt-2" id="password-error">6+ caracteres requeridos</p>
-                  </div>
-                  <!-- End Form Group -->
-        
-                  <!-- Checkbox -->
-                  <div class="flex items-center">
-                    <div class="flex">
-                      <!-- <input id="remember-me" name="remember-me" type="checkbox" class="shrink-0 mt-0.5 border-gray-200 rounded-sm text-blue-600 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"> -->
-                    </div>
-                    <div class="ms-3">
-                      <!-- <label for="remember-me" class="text-sm dark:text-white">Remember me</label> -->
-                    </div>
-                  </div>
-                  <!-- End Checkbox -->
-        
-                  <button type="submit" [disabled]="loginForm.invalid" class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-hidden focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">Sign in</button>
-                </div>
-              </form>
-              <!-- End Form -->
-              
-            </div>
-          </div>
+  <!-- Panel ilustrado: cancha / fútbol (izquierda) -->
+  <div class="hidden lg:flex relative items-center justify-center overflow-hidden">
+    <!-- Césped y líneas -->
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0">
+      <!-- Césped -->
+      <div class="absolute inset-0 bg-gradient-to-br from-emerald-600 via-emerald-700 to-emerald-800"></div>
+      <!-- Líneas de cancha -->
+      <div class="absolute inset-0 opacity-35">
+        <svg viewBox="0 0 1200 800" class="w-full h-full">
+          <!-- perímetro -->
+          <rect x="40" y="40" width="1120" height="720" fill="none" stroke="white" stroke-width="6"/>
+          <!-- medio campo -->
+          <line x1="600" y1="40" x2="600" y2="760" stroke="white" stroke-width="6"/>
+          <circle cx="600" cy="400" r="70" fill="none" stroke="white" stroke-width="6"/>
+          <!-- áreas -->
+          <rect x="40" y="250" width="160" height="300" fill="none" stroke="white" stroke-width="6"/>
+          <rect x="1000" y="250" width="160" height="300" fill="none" stroke="white" stroke-width="6"/>
+        </svg>
+      </div>
+      <!-- Destellos con colores del logo -->
+      <div class="absolute -top-24 -left-24 h-96 w-96 rounded-full bg-[#2e9e44]/30 blur-3xl"></div>
+      <div class="absolute -bottom-24 -right-24 h-96 w-96 rounded-full bg-[#3b3b97]/30 blur-3xl"></div>
+    </div>
+
+    <div class="relative z-10 max-w-lg mx-auto text-center text-white px-10">
+      <img src="assets/logo.jpg" alt="Logo de la liga" class="mx-auto h-20 w-20 object-contain rounded-xl bg-white/10 backdrop-blur-sm p-2 shadow-lg"/>
+      <h2 class="mt-6 text-4xl font-bold tracking-tight drop-shadow">
+        Panel de Ligas de Fútbol
+      </h2>
+      <p class="mt-3 text-white/90">
+        Administra equipos, jornadas y tablas de posiciones en un solo lugar.
+      </p>
+    </div>
+  </div>
+
+  <!-- Formulario (derecha) -->
+  <div class="relative flex items-center justify-center p-6 sm:p-8">
+    <!-- patrón de hexágonos sutil -->
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0 opacity-10 dark:opacity-20">
+      <svg class="w-full h-full text-[#d7a928]" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="hex" width="40" height="34.64" patternUnits="userSpaceOnUse" patternTransform="scale(1)">
+            <polygon points="20,0 40,8.66 40,25.98 20,34.64 0,25.98 0,8.66" fill="currentColor"/>
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#hex)" />
+      </svg>
+    </div>
+
+    <div class="relative z-10 w-full max-w-md">
+      <!-- Marca -->
+      <div class="text-center mb-6">
+        <div class="mx-auto mb-3 h-14 w-14 grid place-items-center rounded-xl bg-[#3b3b97] text-white shadow-md">
+          <!-- balón minimal -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 3l3 5-3 3-3-3 3-5zm0 9l6 2-2 5H8l-2-5 6-2z"></path>
+          </svg>
         </div>
-        
-        <div class="text-center mt-4">
-                <a 
-                  routerLink="/home" 
-                  class="text-blue-600 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium dark:text-blue-500" href="../examples/html/signup.html">
-                  Regresar
-                </a>
-            </div>
+        <h1 class="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+          Iniciar sesión
+        </h1>
+        <p class="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+          Accede para gestionar ligas, equipos y calendarios.
+        </p>
       </div>
 
+      <!-- Card -->
+      <div class="rounded-2xl border border-zinc-200/70 bg-white/75 backdrop-blur-md shadow-lg dark:bg-neutral-900/60 dark:border-neutral-800">
+        <form [formGroup]="loginForm" (ngSubmit)="auth()" id="loginform" class="p-5 sm:p-6 lg:p-7" novalidate>
+          <div class="grid gap-4">
+            <!-- Usuario -->
+            <div>
+              <label for="username" class="mb-1.5 block text-sm font-medium text-zinc-800 dark:text-zinc-200">Usuario</label>
+              <div class="relative">
+                <span class="pointer-events-none absolute inset-y-0 left-3 grid place-items-center text-zinc-400">
+                  <!-- icon user -->
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A7 7 0 1119 12v.5" />
+                  </svg>
+                </span>
+                <input
+                  id="username"
+                  type="text"
+                  formControlName="username"
+                  [attr.aria-invalid]="isInvalid('username')"
+                  [attr.aria-describedby]="isInvalid('username') ? 'username-error' : null"
+                  placeholder="tu.usuario"
+                  autocomplete="username"
+                  class="w-full rounded-xl border border-zinc-300 bg-white pl-10 pr-3 py-2.5 text-[15px] leading-6 text-zinc-900 placeholder:text-zinc-400 shadow-[0_1px_0_rgba(0,0,0,0.02)]
+                         dark:bg-neutral-900 dark:border-neutral-700 dark:text-zinc-100 dark:placeholder-neutral-500
+                         focus:outline-none focus:ring-4 focus:ring-[#2e9e44]/25 focus:border-[#2e9e44]
+                         aria-[invalid=true]:border-red-500 aria-[invalid=true]:focus:ring-red-500/20"
+                  required
+                />
+              </div>
+              <p *ngIf="isInvalid?.('username')" id="username-error" class="mt-1.5 text-xs text-red-600">
+                {{ getError('username') || 'Por favor ingresa un usuario válido.' }}
+              </p>
+            </div>
+
+            <!-- Clave -->
+            <div>
+              <div class="mb-1.5 flex items-center justify-between">
+                <label for="password" class="text-sm font-medium text-zinc-800 dark:text-zinc-200">Clave</label>
+                <!-- <a routerLink="/recover" class="text-xs text-[#3b3b97] hover:underline">¿Olvidaste tu clave?</a> -->
+              </div>
+
+              <div class="relative">
+                <span class="pointer-events-none absolute inset-y-0 left-3 grid place-items-center text-zinc-400">
+                  <!-- candado -->
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 11c-1.657 0-3 1.343-3 3v2h6v-2c0-1.657-1.343-3-3-3z" />
+                    <rect x="5" y="11" width="14" height="10" rx="2" ry="2" />
+                  </svg>
+                </span>
+                <input
+                  id="password"
+                  [type]="showPassword ? 'text' : 'password'"
+                  formControlName="password"
+                  [attr.aria-invalid]="isInvalid('password')"
+                  [attr.aria-describedby]="isInvalid('password') ? 'password-error' : null"
+                  placeholder="••••••••"
+                  autocomplete="current-password"
+                  class="w-full rounded-xl border border-zinc-300 bg-white pl-10 pr-10 py-2.5 text-[15px] leading-6 text-zinc-900 placeholder:text-zinc-400 shadow-[0_1px_0_rgba(0,0,0,0.02)]
+                         dark:bg-neutral-900 dark:border-neutral-700 dark:text-zinc-100 dark:placeholder-neutral-500
+                         focus:outline-none focus:ring-4 focus:ring-[#2e9e44]/25 focus:border-[#2e9e44]
+                         aria-[invalid=true]:border-red-500 aria-[invalid=true]:focus:ring-red-500/20"
+                  required
+                />
+                <!-- Toggle password -->
+                <button
+                  type="button"
+                  (click)="togglePasswordVisibility()"
+                  class="absolute inset-y-0 right-2 flex items-center px-2 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 focus:outline-none"
+                  [attr.aria-pressed]="showPassword"
+                  aria-label="Mostrar u ocultar clave"
+                >
+                  <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7Z" />
+                    <circle cx="12" cy="12" r="3" stroke-width="1.8" />
+                  </svg>
+                  <svg *ngIf="showPassword" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 3l18 18M10.584 10.59A3 3 0 0012 15a3 3 0 002.121-.879M9.88 4.597A9.956 9.956 0 0112 4c4.477 0 8.268 2.943 9.542 7a9.97 9.97 0 01-4.132 5.225M6.228 6.23A9.969 9.969 0 002.458 12C3.732 16.057 7.523 19 12 19c1.157 0 2.267-.197 3.292-.561" />
+                  </svg>
+                </button>
+              </div>
+              <p *ngIf="isInvalid('password')" id="password-error" class="mt-1.5 text-xs text-red-600">
+                {{ getError('password') || 'La clave debe tener al menos 6 caracteres.' }}
+              </p>
+            </div>
+
+            <!-- Mensaje general -->
+            <div *ngIf="authError" class="rounded-lg border border-red-200/60 bg-red-50 text-red-700 px-3 py-2 text-sm dark:bg-red-950/30 dark:border-red-900/40 dark:text-red-300">
+              {{ authError }}
+            </div>
+
+            <!-- Botón -->
+            <button
+              type="submit"
+              [disabled]="loginForm.invalid || loading"
+              class="inline-flex justify-center items-center rounded-xl bg-[#3b3b97] px-4 py-2.5 text-sm font-semibold text-white shadow-sm
+                     hover:bg-[#323285] focus:outline-none focus:ring-2 focus:ring-[#3b3b97]/40 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-neutral-900
+                     disabled:opacity-50 disabled:pointer-events-none transition-colors"
+            >
+              <svg *ngIf="loading" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" role="img" aria-label="Cargando">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v3a5 5 0 00-5 5H4z"></path>
+              </svg>
+              Entrar al panel
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Footer -->
+      <div class="text-center mt-4">
+        <a routerLink="/home" class="text-sm text-[#3b3b97] hover:underline font-medium dark:text-indigo-300">
+          Regresar
+        </a>
+      </div>
+
+      <!-- Mini franja con colores del logo -->
+      <div class="mt-6 h-1.5 w-full rounded-full overflow-hidden">
+        <div class="h-full w-full grid grid-cols-3">
+          <div class="bg-[#2e9e44]"></div>
+          <div class="bg-[#d7a928]"></div>
+          <div class="bg-[#3b3b97]"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

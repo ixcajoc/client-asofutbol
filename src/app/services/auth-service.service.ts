@@ -38,21 +38,25 @@ export class AuthService {
   //   return localStorage.getItem('current-user');
   // }
 
-  auth(post: UserLogin){
-    return this.http.post<any>(`${this.url}auth/login`,post).subscribe({
-      next: (response)=> { 
-        this.setToken(response.data.token);
-        // this.userAutenticated();
-        
-        this.router.navigate(['/dashboard1']); 
-      },
-      error: (error) => {
-        error;
-        // alert(error.error.message);
-        this.message.errorAlert(error.message);
-      } 
-    }); 
+  auth(post: UserLogin) {
+    return this.http.post<any>(`${this.url}auth/login`, post);
   }
+
+  // auth(post: UserLogin){
+  //   return this.http.post<any>(`${this.url}auth/login`,post).subscribe({
+  //     next: (response)=> { 
+  //       this.setToken(response.data.token);
+  //       // this.userAutenticated();
+        
+  //       this.router.navigate(['/dashboard1']); 
+  //     },
+  //     error: (error) => {
+  //       error;
+  //       // alert(error.error.message);
+  //       this.message.errorAlert(error.message);
+  //     } 
+  //   }); 
+  // }
   
   logout(): void {
     localStorage.removeItem('token');
@@ -80,8 +84,5 @@ export class AuthService {
   //     error: (error) => {error}
   //   });
   // }
-
-
-
 
 }
