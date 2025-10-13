@@ -1,6 +1,6 @@
 <div class="container">
     <app-banner [title]="`Equipos de la liga`" ></app-banner>
-    <app-export-button [tableData]="teamList"></app-export-button>
+    <app-export-button class="rotate-z-1" [tableData]="teamList"></app-export-button>
 </div>
 <div class="grid grid-cols-3 gap-2" >
     @for (team of teamList; track $index) {
