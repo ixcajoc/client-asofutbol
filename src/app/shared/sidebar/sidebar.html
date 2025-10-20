@@ -28,7 +28,8 @@
         <ul class="flex flex-col space-y-1">
 
           <!-- Dashboard -->
-          <li *ngIf="hasPermission('dashboard')">
+          <!-- <li *ngIf="hasPermission('dashboard')"> -->
+          <li>
             <a
               class="relative flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg text-gray-100
                      hover:bg-white/10 transition-colors duration-150
@@ -44,7 +45,8 @@
           </li>
 
           <!-- Usuarios -->
-          <li class="hs-accordion" id="account-accordion" *ngIf="hasPermission('usuarios')">
+          <!-- <li class="hs-accordion" id="account-accordion" *ngIf="hasPermission('usuarios')"> -->
+          <li class="hs-accordion" id="account-accordion">
             <button type="button"
               class="relative hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg text-gray-100
                      hover:bg-white/10 transition-colors duration-150
@@ -83,7 +85,8 @@
           </li>
 
           <!-- Equipos -->
-          <li class="hs-accordion" id="teams-accordion" *ngIf="hasPermission('equipos')">
+          <!-- <li class="hs-accordion" id="teams-accordion" *ngIf="hasPermission('equipos')"> -->
+          <li class="hs-accordion" id="teams-accordion">
             <button type="button"
               class="relative hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg text-gray-100
                      hover:bg-white/10 transition-colors duration-150
@@ -104,7 +107,8 @@
           </li>
 
           <!-- Futbolistas -->
-          <li class="hs-accordion" id="players-accordion" *ngIf="hasPermission('futbolistas')">
+          <!-- <li class="hs-accordion" id="players-accordion" *ngIf="hasPermission('futbolistas')"> -->
+          <li class="hs-accordion" id="players-accordion">
             <button type="button"
               class="relative hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg text-gray-100
                      hover:bg-white/10 transition-colors duration-150
@@ -125,7 +129,8 @@
           </li>
 
           <!-- Reportes -->
-          <li class="hs-accordion" id="reports-accordion" *ngIf="hasPermission('reportes')">
+          <!-- <li class="hs-accordion" id="reports-accordion" *ngIf="hasPermission('reportes')"> -->
+          <li class="hs-accordion" id="reports-accordion">
             <button type="button"
               class="relative hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg text-gray-100
                      hover:bg-white/10 transition-colors duration-150
@@ -151,7 +156,8 @@
           </li>
 
           <!-- Calendar -->
-          <li class="hs-accordion" id="calendar-accordion" *ngIf="hasPermission('calendar')">
+          <!-- <li class="hs-accordion" id="calendar-accordion" *ngIf="hasPermission('calendar')"> -->
+          <li class="hs-accordion" id="calendar-accordion">
             <button type="button"
               class="relative hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg text-gray-100
                      hover:bg-white/10 transition-colors duration-150
@@ -173,7 +179,8 @@
           </li>
 
           <!-- Temporadas -->
-          <li class="hs-accordion" id="seasons-accordion" *ngIf="hasPermission('temporadas')">
+          <!-- <li class="hs-accordion" id="seasons-accordion" *ngIf="hasPermission('temporadas')"> -->
+          <li class="hs-accordion" id="seasons-accordion">
             <button type="button"
               class="relative hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg text-gray-100
                      hover:bg-white/10 transition-colors duration-150

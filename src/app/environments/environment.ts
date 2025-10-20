@@ -9,4 +9,3 @@ export const environment = {
     url: 'https://server-asofutbol.vercel.app/api/',
 
 };
-  
